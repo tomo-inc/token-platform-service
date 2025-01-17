@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://44.221.66.16:5432/wallet?useSSL=false&serverTimezone=UTC&characterEncoding=utf8
-    username: test_tomo
-    password: Tomo@2024
+    url: jdbc:postgresql://44.221.66.16:5432/token_service?useSSL=false&serverTimezone=UTC&characterEncoding=utf8
+    username: wallet_token
+    password: bJNoseDojbnjk
     driver-class-name: org.postgresql.Driver
   data:
     redis:

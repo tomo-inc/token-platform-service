@@ -23,7 +23,7 @@ public class CoinGeckoClientConfig {
         // 连接超时时间，单位为毫秒
         int connectTimeoutMillis = 5000;
         // 读取超时时间，单位为毫秒
-        int readTimeoutMillis = 100000;
+        int readTimeoutMillis = 10000;
         return new Request.Options(connectTimeoutMillis, readTimeoutMillis);
     }
 }

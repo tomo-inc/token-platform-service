@@ -1,15 +1,15 @@
 package com.tomo.controller;
 
+import com.tomo.model.ChainUtil;
 import com.tomo.model.ResultUtils;
-import com.tomo.model.dto.TokenCategoryCoinGeckoDTO;
 import com.tomo.model.dto.TokenInfoDTO;
 import com.tomo.model.dto.TokenRankDTO;
-import com.tomo.model.req.TokenReq;
+import com.tomo.model.req.OnchainTokenReq;
+import com.tomo.model.req.PlatformTokenReq;
 import com.tomo.model.resp.Result;
 import com.tomo.service.category.CoinGeckoService;
 import com.tomo.service.category.TokenInfoService;
 import com.tomo.service.category.TokenRankService;
-import com.tomo.model.ChainUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,8 +48,8 @@ public class TokenCategoryController {
         TokenInfoDTO tokenInfoDTO = tokenInfoService.exactQueryToken(chainId, address);
         if (tokenInfoDTO != null) {
             if (TokenInfoService.needUpdate(tokenInfoDTO.getUpdateTime().getTime())) {
-                TokenCategoryCoinGeckoDTO tokenCategoryCoinGeckoDTO = new TokenCategoryCoinGeckoDTO();
-                tokenCategoryCoinGeckoDTO.setCoingeckoChainId(tokenInfoDTO.getCoingeckoCoinId());
+                PlatformTokenReq tokenCategoryCoinGeckoDTO = new PlatformTokenReq();
+                tokenCategoryCoinGeckoDTO.setCoingeckoCoinId(tokenInfoDTO.getCoingeckoCoinId());
                 Map<String, TokenInfoDTO> tokenInfoDTOMap = coinGeckoService.singlePlatformTokenInfoAndPrice(tokenCategoryCoinGeckoDTO);
                 return ResultUtils.success(tokenInfoDTOMap.get(ChainUtil.getCommonKey(tokenInfoDTO.getChainId(), tokenInfoDTO.getAddress())));
             }
@@ -60,9 +60,15 @@ public class TokenCategoryController {
 
 
     @PostMapping("/query/token-info-price/onchain/exact")
-    public Result<Map<String, TokenInfoDTO>> exactQueryOnchainToken(@RequestBody List<TokenReq> tokenReqs) {
-        Map<String, TokenInfoDTO> tokenInfoDTOMap = coinGeckoService.batchOnchainCoinInfoAndPrice(tokenReqs, false);
+    public Result<Map<String, TokenInfoDTO>> exactQueryOnchainToken(@RequestBody List<OnchainTokenReq> onchainTokenReqs) {
+        Map<String, TokenInfoDTO> tokenInfoDTOMap = coinGeckoService.batchOnchainCoinInfoAndPrice(onchainTokenReqs, false);
         return ResultUtils.success(tokenInfoDTOMap);
+    }
+
+    @PostMapping("/query/token-info-price/native/token")
+    public Result<Map<String, TokenInfoDTO>> queryNativeToken(@RequestBody List<PlatformTokenReq> tokens) {
+        Map<String, TokenInfoDTO> stringTokenInfoDTOMap = coinGeckoService.updateNativeOrPlatformPrice(tokens);
+        return ResultUtils.success(stringTokenInfoDTOMap);
     }
 
 

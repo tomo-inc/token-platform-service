@@ -1,6 +1,7 @@
 package com.tomo.model;
 
 import lombok.Getter;
+import org.springframework.data.util.Pair;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,7 +23,13 @@ public class ChainUtil {
     public static Map<Long, ChainInfoEnum> okxChainInfoMap = Arrays.stream(ChainInfoEnum.values()).collect(Collectors.toMap(ChainInfoEnum::getOkxId, Function.identity()));
 
     @Getter
-    public static Map<String, ChainInfoEnum> coinGeckoChainInfoMap = Arrays.stream(ChainInfoEnum.values()).collect(Collectors.toMap(ChainInfoEnum::getCoingeckoChainName, Function.identity()));
+    public static Map<String, Pair<CoinGeckoEnum,ChainEnum>> coinGeckoChainInfoMap = Arrays
+            .stream(ChainCoinGeckoEnum.values())
+            .collect(
+                    Collectors.toMap(e-> e.getCoinGeckoEnum().getPlatformChainId(),
+                                    e->Pair.of( e.getCoinGeckoEnum(),e.getChainEnum())
+                    )
+            );
 
 
     public static String getCommonKey(Long chainId,String address) {

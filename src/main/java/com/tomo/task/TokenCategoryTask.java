@@ -2,14 +2,16 @@ package com.tomo.task;
 
 
 import com.tomo.feign.CoinGeckoClient;
-import com.tomo.model.ChainInfoEnum;
+import com.tomo.model.ChainEnum;
 import com.tomo.model.ChainUtil;
-import com.tomo.model.dto.TokenCategoryCoinGeckoDTO;
+import com.tomo.model.CoinGeckoEnum;
+import com.tomo.model.req.PlatformTokenReq;
 import com.tomo.model.resp.CoinSimpleInfoResp;
 import com.tomo.model.resp.NativeCoinSimpleInfoResp;
 import com.tomo.service.category.TokenCategoryDataService;
 import com.tomo.service.category.impl.CoinGeckoServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -26,24 +28,19 @@ public class TokenCategoryTask {
     @Autowired
     CoinGeckoClient coinGeckoClient;
 
-
     public void allNativeToken(){
         List<NativeCoinSimpleInfoResp> allNativeCoinList = coinGeckoClient.getAllNativeCoinList();
-        List<TokenCategoryCoinGeckoDTO> list = new ArrayList<>();
-        Map<String, ChainInfoEnum> coinGeckoChainInfoMap = ChainUtil.getCoinGeckoChainInfoMap();
+        List<PlatformTokenReq> list = new ArrayList<>();
+        Map<String, Pair<CoinGeckoEnum, ChainEnum>> coinGeckoChainInfoMap = ChainUtil.getCoinGeckoChainInfoMap();
         for (NativeCoinSimpleInfoResp nativeCoinSimpleInfoResp : allNativeCoinList) {
             if (!coinGeckoChainInfoMap.containsKey(nativeCoinSimpleInfoResp.getId())){
                 continue;
             }
-            ChainInfoEnum chainInfoEnum = coinGeckoChainInfoMap.get(nativeCoinSimpleInfoResp.getId());
-            TokenCategoryCoinGeckoDTO tokenCategoryCoinGeckoDTO = new TokenCategoryCoinGeckoDTO();
-            tokenCategoryCoinGeckoDTO.setCoingeckoCoinId(nativeCoinSimpleInfoResp.getNativeCoinId());
-            tokenCategoryCoinGeckoDTO.setName(nativeCoinSimpleInfoResp.getName());
-            tokenCategoryCoinGeckoDTO.setIsNative(true);
-            tokenCategoryCoinGeckoDTO.setChainId(chainInfoEnum.getChainId());
+            PlatformTokenReq tokenReq = new PlatformTokenReq();
+            tokenReq.setCoingeckoCoinId(nativeCoinSimpleInfoResp.getNativeCoinId());
             boolean exists = tokenCategoryDataService.exists(nativeCoinSimpleInfoResp.getId());
             if (!exists) {
-                list.add(tokenCategoryCoinGeckoDTO);
+                list.add(tokenReq);
             }
         }
         coinGeckoService.batchPlatformCoinInfoAndPrice(list);
@@ -51,15 +48,13 @@ public class TokenCategoryTask {
 
     public void allTokenBriefInfoTask() {
         List<CoinSimpleInfoResp> coinSimpleInfoResps = coinGeckoClient.getAllCoinList();
-        List<TokenCategoryCoinGeckoDTO> list = new ArrayList<>();
+        List<PlatformTokenReq> list = new ArrayList<>();
         for (CoinSimpleInfoResp coinSimpleInfoResp : coinSimpleInfoResps) {
-            TokenCategoryCoinGeckoDTO tokenCategoryCoinGeckoDTO = new TokenCategoryCoinGeckoDTO();
-            tokenCategoryCoinGeckoDTO.setCoingeckoCoinId(coinSimpleInfoResp.getId());
-            tokenCategoryCoinGeckoDTO.setName(coinSimpleInfoResp.getName());
-            tokenCategoryCoinGeckoDTO.setIsNative(false);
+            PlatformTokenReq tokenReq = new PlatformTokenReq();
+            tokenReq.setCoingeckoCoinId(coinSimpleInfoResp.getId());
             boolean exists = tokenCategoryDataService.exists(coinSimpleInfoResp.getId());
             if (!exists) {
-                list.add(tokenCategoryCoinGeckoDTO);
+                list.add(tokenReq);
             }
         }
         coinGeckoService.batchPlatformCoinInfoAndPrice(list);
