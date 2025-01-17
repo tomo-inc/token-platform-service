@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://44.221.66.16:5432/wallet?useSSL=false&serverTimezone=UTC&characterEncoding=utf8
+    username: test_tomo
+    password: Tomo@2024
+    driver-class-name: org.postgresql.Driver
+  data:
+    redis:
+      host: http://172.31.26.48
+      port: 6379
+      database: 0
+      timeout:  2000
+      password: Tomoredis
+
+
+
+mybatis:
+  mapper-locations: classpath:mappers/*.xml
+
+

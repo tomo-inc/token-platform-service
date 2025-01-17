@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration status="WARN" monitorInterval="30" packages="org.apache.skywalking.apm.toolkit.log.log4j.v2.x">
+
+    <properties>
+        <Property name="logging.path">@logging.path@</Property>
+        <Property name="logging.console.level">INFO</Property>
+        <Property name="logging.immediateFlush">@logging.immediateFlush@</Property>
+        <Property name="logging.path.redis.cli">@logging.path.redis.cli@</Property>
+        <Property name="CHARSET">UTF-8</Property>
+        <Property name="LOG_LEVEL_PATTERN">%5p</Property>
+        <Property name="LOG_DATEFORMAT_PATTERN">yyyy-MM-dd HH:mm:ss.SSS</Property>
+        <Property name="CONSOLE_LOG_PATTERN">%maxLen{%clr{%d{${LOG_DATEFORMAT_PATTERN}}}{faint} %clr{${LOG_LEVEL_PATTERN}} [%traceId] [%X{X-RequestID}] [%X{C-UID}] [%X{C-SOURCE}] %clr{%pid}{magenta} %clr{---}{faint} %clr{[%15.15t]}{faint} %clr{%-40.40c{1.}}{cyan} %clr{:}{faint} %m}{4096}%n</Property>
+        <Property name="FILE_LOG_PATTERN">%maxLen{%d{${LOG_DATEFORMAT_PATTERN}} ${LOG_LEVEL_PATTERN} [%traceId] [%X{X-RequestID}] [%X{C-UID}] [%X{C-SOURCE}] %pid --- [%t] %-40.40c{1.} : %m}{4096}%n
+        </Property>
+    </properties>
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT" follow="true">
+            <PatternLayout pattern="${FILE_LOG_PATTERN}"/>
+        </Console>
+        <RollingRandomAccessFile name="InfoFile"
+                                 immediateFlush="${logging.immediateFlush}"
+                                 fileName="${logging.path}/info.log"
+                                 filePattern="${logging.path}/archive/history_info.%d{yyyy-MM-dd}.%i.zip">
+            <PatternLayout pattern="${FILE_LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="500 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="3">
+                <Delete basePath="${logging.path}/archive" maxDepth="2">
+                    <IfFileName glob="history_info.*"/>
+                    <IfLastModified age="1d"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingRandomAccessFile>
+
+
+        <RollingRandomAccessFile name="ErrorFile"
+                                 fileName="${logging.path}/error.log"
+                                 filePattern="${logging.path}/archive/history_error.%d{yyyy-MM-dd}.%i.zip">
+            <PatternLayout pattern="${FILE_LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="500 MB"/>
+            </Policies>
+            <ThresholdFilter level="WARN" onMatch="ACCEPT" onMismatch="DENY"/>
+            <DefaultRolloverStrategy max="3">
+                <Delete basePath="${logging.path}/archive" maxDepth="2">
+                    <IfFileName glob="history_error.*"/>
+                    <IfLastModified age="1d"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingRandomAccessFile>
+
+        <RollingRandomAccessFile name="redis-client-log"
+                                 fileName="${logging.path.redis.cli}/ok-redis-sdk-info.log"
+                                 filePattern="${logging.path.redis.cli}/history_info.%d{yyyy-MM-dd}.%i.zip">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss}\t%m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="500 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="3">
+                <Delete basePath="${logging.path.redis.cli}" maxDepth="2">
+                    <IfFileName glob="history_info.*"/>
+                    <IfLastModified age="1d"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingRandomAccessFile>
+        <RollingRandomAccessFile name="TraceFile"
+                                 fileName="${logging.path}/trace.log"
+                                 filePattern="${logging.path}/event_tracking/trace.%d{yyyy-MM-dd}.%i.zip">
+            <PatternLayout pattern="${FILE_LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="500 MB"/>
+            </Policies>
+            <ThresholdFilter level="TRACE" onMatch="ACCEPT" onMismatch="DENY"/>
+            <DefaultRolloverStrategy max="3">
+                <Delete basePath="${logging.path}/event_tracking" maxDepth="2">
+                    <IfFileName glob="trace.*"/>
+                    <IfLastModified age="1d"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingRandomAccessFile>
+
+    </Appenders>
+
+    <Loggers>
+        <root level="INFO" includeLocation="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="InfoFile"/>
+            <AppenderRef ref="ErrorFile"/>
+        </root>
+
+        <Logger name="com.okcoin.commons.redis.client" level="info" additivity="false">
+            <appender-ref ref="redis-client-log"/>
+        </Logger>
+
+        <logger name="com.alibaba.nacos" level="WARN"/>
+
+        <Logger name="io.lettuce.core.protocol" level="ERROR" additivity="false">
+            <appender-ref ref="redis-client-log"/>
+        </Logger>
+
+        <Logger name="com.okcoin.wallet.sa.service.log.trace" level="TRACE"
+                additivity="false">
+            <appender-ref ref="TraceFile"/>
+        </Logger>
+
+    </Loggers>
+
+</configuration>
