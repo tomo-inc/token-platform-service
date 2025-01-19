@@ -32,7 +32,7 @@ public class TokenCategoryCoinGeckoDTO implements Cloneable {
     @TableField(value = "is_native")
     private Boolean isNative;
 
-    @TableField(value = "`name`")
+    @TableField(value = "name")
     private String name;
 
     @TableField(value = "display_name")

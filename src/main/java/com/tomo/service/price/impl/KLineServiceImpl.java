@@ -6,8 +6,10 @@ import com.tomo.model.ChainUtil;
 import com.tomo.model.IntervalEnum;
 import com.tomo.model.dto.TokenInfoDTO;
 import com.tomo.model.dto.TokenOhlcvDTO;
+import com.tomo.model.req.OnchainTokenReq;
 import com.tomo.model.resp.OKXResult;
 import com.tomo.model.resp.OnchainOHLCVResp;
+import com.tomo.service.category.CoinGeckoService;
 import com.tomo.service.category.TokenInfoService;
 import com.tomo.service.price.BitqueryService;
 import com.tomo.service.price.KLineService;
@@ -28,13 +30,15 @@ public class KLineServiceImpl implements KLineService {
     OKXClient okxClient;
     @Autowired
     CoinGeckoClient coinGeckoClient;
-
+    @Autowired
+    CoinGeckoService geckoService;
     @Autowired
     TokenInfoService tokenInfoService;
 
     @Autowired
     BitqueryService bitqueryService;
-
+    @Autowired
+    private CoinGeckoService coinGeckoService;
 
 
     // 改成coingecko
@@ -90,7 +94,7 @@ public class KLineServiceImpl implements KLineService {
     // 只提供一个接口
     @Override
     public List<TokenOhlcvDTO> getTokenOhlcv(Long chainId, String address, IntervalEnum interval) {
-        TokenInfoDTO tokenInfoDTO = tokenInfoService.exactQueryToken(chainId, address);
+        TokenInfoDTO tokenInfoDTO = coinGeckoService.queryOneByOnchain(new OnchainTokenReq(chainId, address), true);
         if (tokenInfoDTO == null) {
             return new ArrayList<>();
         }
@@ -119,7 +123,7 @@ public class KLineServiceImpl implements KLineService {
                             .setVolume(t.get(7))
             ).toList();
         } else {
-            String networkId = ChainUtil.getChainInfoMap().get(tokenInfoDTO.getChainId()).getCoingeckoOnchainName();
+            String networkId = ChainUtil.getChainAndCoinGeckoMap().get(tokenInfoDTO.getChainId()).getCoinGeckoEnum().getChainIdentityId();
             String poolAddress = tokenInfoDTO.getPoolAddress();
             if (networkId == null) {
                 return new ArrayList<>();

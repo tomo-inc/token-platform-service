@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 public interface CoinGeckoService {
+    TokenInfoDTO queryOneByOnchain(OnchainTokenReq tokenReq, boolean include);
+
     // 更新多个onchain币价同时更新代币信息
     // key: chainId+ "-" +address
     Map<String, TokenInfoDTO> batchOnchainCoinInfoAndPrice(List<OnchainTokenReq> tokenList, boolean include);

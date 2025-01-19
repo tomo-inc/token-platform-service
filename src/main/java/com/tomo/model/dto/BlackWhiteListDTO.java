@@ -14,7 +14,7 @@ public class BlackWhiteListDTO {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @TableField(value = "`type`")
+    @TableField(value = "type")
     private Boolean type;
 
     @TableField(value = "address")
@@ -23,7 +23,7 @@ public class BlackWhiteListDTO {
     @TableField(value = "chain_id")
     private Long chainId;
 
-    @TableField(value = "`comment`")
+    @TableField(value = "comment")
     private String comment;
 
     @TableField(value = "update_time")
@@ -32,6 +32,6 @@ public class BlackWhiteListDTO {
     @TableField(value = "create_time")
     private Date createTime;
 
-    @TableField(value = "`source`")
+    @TableField(value = "source")
     private String source;
 }

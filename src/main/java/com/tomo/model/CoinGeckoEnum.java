@@ -360,17 +360,17 @@ public enum CoinGeckoEnum {
 
     final String platformChainId;
     final String coinId;
-    final String networkChainId;
-    final String onchainChainId;
+    final String chainIdentityId;
+    final String networkId;
 
-    CoinGeckoEnum(String platformChainId, String coinId, String networkChainId, String onchainChainId) {
+    CoinGeckoEnum(String platformChainId, String coinId, String chainIdentityId, String networkId) {
         this.platformChainId = platformChainId;
         this.coinId = coinId;
-        this.networkChainId = networkChainId;
-        this.onchainChainId = onchainChainId;
+        this.chainIdentityId = chainIdentityId;
+        this.networkId = networkId;
     }
 
-    public static CoinGeckoEnum getCoinGeckoEnum(String coinId) {
+    public static CoinGeckoEnum getCoinGeckoEnumNativeId(String coinId) {
         for (CoinGeckoEnum coinGeckoEnum : values()) {
             if (coinGeckoEnum.coinId.equals(coinId)) {
                 return coinGeckoEnum;
@@ -378,5 +378,6 @@ public enum CoinGeckoEnum {
         }
         return null;
     }
+
 
 }

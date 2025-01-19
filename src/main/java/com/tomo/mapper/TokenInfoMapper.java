@@ -43,7 +43,7 @@ public interface TokenInfoMapper extends BaseMapper<TokenInfoDTO> {
               coingecko_coin_id = COALESCE(#{tokenInfoDTO.coingeckoCoinId}, token_info.coingecko_coin_id),
               coingecko_chain_id = COALESCE(#{tokenInfoDTO.coingeckoChainId}, token_info.coingecko_chain_id),
               is_native = COALESCE(#{tokenInfoDTO.isNative}, token_info.is_native),
-              name = COALESCE(#{tokenInfoDTO.name}, token_info.name),
+              "name" = COALESCE(#{tokenInfoDTO.name}, token_info.name),
               display_name = COALESCE(#{tokenInfoDTO.displayName}, token_info.display_name),
               symbol = COALESCE(#{tokenInfoDTO.symbol}, token_info.symbol),
               image_url = COALESCE(#{tokenInfoDTO.imageUrl}, token_info.image_url),

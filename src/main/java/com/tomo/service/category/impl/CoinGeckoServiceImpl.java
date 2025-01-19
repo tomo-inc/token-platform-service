@@ -1,8 +1,9 @@
 package com.tomo.service.category.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.tomo.feign.CoinGeckoClient;
+import com.tomo.model.ChainCoinGeckoEnum;
 import com.tomo.model.ChainEnum;
-import com.tomo.model.ChainInfoEnum;
 import com.tomo.model.ChainUtil;
 import com.tomo.model.CoinGeckoEnum;
 import com.tomo.model.IntervalEnum;
@@ -56,6 +57,20 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
     KLineService kLineService;
 
 
+    @Override
+    public TokenInfoDTO queryOneByOnchain(OnchainTokenReq tokenReq, boolean include){
+        LambdaQueryWrapper<TokenInfoDTO> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(TokenInfoDTO::getAddress, tokenReq.getAddress());
+        queryWrapper.eq(TokenInfoDTO::getChainId, tokenReq.getChainId());
+        List<TokenInfoDTO> list = tokenInfoService.list(queryWrapper);
+        if (CollectionUtils.isEmpty(list)) {
+            Map<String, TokenInfoDTO> infoDTOMap = singleOnchainTokenInfoAndPrice(List.of(tokenReq), include);
+            if(infoDTOMap.containsKey(tokenReq.getAddress())){
+                return infoDTOMap.get(tokenReq.getAddress());
+            }
+        }
+       return list.get(0);
+    }
 
     @Override
     public Map<String, TokenInfoDTO> batchOnchainCoinInfoAndPrice(List<OnchainTokenReq> tokenList, boolean include) {
@@ -92,9 +107,12 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
                 return new HashMap<>();
             }
             Long chainId = partition.get(0).getChainId();
-            ChainInfoEnum chainInfoEnum = ChainUtil.getChainInfoMap().get(chainId);
+            ChainCoinGeckoEnum chainInfoEnum = ChainUtil.getChainAndCoinGeckoMap().get(chainId);
+            if (Objects.isNull(chainInfoEnum)) {
+                return new HashMap<>();
+            }
             List<String> addresses = partition.stream().map(OnchainTokenReq::getAddress).filter(StringUtils::hasLength).toList();
-            DexTokenResp dexTokenResp = coinGeckoClient.batchGetTokenInfo(chainInfoEnum.getCoingeckoOnchainName(), listToString(addresses));
+            DexTokenResp dexTokenResp = coinGeckoClient.batchGetTokenInfo(chainInfoEnum.getCoinGeckoEnum().getPlatformChainId(), listToString(addresses));
             partition.forEach((oldTokenInfo) -> {
                 Optional<DexTokenResp.DexData> dexDataOpt = dexTokenResp.getData().stream().filter((data -> data.getAttributes().getAddress().equalsIgnoreCase(oldTokenInfo.getAddress()))).findFirst();
                 if (dexDataOpt.isEmpty()) {
@@ -250,7 +268,7 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
             if (onlineTokenPrice == null) {
                 return;
             }
-            CoinGeckoEnum coinGeckoEnum = CoinGeckoEnum.getCoinGeckoEnum(token.getCoingeckoCoinId());
+            CoinGeckoEnum coinGeckoEnum = CoinGeckoEnum.getCoinGeckoEnumNativeId(token.getCoingeckoCoinId());
             if (coinGeckoEnum == null) {
                 return;
             }

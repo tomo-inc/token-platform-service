@@ -14,7 +14,7 @@ public class TokenRankDTO {
     @TableField(value = "address")
     private String address;
 
-    @TableField(value = "`name`")
+    @TableField(value = "name")
     private String name;
 
     @TableField(value = "symbol")

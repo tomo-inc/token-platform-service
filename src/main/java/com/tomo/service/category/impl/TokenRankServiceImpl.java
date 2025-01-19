@@ -8,8 +8,6 @@ import com.tomo.model.resp.OKXDatumResp;
 import com.tomo.model.resp.OKXResult;
 import com.tomo.service.RedisClient;
 import com.tomo.service.category.TokenRankService;
-import com.tomo.model.ChainInfoEnum;
-import com.tomo.model.ChainUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,7 +42,7 @@ public class TokenRankServiceImpl implements TokenRankService {
         List<TokenRankDTO> list = data.getMarketListsTokenInfos().stream().map(marketInfo -> {
             try {
                 TokenRankDTO tokenRankDTO = new TokenRankDTO();
-                tokenRankDTO.setChainId(ChainUtil.getOkxChainInfoMap().getOrDefault(Long.valueOf(marketInfo.getChainId()), ChainInfoEnum.UNKNOWN).getChainId());
+//                tokenRankDTO.setChainId(ChainUtil.getOkxChainInfoMap().getOrDefault(Long.valueOf(marketInfo.getChainId()), ChainInfoEnum.UNKNOWN).getChainId());
                 tokenRankDTO.setAddress(marketInfo.getTokenContractAddress());
                 tokenRankDTO.setName(marketInfo.getTokenSymbol());
                 tokenRankDTO.setSymbol(marketInfo.getTokenSymbol());

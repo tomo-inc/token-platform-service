@@ -1,6 +1,7 @@
 package com.tomo.service;
 
 import jakarta.annotation.Resource;
+import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,17 @@ public class RedisClient {
 
     @Resource
     private StringRedisTemplate stringRedisTemplate;
+
+
+    public <T> List<T> getValuesByKeys(String hashName, List<String> keys, Class<T> clazz) {
+        HashOperations<String, String, String> hashOps = stringRedisTemplate.opsForHash();
+        List<String> resultStr = hashOps.multiGet(hashName, keys);
+        if (clazz == String.class) {
+            return (List<T>) resultStr;
+        }
+        return resultStr.stream().map(k -> JsonService.fromJson(k, clazz)).toList();
+    }
+
 
     // 向 Redis 的 Hash 结构中添加元素
     public <E> void hset(String hashKey, String field, E value) {

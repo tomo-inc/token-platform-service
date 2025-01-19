@@ -15,7 +15,8 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(tokenPriceWebSocketHandler(), "/tokenPrice");
+        registry.addHandler(tokenPriceWebSocketHandler(), "/v1/token-service/token-price");
+        registry.addHandler(kLineWebSocketHandler(), "/v1/token-service/k-line");
     }
 
     @Bean
@@ -25,14 +26,19 @@ public class WebSocketConfig implements WebSocketConfigurer {
         container.setMaxTextMessageBufferSize(1024 * 1024);
         // 设置最大二进制消息大小为 1MB
         container.setMaxBinaryMessageBufferSize(1024 * 1024);
-        // 设置最大会话空闲超时时间为 3 分钟
-        container.setMaxSessionIdleTimeout(1 * 60 * 1000L);
+        // 设置最大会话空闲超时时间为 1 分钟
+        container.setMaxSessionIdleTimeout(3 * 60 * 1000L);
         return container;
     }
 
-    @Bean
+    @Bean("tokenPriceWebSocketHandler")
     public WebSocketHandler tokenPriceWebSocketHandler() {
         return new TokenPriceWebSocketHandler();
+    }
+
+    @Bean("kLineWebSocketHandler")
+    public WebSocketHandler kLineWebSocketHandler() {
+        return new KLineWebSocketHandler();
     }
 
     @Bean
