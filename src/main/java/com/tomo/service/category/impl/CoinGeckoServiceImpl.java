@@ -112,7 +112,7 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
                 return new HashMap<>();
             }
             List<String> addresses = partition.stream().map(OnchainTokenReq::getAddress).filter(StringUtils::hasLength).toList();
-            DexTokenResp dexTokenResp = coinGeckoClient.batchGetTokenInfo(chainInfoEnum.getCoinGeckoEnum().getPlatformChainId(), listToString(addresses));
+            DexTokenResp dexTokenResp = coinGeckoClient.batchGetTokenInfo(chainInfoEnum.getCoinGeckoEnum().getNetworkId(), listToString(addresses));
             partition.forEach((oldTokenInfo) -> {
                 Optional<DexTokenResp.DexData> dexDataOpt = dexTokenResp.getData().stream().filter((data -> data.getAttributes().getAddress().equalsIgnoreCase(oldTokenInfo.getAddress()))).findFirst();
                 if (dexDataOpt.isEmpty()) {
