@@ -3,6 +3,7 @@ package com.tomo.service.category.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tomo.mapper.TokenInfoMapper;
+import com.tomo.model.TokenBase;
 import com.tomo.model.dto.TokenInfoDTO;
 import com.tomo.service.category.TokenInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,11 @@ public class TokenInfoServiceImpl extends ServiceImpl<TokenInfoMapper, TokenInfo
 
     @Autowired
     private TokenInfoMapper tokenInfoMapper;
+
+    @Override
+    public List<TokenInfoDTO> batchQuery(List<TokenBase> tokenBase){
+        return tokenInfoMapper.batchQuery(tokenBase);
+    }
 
     @Override
     public boolean insertOrUpdate(TokenInfoDTO tokenInfoDTO) {

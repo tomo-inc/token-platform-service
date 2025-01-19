@@ -18,7 +18,13 @@ public class RedisClient {
     private StringRedisTemplate stringRedisTemplate;
 
 
-    public <T> List<T> getValuesByKeys(String hashName, List<String> keys, Class<T> clazz) {
+    public <E> void hsetAll(String hashKey, Map<String, E> map) {
+        for (Map.Entry<String, E> entry : map.entrySet()) {
+            hset(hashKey, entry.getKey(), entry.getValue());
+        }
+    }
+
+    public <T> List<T> hgetAll(String hashName, List<String> keys, Class<T> clazz) {
         HashOperations<String, String, String> hashOps = stringRedisTemplate.opsForHash();
         List<String> resultStr = hashOps.multiGet(hashName, keys);
         if (clazz == String.class) {

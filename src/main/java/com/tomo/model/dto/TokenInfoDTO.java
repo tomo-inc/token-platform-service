@@ -89,4 +89,8 @@ public class TokenInfoDTO {
 
     @TableField(value = "create_time")
     private Date createTime;
+
+    public String getId(){
+        return address+chainId;
+    }
 }

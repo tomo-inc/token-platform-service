@@ -146,7 +146,7 @@ public enum CoinGeckoEnum {
     ZORA("zora-network", "weth", "7777777", ""),
     MERLIN_CHAIN("merlin-chain", "wrapped-bitcoin", "4200", ""),
     INJECTIVE("injective", "injective-protocol", "", ""),
-    BNB_SMART_CHAIN("binance-smart-chain", "binancecoin", "56", ""),
+    BNB_SMART_CHAIN("binance-smart-chain", "binancecoin", "56", "bsc"),
     DEFICHAIN_EVM("defichain-evm", "defichain", "1130", ""),
     ORENIUM("orenium", "orenium-protocol", "", ""),
     BEAMPRIVACY("beamprivacy", "beam", "", ""),

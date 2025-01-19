@@ -1,13 +1,28 @@
 package com.tomo.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.tomo.model.TokenBase;
 import com.tomo.model.dto.TokenInfoDTO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 @Mapper
 public interface TokenInfoMapper extends BaseMapper<TokenInfoDTO> {
+    @Select({
+        """
+        select * from token_info
+        where
+        <foreach collection="tokenBase" item="item" separator=" OR " open="(" close=")">
+            (address = #{item.address} and chain_id = #{item.chainId})
+        </foreach>
+        """
+    })
+    List<TokenInfoDTO> batchQuery(@Param("tokenBase") List<TokenBase> tokenBase);
+
     @Insert({
             """
              INSERT INTO token_info (

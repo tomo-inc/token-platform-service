@@ -24,4 +24,8 @@ public class TokenBase {
     public static boolean isNull(TokenBase tokenBase) {
         return tokenBase.getAddress() == null && tokenBase.getChainId() == 0;
     }
+
+    public String getId() {
+        return address + chainId;
+    }
 }

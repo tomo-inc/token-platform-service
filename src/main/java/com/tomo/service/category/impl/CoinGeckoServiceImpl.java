@@ -17,6 +17,7 @@ import com.tomo.model.req.PlatformTokenReq;
 import com.tomo.model.resp.CoinInfoResp;
 import com.tomo.model.resp.DexTokenResp;
 import com.tomo.model.resp.TokenPriceResp;
+import com.tomo.service.TokenInfoCacheService;
 import com.tomo.service.category.CoinGeckoService;
 import com.tomo.service.category.TokenCategoryDataService;
 import com.tomo.service.category.TokenInfoService;
@@ -55,6 +56,8 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
     CoinGeckoClient coinGeckoClient;
     @Autowired
     KLineService kLineService;
+    @Autowired
+    TokenInfoCacheService tokenInfoCacheService;
 
 
     @Override
@@ -412,4 +415,19 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
         }
         return partitions;
     }
+
+
+//    public List<TokenInfoDTO> getTokenInfoFromCache(List<TokenBase> tokenBases) {
+//        List<TokenInfoDTO> tokenInfoDTOS = tokenInfoCacheService.hGetAll(tokenBases);
+//        Set<String> allToken = tokenBases.stream().map(TokenBase::getId).collect(Collectors.toSet());
+//        Set<String> allCacheToken = tokenInfoDTOS.stream().map(TokenInfoDTO::getId).collect(Collectors.toSet());
+//        allToken.removeAll(allCacheToken);
+//    }
+//
+//    public List<TokenInfoDTO> getTokenInfoFromDB(List<TokenBase> tokenBases) {
+//        List<TokenInfoDTO> tokenInfoDTOS = tokenInfoService.batchQuery(tokenBases);
+//        Set<String> allToken = tokenBases.stream().map(TokenBase::getId).collect(Collectors.toSet());
+//        Set<String> allCacheToken = tokenInfoDTOS.stream().map(TokenInfoDTO::getId).collect(Collectors.toSet());
+//        allToken.removeAll(allCacheToken);
+//    }
 }
