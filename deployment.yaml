@@ -1,34 +1,34 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: tomo-token-platform-service-dev
+  name: token-platform-service-dev
 
 ---
 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: tomo-token-platform-service-dev
-  name: tomo-token-platform-service
+  namespace: token-platform-service-dev
+  name: token-platform-service
   labels:
-    app: tomo-token-platform-service
+    app: token-platform-service
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: tomo-token-platform-service
+      app: token-platform-service
   template:
     metadata:
       labels:
-        app: tomo-token-platform-service
+        app: token-platform-service
 #      annotations:
 #        prometheus.io/path: /actuator/prometheus
 #        prometheus.io/port: '8081'
 #        prometheus.io/scrape: 'true'
     spec:
       containers:
-        - name: tomo-token-platform-service
-          image: 172.31.20.22:80/tomo-inc/tomo-token-platform-service:dev
+        - name: token-platform-service
+          image: 172.31.20.22:80/tomo-inc/token-platform-service:dev
           imagePullPolicy: Always
           resources:
             requests:
@@ -48,11 +48,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: tomo-token-platform-service-dev
-  name: tomo-token-platform-service
+  namespace: token-platform-service-dev
+  name: token-platform-service
 spec:
   selector:
-    app: tomo-token-platform-service
+    app: token-platform-service
   ports:
     - protocol: TCP
       port: 8081
