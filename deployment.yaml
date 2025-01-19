@@ -21,10 +21,10 @@ spec:
     metadata:
       labels:
         app: tomo-token-platform-service
-      annotations:
-        prometheus.io/path: /actuator/prometheus
-        prometheus.io/port: '8081'
-        prometheus.io/scrape: 'true'
+#      annotations:
+#        prometheus.io/path: /actuator/prometheus
+#        prometheus.io/port: '8081'
+#        prometheus.io/scrape: 'true'
     spec:
       containers:
         - name: tomo-token-platform-service
