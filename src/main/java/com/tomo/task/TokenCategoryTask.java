@@ -2,16 +2,14 @@ package com.tomo.task;
 
 
 import com.tomo.feign.CoinGeckoClient;
-import com.tomo.model.ChainEnum;
+import com.tomo.model.ChainCoinGeckoEnum;
 import com.tomo.model.ChainUtil;
-import com.tomo.model.CoinGeckoEnum;
 import com.tomo.model.req.PlatformTokenReq;
 import com.tomo.model.resp.CoinSimpleInfoResp;
 import com.tomo.model.resp.NativeCoinSimpleInfoResp;
 import com.tomo.service.category.TokenCategoryDataService;
 import com.tomo.service.category.impl.CoinGeckoServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -31,7 +29,7 @@ public class TokenCategoryTask {
     public void allNativeToken(){
         List<NativeCoinSimpleInfoResp> allNativeCoinList = coinGeckoClient.getAllNativeCoinList();
         List<PlatformTokenReq> list = new ArrayList<>();
-        Map<String, Pair<CoinGeckoEnum, ChainEnum>> coinGeckoChainInfoMap = ChainUtil.getCoinGeckoChainInfoMap();
+        Map<String, ChainCoinGeckoEnum> coinGeckoChainInfoMap = ChainUtil.getCoinGeckoChainInfoMap();
         for (NativeCoinSimpleInfoResp nativeCoinSimpleInfoResp : allNativeCoinList) {
             if (!coinGeckoChainInfoMap.containsKey(nativeCoinSimpleInfoResp.getId())){
                 continue;

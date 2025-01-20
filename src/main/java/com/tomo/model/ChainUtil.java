@@ -1,9 +1,12 @@
 package com.tomo.model;
 
 import lombok.Getter;
-import org.springframework.data.util.Pair;
+import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -15,13 +18,32 @@ public class ChainUtil {
 
     // platformid -> enum
     @Getter
-    public static Map<String, Pair<CoinGeckoEnum,ChainEnum>> coinGeckoChainInfoMap = Arrays
+    public static Map<String, ChainCoinGeckoEnum> coinGeckoChainInfoMap = Arrays
             .stream(ChainCoinGeckoEnum.values())
             .collect(
                     Collectors.toMap(e-> e.getCoinGeckoEnum().getPlatformChainId(),
-                                    e->Pair.of( e.getCoinGeckoEnum(),e.getChainEnum())
+                                    Function.identity()
                     )
             );
+
+    // coinId -> enum
+    @Getter
+    public static HashMap<String, List<ChainCoinGeckoEnum>> nativeIdToEnum = new HashMap<>();
+    static {
+        Arrays.stream(ChainCoinGeckoEnum.values())
+                .forEach(e -> {
+                    String coinId = e.getCoinGeckoEnum().getCoinId();
+                    if (nativeIdToEnum.containsKey(coinId)) {
+                        nativeIdToEnum.get(coinId).add(e);
+                    } else {
+                        List<ChainCoinGeckoEnum> list = new ArrayList<>();
+                        list.add(e);
+                        nativeIdToEnum.put(coinId, list);
+                    }
+                });
+    }
+
+
 
     // chainid -> ChainEnum
     public static Map<Long,ChainEnum> chainIdMap = Arrays
@@ -36,7 +58,12 @@ public class ChainUtil {
             .collect(Collectors.toMap(ChainCoinGeckoEnum::getChainId, Function.identity()));
 
 
+
     public static String getCommonKey(Long chainId,String address) {
-        return chainId + "-" + address;
+        if (StringUtils.hasText(address)) {
+            return chainId + "-" + address;
+        }else {
+            return chainId.toString();
+        }
     }
 }
