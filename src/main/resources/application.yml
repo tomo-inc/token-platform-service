@@ -15,4 +15,17 @@ spring:
 mybatis:
   mapper-locations: classpath:mappers/*.xml
 
+## 监控
+management:
+  metrics:
+    tags:
+      application: ${spring.application.name:token-platform-service}
+    distribution:
+      percentiles:
+        all: 0.5, 0.75, 0.9, 0.95, 0.99
+  endpoints:
+    web:
+      exposure:
+        include: prometheus,info,health
+
 
