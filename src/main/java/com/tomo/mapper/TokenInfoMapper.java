@@ -14,11 +14,13 @@ import java.util.List;
 public interface TokenInfoMapper extends BaseMapper<TokenInfoDTO> {
     @Select({
         """
-        select * from token_info
-        where
-        <foreach collection="tokenBase" item="item" separator=" OR " open="(" close=")">
-            (address = #{item.address} and chain_id = #{item.chainId})
-        </foreach>
+        <script>
+            select * from token_info
+            where
+            <foreach collection="tokenBase" item="item" separator=" OR ">
+                (address = #{item.address} and chain_id = #{item.chainId})
+            </foreach>
+        </script>
         """
     })
     List<TokenInfoDTO> batchQuery(@Param("tokenBase") List<TokenBase> tokenBase);

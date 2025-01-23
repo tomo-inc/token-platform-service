@@ -64,7 +64,7 @@ public interface CoinGeckoClient {
 
     @GetMapping("/onchain/simple/networks/{network}/token_price/{address}")
     DexTokensPriceResp batchGetTokenPrice(@PathVariable("network") String network,
-                                          @PathVariable("address") List<String> addresses);
+                                          @PathVariable("address") String addresses);
 
 
 

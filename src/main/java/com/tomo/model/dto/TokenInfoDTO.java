@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.tomo.model.ChainUtil;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -91,6 +92,6 @@ public class TokenInfoDTO {
     private Date createTime;
 
     public String getId(){
-        return address+chainId;
+        return ChainUtil.getCommonKey(chainId,address);
     }
 }

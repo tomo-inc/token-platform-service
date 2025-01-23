@@ -1,10 +1,14 @@
 package com.tomo.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class TokenBase {
     String address;
     Long chainId;
@@ -26,6 +30,6 @@ public class TokenBase {
     }
 
     public String getId() {
-        return address + chainId;
+        return ChainUtil.getCommonKey(chainId,address);
     }
 }
