@@ -39,9 +39,9 @@ spec:
               memory: "500Mi"  # 限制 2048 MiB 内存
           ports:
             - containerPort: 8081
-#          env:
-#            - name: spring.profiles.active
-#              value: "dev"
+          env:
+            - name: spring.profiles.active
+              value: "dev"
 
 ---
 

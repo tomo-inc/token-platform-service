@@ -1,18 +1,16 @@
 spring:
   datasource:
-    url: jdbc:postgresql://44.221.66.16:5432/token_service?useSSL=false&serverTimezone=UTC&characterEncoding=utf8
-    username: wallet_token
-    password: bJNoseDojbnjk
+    url: jdbc:postgresql://${DB_HOST}/token_service?useSSL=false&serverTimezone=UTC&characterEncoding=utf8
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
   data:
     redis:
-      host: http://172.31.26.48
-      port: 6379
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
       database: 0
       timeout:  2000
-      password: Tomoredis
-
-
+      password: ${REDIS_PASSORD}
 
 mybatis:
   mapper-locations: classpath:mappers/*.xml

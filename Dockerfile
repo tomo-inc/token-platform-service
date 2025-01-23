@@ -9,4 +9,4 @@ ADD target/*SNAPSHOT.jar app.jar
 
 EXPOSE 8081
 
-CMD java -jar /application/app.jar
+ENTRYPOINT  ["java", "-jar", "/application/app.jar"]
