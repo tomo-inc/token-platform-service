@@ -59,6 +59,11 @@ public class TokenCategoryController {
     }
 
 
+    /**
+     * 查询币价和代币信息
+     * @param onchainTokenReqs
+     * @return
+     */
     @PostMapping("/query/token-info-price/onchain/exact")
     public Result<Map<String, TokenInfoDTO>> exactQueryOnchainToken(@RequestBody List<OnchainTokenReq> onchainTokenReqs) {
         Map<String, TokenInfoDTO> tokenInfoDTOMap = coinGeckoService.batchOnchainCoinInfoAndPrice(onchainTokenReqs, false);

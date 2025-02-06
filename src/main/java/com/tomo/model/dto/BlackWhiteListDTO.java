@@ -15,7 +15,7 @@ public class BlackWhiteListDTO {
     private Long id;
 
     @TableField(value = "type")
-    private Boolean type;
+    private Boolean type; // true 黑名单，false，白名单。null：不存在
 
     @TableField(value = "address")
     private String address;

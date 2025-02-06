@@ -81,6 +81,12 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
         return list.get(0);
     }
 
+    /**
+     *
+     * @param rawTokenList
+     * @param include  是否查询池子信息
+     * @return
+     */
     @Override
     public Map<String, TokenInfoDTO> batchOnchainCoinInfoAndPrice(List<OnchainTokenReq> rawTokenList, boolean include) {
         Map<String, TokenInfoDTO> resultMap = new ConcurrentHashMap<>();

@@ -19,6 +19,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * ws 推送
+ */
 @Slf4j
 public class TokenPriceWebSocketHandler extends TextWebSocketHandler {
     private final Map<WebSocketSession, List<TokenPriceWsReceive>> sessionTokens = new ConcurrentHashMap<>();
