@@ -35,8 +35,8 @@ spec:
               cpu: "200m"  # 请求 200 毫核 CPU
               memory: "200Mi"  # 请求 1024 MiB 内存
             limits:
-              cpu: "500m"  # 限制 500 毫核 CPU
-              memory: "500Mi"  # 限制 2048 MiB 内存
+              cpu: "1"  # 限制 500 毫核 CPU
+              memory: "2048Mi"  # 限制 2048 MiB 内存
           ports:
             - containerPort: 8081
           env:
