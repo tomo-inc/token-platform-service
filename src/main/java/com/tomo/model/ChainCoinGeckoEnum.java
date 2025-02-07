@@ -35,7 +35,7 @@ public enum ChainCoinGeckoEnum {
 //    BERACHAIN_BARTIO_TEST(80084L,"Berachain bArtio Testnet"),
 //    BOTANIX_TEST(3636L,"Botanix Testnet"),
 //    TAC_TEST(2390L,"TAC Testnet"),
-//    BTC(0L,CoinGeckoEnum.B),
+    BTC(0L,CoinGeckoEnum.BITCOIN,ChainEnum.BTC),
     SOL( 501L,CoinGeckoEnum.SOLANA,ChainEnum.SOL),
     TON(1100L,CoinGeckoEnum.TON,ChainEnum.TON),
     TRON(19484L,CoinGeckoEnum.TRON,ChainEnum.TRON),
