@@ -124,12 +124,16 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
                 resultMap.putAll(map);
             }
         });
-
         List<PlatformTokenReq> nativeTokenList = nativeTokenMap
                 .stream()
                 .map(e -> {
                     PlatformTokenReq tokenReq = new PlatformTokenReq();
-                    tokenReq.setCoingeckoCoinId(ChainUtil.getChainAndCoinGeckoMap().get(e.getChainId()).getCoinGeckoEnum().getCoinId());
+                    ChainCoinGeckoEnum chainCoinGeckoEnum = ChainUtil.getChainAndCoinGeckoMap().get(e.getChainId());
+                    if(chainCoinGeckoEnum!=null){
+                        tokenReq.setCoingeckoCoinId(chainCoinGeckoEnum.getCoinGeckoEnum().getCoinId());
+                    }else{
+                       log.error("CoinGeckoServiceImpl batchOnchainCoinInfoAndPrice chainId not exist:{}",e.getChainId());
+                    }
                     return tokenReq;
                 }).toList();
         Map<String, TokenInfoDTO> nativeTokenResultMap = batchPlatformCoinInfoAndPrice(nativeTokenList);
