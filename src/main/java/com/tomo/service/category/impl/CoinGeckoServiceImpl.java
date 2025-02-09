@@ -257,9 +257,13 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
                 String patternStr = getPatternStr(dexData.getId(), 0);
                 TokenCategoryCoinGeckoDTO tokenCategoryCoinGeckoDTO = setOnchainTokenInfo(attributes);
                 tokenCategoryCoinGeckoDTO.setChainId(chainId);
+                //传入的参数地址区分大小写，但三方结果全为小写，存数据库以传入为准，否则查不到
+                tokenCategoryCoinGeckoDTO.setAddress(oldTokenInfo.getAddress());
                 TokenPriceDTO tokenPriceDTO = setOnchainTokenPrice(oldTokenInfo.getChainId(), attributes);
                 tokenCategoryCoinGeckoDTO.setCoingeckoChainId(patternStr);
                 tokenPriceDTO.setCoingeckoChainId(patternStr);
+                //传入的参数地址区分大小写，但三方结果全为小写，存数据库以传入为准，否则查不到
+                tokenPriceDTO.setAddress(oldTokenInfo.getAddress());
                 if (include) {
                     setPoolInfo(dexTokenResp, dexData, tokenPriceDTO);
                 }
