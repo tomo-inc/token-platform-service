@@ -11,6 +11,8 @@ public interface TokenInfoService extends IService<TokenInfoDTO>{
 
     boolean insertOrUpdate(TokenInfoDTO tokenInfoDTO);
 
+    boolean batchInsertOrUpdate(List<TokenInfoDTO> tokenInfoDTOs);
+
     TokenInfoDTO exactQueryToken(Long chainId, String address);
 
     // 只能从本地模糊查询

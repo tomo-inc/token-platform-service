@@ -66,10 +66,23 @@ public class TokenCategoryController {
      */
     @PostMapping("/query/token-info-price/onchain/exact")
     public Result<Map<String, TokenInfoDTO>> exactQueryOnchainToken(@RequestBody List<OnchainTokenReq> onchainTokenReqs) {
+        long l = System.currentTimeMillis();
         Map<String, TokenInfoDTO> tokenInfoDTOMap = coinGeckoService.batchOnchainCoinInfoAndPrice(onchainTokenReqs, false);
+        System.out.println(System.currentTimeMillis()-l);
         return ResultUtils.success(tokenInfoDTOMap);
     }
-
+    /**
+     * 查询币价和代币信息
+     * @param onchainTokenReqs
+     * @return
+     */
+    @PostMapping("/query/token-info-price/onchain/exact2")
+    public Result<Map<String, TokenInfoDTO>> exactQueryOnchainToken2(@RequestBody List<OnchainTokenReq> onchainTokenReqs) {
+        long l = System.currentTimeMillis();
+        Map<String, TokenInfoDTO> tokenInfoDTOMap = coinGeckoService.batchOnchainCoinInfoAndPriceV2(onchainTokenReqs, false);
+        System.out.println(System.currentTimeMillis()-l);
+        return ResultUtils.success(tokenInfoDTOMap);
+    }
     @PostMapping("/query/token-info-price/native/token")
     public Result<Map<String, TokenInfoDTO>> queryNativeToken(@RequestBody List<PlatformTokenReq> tokens) {
         Map<String, TokenInfoDTO> stringTokenInfoDTOMap = coinGeckoService.updateNativeOrPlatformPrice(tokens);

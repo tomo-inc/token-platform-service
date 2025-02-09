@@ -7,6 +7,8 @@ import com.tomo.service.category.TokenCategoryDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TokenCategoryDataServiceImpl extends ServiceImpl<TokenCategoryMapper, TokenCategoryCoinGeckoDTO> implements TokenCategoryDataService {
     @Autowired
@@ -16,4 +18,11 @@ public class TokenCategoryDataServiceImpl extends ServiceImpl<TokenCategoryMappe
     public boolean insertOrUpdate(TokenCategoryCoinGeckoDTO tokenCategoryCoinGeckoDTO){
         return tokenCategoryMapper.insertOrUpdate(tokenCategoryCoinGeckoDTO);
     }
+
+    @Override
+    public void batchInsertOrUpdate(List<TokenCategoryCoinGeckoDTO> tokenCategoryUpdateList) {
+         tokenCategoryMapper.batchInsertOrUpdate(tokenCategoryUpdateList);
+    }
+
+
 }
