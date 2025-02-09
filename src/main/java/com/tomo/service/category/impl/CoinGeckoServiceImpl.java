@@ -267,10 +267,12 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
                 tokenInfoDTOUpdateList.add(tokenInfoDTO);
                 resultMap.put(ChainUtil.getCommonKey(tokenInfoDTO.getChainId(), tokenInfoDTO.getAddress()), tokenInfoDTO);
             });
-            //批量更新 可以异步优化
-            tokenCategoryDataService.batchInsertOrUpdate(tokenCategoryUpdateList);
-            tokenPriceDataService.batchInsertOrUpdate(tokenPriceDTOUpdateList);
-            tokenInfoService.batchInsertOrUpdate(tokenInfoDTOUpdateList);
+            CompletableFuture.runAsync(()->{
+                //批量更新 可以异步优化
+                tokenCategoryDataService.batchInsertOrUpdate(tokenCategoryUpdateList);
+                tokenPriceDataService.batchInsertOrUpdate(tokenPriceDTOUpdateList);
+                tokenInfoService.batchInsertOrUpdate(tokenInfoDTOUpdateList);
+            });
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
@@ -430,10 +432,12 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
                 resultMap.put(ChainUtil.getCommonKey(tokenInfoDTO.getChainId(), tokenInfoDTO.getAddress()), tokenInfoDTO);
             }
         }
-        //批量更新 可以异步优化
-        tokenCategoryDataService.batchInsertOrUpdate(tokenCategoryUpdateList);
-        tokenPriceDataService.batchInsertOrUpdate(tokenPriceDTOUpdateList);
-        tokenInfoService.batchInsertOrUpdate(tokenInfoDTOUpdateList);
+        CompletableFuture.runAsync(()->{
+            //批量更新 可以异步优化
+            tokenCategoryDataService.batchInsertOrUpdate(tokenCategoryUpdateList);
+            tokenPriceDataService.batchInsertOrUpdate(tokenPriceDTOUpdateList);
+            tokenInfoService.batchInsertOrUpdate(tokenInfoDTOUpdateList);
+        });
     }
 
     private void setPlatformInfo(ChainCoinGeckoEnum coinGeckoEnum,
