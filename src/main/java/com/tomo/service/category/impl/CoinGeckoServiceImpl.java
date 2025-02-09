@@ -112,7 +112,7 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
                 tokenList.stream()
                         .filter(e -> !StringUtils.hasText(e.getAddress()) && Objects.nonNull(e.getChainId()))
                         .toList();
-
+        long l1 = System.currentTimeMillis();
         chainTokenMap.forEach((chainId, tokens) -> {
             // 分隔成一组组
             List<List<OnchainTokenReq>> partitions = getPartitions(tokens, 30);
@@ -122,6 +122,8 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
                 resultMap.putAll(map);
             }
         });
+        long l2 = System.currentTimeMillis();
+        log.info("CoinGeckoServiceImpl batchOnchainCoinInfoAndPrice time1:{}",l2-l1);
         List<PlatformTokenReq> nativeTokenList = nativeTokenMap
                 .stream()
                 .map(e -> {
@@ -136,12 +138,15 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
                 }).toList();
         Map<String, TokenInfoDTO> nativeTokenResultMap = batchPlatformCoinInfoAndPrice(nativeTokenList);
         resultMap.putAll(nativeTokenResultMap);
-
+        long l3 = System.currentTimeMillis();
+        log.info("CoinGeckoServiceImpl batchOnchainCoinInfoAndPrice time2:{}",l3-l2);
 
         if (!CollectionUtils.isEmpty(first)) {
-            Map<String, TokenInfoDTO> existMap = updateOnchainPrice(first);
-            resultMap.putAll(existMap);
+            //Map<String, TokenInfoDTO> existMap = updateOnchainPrice(first);
+            resultMap.putAll(first);
         }
+        long l4 = System.currentTimeMillis();
+        log.info("CoinGeckoServiceImpl batchOnchainCoinInfoAndPrice time3:{}",l4-l3);
         return resultMap;
     }
 
