@@ -275,11 +275,11 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
             CompletableFuture<CoinInfoResp> onlineTokenInfoFuture = CompletableFuture.supplyAsync(() -> coinGeckoClient.getPlatformCoinInfo(token.getCoingeckoCoinId()));
             CompletableFuture<Map<String, TokenPriceResp>> platformTokenPriceMapFuture = CompletableFuture.supplyAsync(() -> coinGeckoClient.getPlatformTokenPrice(token.getCoingeckoCoinId()));
             Map<String, TokenPriceResp> platformTokenPriceMap =platformTokenPriceMapFuture.get();
-            CoinInfoResp onlineTokenInfo =onlineTokenInfoFuture.get();
             TokenPriceResp onlineTokenPrice = platformTokenPriceMap.get(token.getCoingeckoCoinId());
             if (CollectionUtils.isEmpty(platformTokenPriceMap)) {
                 return resultMap;
             }
+            CoinInfoResp onlineTokenInfo =onlineTokenInfoFuture.get();
             // 不同平台,循环遍历
             onlineTokenInfo.getPlatforms().forEach((assetPlatformId, address) -> {
                 try {
