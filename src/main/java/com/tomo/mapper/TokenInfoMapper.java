@@ -18,7 +18,15 @@ public interface TokenInfoMapper extends BaseMapper<TokenInfoDTO> {
             select * from token_info
             where
             <foreach collection="tokenBase" item="item" separator=" OR ">
-                (address = #{item.address} and chain_id = #{item.chainId})
+                (
+                    chain_id = #{item.chainId}
+                     <if test="item.address != null and item.address != ''">
+                           and address = #{item.address} 
+                    </if>
+                    <if test="item.address == null or item.address == ''">
+                           and address is null
+                    </if>
+                )
             </foreach>
         </script>
         """
@@ -81,4 +89,65 @@ public interface TokenInfoMapper extends BaseMapper<TokenInfoDTO> {
             """
     })
     boolean insertOrUpdate(@Param("tokenInfoDTO") TokenInfoDTO tokenInfoDTO);
+
+    @Insert({
+            """
+            <script>
+             INSERT INTO token_info (
+                chain_id, address, coingecko_coin_id,coingecko_chain_id, is_native, name, display_name, symbol, image_url, decimals, website_url, twitter_url, telegram_url,pool_address,is_pool_base_token,liquidity_usd, real_price, volume24h, change24h, market_cap, fdv_usd,total_supply,risk_level
+             ) VALUES
+              <foreach collection="tokenInfoDTOs" item="tokenInfoDTO" separator=",">
+                     ( #{tokenInfoDTO.chainId},
+                      #{tokenInfoDTO.address},
+                      #{tokenInfoDTO.coingeckoCoinId},
+                      #{tokenInfoDTO.coingeckoChainId},
+                      #{tokenInfoDTO.isNative},
+                      #{tokenInfoDTO.name},
+                      #{tokenInfoDTO.displayName},
+                      #{tokenInfoDTO.symbol},
+                      #{tokenInfoDTO.imageUrl},
+                      #{tokenInfoDTO.decimals},
+                      #{tokenInfoDTO.websiteUrl},
+                      #{tokenInfoDTO.twitterUrl},
+                      #{tokenInfoDTO.telegramUrl},
+                      #{tokenInfoDTO.poolAddress},
+                      #{tokenInfoDTO.isPoolBaseToken},
+                      #{tokenInfoDTO.liquidityUsd},
+                      #{tokenInfoDTO.realPrice},
+                      #{tokenInfoDTO.volume24h},
+                      #{tokenInfoDTO.change24h},
+                      #{tokenInfoDTO.marketCap},
+                      #{tokenInfoDTO.fdvUsd},
+                      #{tokenInfoDTO.totalSupply},
+                      #{tokenInfoDTO.riskLevel}) 
+              </foreach>
+             ON CONFLICT (chain_id, address) 
+             DO UPDATE SET
+              chain_id = COALESCE(EXCLUDED.chain_id, token_info.chain_id),
+              address = COALESCE(EXCLUDED.address, token_info.address),
+              coingecko_coin_id = COALESCE(EXCLUDED.coingecko_coin_id, token_info.coingecko_coin_id),
+              coingecko_chain_id = COALESCE(EXCLUDED.coingecko_chain_id, token_info.coingecko_chain_id),
+              is_native = COALESCE(EXCLUDED.is_native, token_info.is_native),
+              "name" = COALESCE(EXCLUDED.name, token_info.name),
+              display_name = COALESCE(EXCLUDED.display_name, token_info.display_name),
+              symbol = COALESCE(EXCLUDED.symbol, token_info.symbol),
+              image_url = COALESCE(EXCLUDED.display_name, token_info.image_url),
+              decimals = COALESCE(EXCLUDED.decimals, token_info.decimals),
+              website_url = COALESCE(EXCLUDED.website_url, token_info.website_url),
+              twitter_url = COALESCE(EXCLUDED.twitter_url, token_info.twitter_url),
+              telegram_url = COALESCE(EXCLUDED.telegram_url, token_info.telegram_url),
+              pool_address = COALESCE(EXCLUDED.pool_address, token_info.pool_address),
+              is_pool_base_token = COALESCE(EXCLUDED.is_pool_base_token, token_info.is_pool_base_token),
+              liquidity_usd = COALESCE(EXCLUDED.liquidity_usd, token_info.liquidity_usd),
+              real_price = COALESCE(EXCLUDED.real_price, token_info.real_price),
+              volume24h = COALESCE(EXCLUDED.volume24h, token_info.volume24h),
+              change24h = COALESCE(EXCLUDED.change24h, token_info.change24h),
+              market_cap = COALESCE(EXCLUDED.market_cap, token_info.market_cap),
+              fdv_usd = COALESCE(EXCLUDED.fdv_usd, token_info.fdv_usd),
+              total_supply = COALESCE(EXCLUDED.total_supply, token_info.total_supply),
+              risk_level = COALESCE(EXCLUDED.risk_level, token_info.risk_level)
+              </script>
+            """
+    })
+    boolean batchInsertOrUpdate(List<TokenInfoDTO> tokenInfoDTOs);
 }

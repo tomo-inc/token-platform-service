@@ -62,4 +62,6 @@ public interface TokenPriceDataService extends IService<TokenPriceDTO>{
     }
 
     boolean insertOrUpdate(TokenPriceDTO tokenPriceDTO);
+
+    void batchInsertOrUpdate(List<TokenPriceDTO> tokenPriceDTOUpdateList);
 }
