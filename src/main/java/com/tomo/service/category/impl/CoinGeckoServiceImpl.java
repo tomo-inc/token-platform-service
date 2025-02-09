@@ -43,6 +43,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.regex.Matcher;
@@ -271,8 +272,10 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
     public Map<String, TokenInfoDTO> singlePlatformTokenInfoAndPrice(PlatformTokenReq token) {
         Map<String, TokenInfoDTO> resultMap = new HashMap<>();
         try {// coingecko请求基本数据
-            CoinInfoResp onlineTokenInfo = coinGeckoClient.getPlatformCoinInfo(token.getCoingeckoCoinId());
-            Map<String, TokenPriceResp> platformTokenPriceMap = coinGeckoClient.getPlatformTokenPrice(token.getCoingeckoCoinId());
+            CompletableFuture<CoinInfoResp> onlineTokenInfoFuture = CompletableFuture.supplyAsync(() -> coinGeckoClient.getPlatformCoinInfo(token.getCoingeckoCoinId()));
+            CompletableFuture<Map<String, TokenPriceResp>> platformTokenPriceMapFuture = CompletableFuture.supplyAsync(() -> coinGeckoClient.getPlatformTokenPrice(token.getCoingeckoCoinId()));
+            Map<String, TokenPriceResp> platformTokenPriceMap =platformTokenPriceMapFuture.get();
+            CoinInfoResp onlineTokenInfo =onlineTokenInfoFuture.get();
             TokenPriceResp onlineTokenPrice = platformTokenPriceMap.get(token.getCoingeckoCoinId());
             if (CollectionUtils.isEmpty(platformTokenPriceMap)) {
                 return resultMap;
