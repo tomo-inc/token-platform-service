@@ -29,6 +29,8 @@ public class TokenController {
         if(CollectionUtils.isEmpty(tokenDTOS)) {
             Date now = new Date();
             TokenDTO tokenDTO = TokenDTO.builder()
+                    .riseTokenSymbol("BNB")
+                    .riseTokenAddress("")
                     .fourMemeToken(true)
                     .id(10000L)
                     .name("BSC-"+content)
