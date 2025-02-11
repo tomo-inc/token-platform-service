@@ -14,6 +14,8 @@ import java.util.Date;
 @NoArgsConstructor
 public class TokenDTO {
     private Boolean fourMemeToken;
+    private String riseTokenSymbol;
+    private String riseTokenAddress;
 
     private Long id;
 
