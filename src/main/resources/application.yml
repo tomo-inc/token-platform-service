@@ -31,3 +31,6 @@ management:
         include: prometheus,info,health
 
 
+backend:
+  client:
+    url: https://apps-prod.unyx.tech
