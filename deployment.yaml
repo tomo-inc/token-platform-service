@@ -21,10 +21,10 @@ spec:
     metadata:
       labels:
         app: token-platform-service
-#      annotations:
-#        prometheus.io/path: /actuator/prometheus
-#        prometheus.io/port: '8081'
-#        prometheus.io/scrape: 'true'
+      annotations:
+        prometheus.io/path: /actuator/prometheus
+        prometheus.io/port: '8081'
+        prometheus.io/scrape: 'true'
     spec:
       containers:
         - name: token-platform-service
