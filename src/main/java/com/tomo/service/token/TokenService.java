@@ -65,7 +65,9 @@ public class TokenService {
         }
 
         List<TokenDTO> backEndTokenList = backEndTokenSearchRes.getResult();
-        dataList.addAll(backEndTokenList);
+        if(!CollectionUtils.isEmpty(backEndTokenList)){
+            dataList.addAll(backEndTokenList);
+        }
         return dataList;
     }
 
