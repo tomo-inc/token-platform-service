@@ -1,4 +1,28 @@
 spring:
+  kafka:
+    bootstrap-servers: ${KAFKA_HOST}
+    consumer:
+      auto-offset-reset: earliest
+      bootstrap-servers: ${KAFKA_HOST}
+      group-id: token-group
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      acks: -1
+      bootstrap-servers: ${KAFKA_HOST}
+      properties:
+        enable:
+          idempotence: true
+        max:
+          in:
+            flight:
+              requests:
+                per:
+                  connection: 1
+        retry:
+          backoff:
+            ms: 100
+      retries: 3
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
   datasource:
     url: jdbc:postgresql://${DB_HOST}/token_service?useSSL=false&serverTimezone=UTC&characterEncoding=utf8
     username: ${DB_USERNAME}
