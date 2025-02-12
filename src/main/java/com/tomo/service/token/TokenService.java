@@ -55,7 +55,7 @@ public class TokenService {
                         .priceChangeH24(new BigDecimal(data.getPriceChangeH24()).doubleValue())
                         .volumeH24(new BigDecimal(data.getVolumeH24()))
                         .marketCapUsd(StringUtils.isNoneBlank(data.getMarketCapUsd()) ? new BigDecimal(data.getMarketCapUsd()) : BigDecimal.ZERO)
-                        .risk("risk")
+                        .risk("SAFE")
                         .createdTime(now)
                         .updatedTime(now)
                         .build();
