@@ -40,7 +40,7 @@ public class TokenService {
             List<TokenDTO> collect = fourMemeTokens.stream().map(data -> {
                 TokenDTO tokenDTO = TokenDTO.builder()
                         .riseTokenSymbol(data.getRiskTokenSymbol())
-                        .riseTokenAddress(data.getRiskTokenAddress())
+                        .riseTokenAddress(StringUtils.equalsIgnoreCase(data.getRiskTokenSymbol(),"BNB") ? "" : data.getRiskTokenAddress())
                         .fourMemeToken(true)
                         .id(Long.valueOf(data.getId()))
                         .name("BSC-"+data.getTokenAddress())
