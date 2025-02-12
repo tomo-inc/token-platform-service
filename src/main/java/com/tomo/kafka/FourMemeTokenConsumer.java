@@ -29,6 +29,8 @@ public class FourMemeTokenConsumer {
         for (TokenMessageDto tokenMessageDto : list) {
             String tokenAddress = tokenMessageDto.getTokenAddress().toLowerCase();
             String riseTokenAddress = tokenMessageDto.getRiseTokenAddress().toLowerCase();
+            String priceChangeH24 = String.format("%.2f",Double.valueOf(tokenMessageDto.getPriceChangeH24()));
+
             try {
                 FourMemeToken fourMemeToken = tokenService.querByAddress(tokenAddress);
                 if (fourMemeToken != null) {
@@ -38,7 +40,7 @@ public class FourMemeTokenConsumer {
                     fourMemeToken.setTokenSymbol(tokenMessageDto.getSymbol());
                     fourMemeToken.setTokenPrecision(tokenMessageDto.getDecimals());
                     fourMemeToken.setPriceUsd(tokenMessageDto.getPrice());
-                    fourMemeToken.setPriceChangeH24(tokenMessageDto.getPriceChangeH24());
+                    fourMemeToken.setPriceChangeH24(priceChangeH24);
                     fourMemeToken.setVolumeH24(tokenMessageDto.getVolumeH24());
                     fourMemeToken.setMarketCapUsd(tokenMessageDto.getMarketCapUsd());
                     tokenService.updateToken(fourMemeToken);
@@ -51,7 +53,7 @@ public class FourMemeTokenConsumer {
                     fourMemeToken.setTokenSymbol(tokenMessageDto.getSymbol());
                     fourMemeToken.setTokenPrecision(tokenMessageDto.getDecimals());
                     fourMemeToken.setPriceUsd(tokenMessageDto.getPrice());
-                    fourMemeToken.setPriceChangeH24(tokenMessageDto.getPriceChangeH24());
+                    fourMemeToken.setPriceChangeH24(priceChangeH24);
                     fourMemeToken.setVolumeH24(tokenMessageDto.getVolumeH24());
                     fourMemeToken.setMarketCapUsd(tokenMessageDto.getMarketCapUsd());
                     tokenService.addToken(fourMemeToken);
