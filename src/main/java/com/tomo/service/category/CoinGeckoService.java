@@ -6,6 +6,7 @@ import com.tomo.model.dto.TokenInfoDTO;
 import com.tomo.model.dto.TokenOhlcvDTO;
 import com.tomo.model.req.OnchainTokenReq;
 import com.tomo.model.req.PlatformTokenReq;
+import com.tomo.model.resp.CoinPriceResp;
 
 import java.util.List;
 import java.util.Map;
@@ -32,4 +33,5 @@ public interface CoinGeckoService {
     // 查询k线
     List<TokenOhlcvDTO> getPlatformTokenOhlcv(Long chainId, String address, IntervalEnum interval);
 
+    List<CoinPriceResp> batchOnchainCoinPrice(List<OnchainTokenReq> onchainTokenReqs, boolean b);
 }

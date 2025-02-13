@@ -6,6 +6,7 @@ import com.tomo.model.dto.TokenInfoDTO;
 import com.tomo.model.dto.TokenRankDTO;
 import com.tomo.model.req.OnchainTokenReq;
 import com.tomo.model.req.PlatformTokenReq;
+import com.tomo.model.resp.CoinPriceResp;
 import com.tomo.model.resp.Result;
 import com.tomo.service.category.CoinGeckoService;
 import com.tomo.service.category.TokenInfoService;
@@ -68,6 +69,12 @@ public class TokenCategoryController {
     public Result<Map<String, TokenInfoDTO>> exactQueryOnchainToken(@RequestBody List<OnchainTokenReq> onchainTokenReqs) {
         Map<String, TokenInfoDTO> tokenInfoDTOMap = coinGeckoService.batchOnchainCoinInfoAndPrice(onchainTokenReqs, false);
         return ResultUtils.success(tokenInfoDTOMap);
+    }
+
+    @PostMapping("/query/token-price/onchain/exact")
+    public Result<List<CoinPriceResp>> exactQueryTokenPrice(@RequestBody List<OnchainTokenReq> onchainTokenReqs) {
+        List<CoinPriceResp> list = coinGeckoService.batchOnchainCoinPrice(onchainTokenReqs, false);
+        return ResultUtils.success(list);
     }
 
     @PostMapping("/query/token-info-price/native/token")
