@@ -802,9 +802,9 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
                 coinPriceResp.setChainId(req.getChainId());
                 coinPriceResp.setAddress("");
                 coinPriceResp.setIsNative(true);
-                coinPriceResp.setRealPrice(BigDecimal.valueOf(tokenPrice.getRealPrice()));
-                coinPriceResp.setVolume24h(BigDecimal.valueOf(tokenPrice.getVolume24h()));
-                coinPriceResp.setChange24h(BigDecimal.valueOf(tokenPrice.getChange24h()));
+                coinPriceResp.setRealPrice(tokenPrice.getRealPrice() == null ? null : BigDecimal.valueOf(tokenPrice.getRealPrice()));
+                coinPriceResp.setVolume24h(tokenPrice.getVolume24h() == null ? null : BigDecimal.valueOf(tokenPrice.getVolume24h()));
+                coinPriceResp.setChange24h(tokenPrice.getChange24h() == null ? null : BigDecimal.valueOf(tokenPrice.getChange24h()));
                 resultList.add(coinPriceResp);
             }
         }
