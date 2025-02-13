@@ -58,6 +58,7 @@ public class TokenService {
                         .risk("SAFE")
                         .createdTime(now)
                         .updatedTime(now)
+                        .launchOnPancake(data.getLaunchOnPancake())
                         .build();
                 return tokenDTO;
             }).collect(Collectors.toList());
