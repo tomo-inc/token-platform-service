@@ -20,4 +20,5 @@ public class TokenMessageDto {
     private String marketCapUsd;
     private Long publishTime;
     private Double progress;
+    private Boolean launchOnPancake;
 }
