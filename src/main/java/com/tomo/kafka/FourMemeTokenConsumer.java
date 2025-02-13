@@ -12,6 +12,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -27,6 +28,7 @@ public class FourMemeTokenConsumer {
     public void listen(String msg) {
         log.info("four meme token "+msg);
         List<TokenMessageDto> list = JSONUtil.toList(msg, TokenMessageDto.class);
+        Date now = new Date();
         for (TokenMessageDto tokenMessageDto : list) {
             String tokenAddress = tokenMessageDto.getTokenAddress().toLowerCase();
             String priceChangeH24 = String.format("%.2f",Double.valueOf(tokenMessageDto.getPriceChangeH24()));
@@ -47,7 +49,11 @@ public class FourMemeTokenConsumer {
                     fourMemeToken.setProgress(tokenMessageDto.getProgress());
                     fourMemeToken.setPublishTime(tokenMessageDto.getPublishTime());
                     fourMemeToken.setLaunchOnPancake(tokenMessageDto.getLaunchOnPancake());
+                    fourMemeToken.setUpdateTime(now);
                     tokenService.updateToken(fourMemeToken);
+                    if(StringUtils.isBlank(fourMemeToken.getImageUrl())){
+                        kafkaTemplate.send("four-meme-token-image-topic", fourMemeToken.getId()+"---"+fourMemeToken.getTokenAddress());
+                    }
                 }else {
                     fourMemeToken = new FourMemeToken();
                     fourMemeToken.setRaiseTokenAddress(riseTokenAddress);
