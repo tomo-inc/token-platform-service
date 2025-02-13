@@ -694,6 +694,14 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
                 Map<String, BigDecimal> tokenPrices = dexTokensPriceResp.getData().getAttributes().getTokenPrices();
                 tokenPrices.forEach((key, value) -> {
                     TokenInfoDTO tokenInfoDTO = first.get(ChainUtil.getCommonKey(chainId, key));
+                    if (tokenInfoDTO == null) {
+                        // TODO Fix the capitalization and lowercase issues. To be optimized.
+                        tokenInfoDTO = first.values().stream().filter(e -> e.getAddress().equalsIgnoreCase(key)).findFirst().orElse(null);
+                        if (tokenInfoDTO == null) {
+                            log.warn("updateOnchainPrice tokenInfoDTO is null");
+                            return;
+                        }
+                    }
                     tokenInfoDTO.setRealPrice(value);
                     tokenInfoService.insertOrUpdate(tokenInfoDTO);
 
