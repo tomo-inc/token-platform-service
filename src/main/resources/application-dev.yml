@@ -6,10 +6,12 @@ DB_PASSWORD: bJNoseDojbnjk
 
 REDIS_HOST: 172.31.26.48
 REDIS_PORT: 6379
-REDIS_USERNAME: 
+REDIS_USERNAME: token_symbol
 REDIS_PASSWORD: Tomoredis
 
-KAFKA_HOST: 44.221.66.16:9092
+#KAFKA_HOST: 44.221.66.16:9092
+KAFKA_HOST: boot-4ev.tomo.ne4173.c7.kafka.us-east-1.amazonaws.com:9092,boot-nd8.tomo.ne4173.c7.kafka.us-east-1.amazonaws.com:9092,boot-9sy.tomo.ne4173.c7.kafka.us-east-1.amazonaws.com:9092
+
 
 backend:
   client:
