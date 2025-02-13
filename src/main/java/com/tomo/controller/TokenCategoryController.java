@@ -8,6 +8,7 @@ import com.tomo.model.req.OnchainTokenReq;
 import com.tomo.model.req.PlatformTokenReq;
 import com.tomo.model.resp.OnChainTokenInfo;
 import com.tomo.model.resp.OnChainTokenPrice;
+import com.tomo.model.resp.CoinPriceResp;
 import com.tomo.model.resp.Result;
 import com.tomo.service.category.CoinGeckoService;
 import com.tomo.service.category.TokenInfoService;
@@ -94,6 +95,12 @@ public class TokenCategoryController {
         Map<String, TokenInfoDTO> tokenInfoDTOMap = coinGeckoService.batchOnchainCoinInfoAndPriceV2(onchainTokenReqs, false);
         System.out.println(System.currentTimeMillis() - l);
         return ResultUtils.success(tokenInfoDTOMap);
+    }
+
+    @PostMapping("/query/token-price/onchain/exact")
+    public Result<List<CoinPriceResp>> exactQueryTokenPrice(@RequestBody List<OnchainTokenReq> onchainTokenReqs) {
+        List<CoinPriceResp> list = coinGeckoService.batchOnchainCoinPrice(onchainTokenReqs, false);
+        return ResultUtils.success(list);
     }
 
     @PostMapping("/query/token-info-price/native/token")
