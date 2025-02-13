@@ -47,7 +47,7 @@ public class TokenService {
                         .id(Long.valueOf(data.getId()))
                         .name("BSC-"+data.getTokenAddress())
                         .displayName(data.getTokenName())
-                        .symbol(data.getTokenName())
+                        .symbol(data.getTokenSymbol())
                         .imageUrl(data.getImageUrl())
                         .decimals(data.getTokenPrecision())
                         .chain("BSC")
