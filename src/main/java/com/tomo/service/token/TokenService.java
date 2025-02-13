@@ -3,7 +3,9 @@ package com.tomo.service.token;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.tomo.feign.BackendClient;
 import com.tomo.mapper.FourMemeTokenMapper;
+import com.tomo.model.convert.MemeTokenConverter;
 import com.tomo.model.dto.FourMemeToken;
+import com.tomo.model.dto.MemeTokenDTO;
 import com.tomo.model.dto.TokenDTO;
 import com.tomo.model.resp.BackendResponseDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -68,6 +70,27 @@ public class TokenService {
         List<TokenDTO> backEndTokenList = backEndTokenSearchRes.getResult();
         if(!CollectionUtils.isEmpty(backEndTokenList)){
             dataList.addAll(backEndTokenList);
+        }
+        return dataList;
+    }
+
+    public List<MemeTokenDTO> memeTokenQuery(String status, Boolean launchOnPancake) {
+        List<MemeTokenDTO> dataList = new ArrayList<>();
+        LambdaQueryWrapper<FourMemeToken> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(FourMemeToken::getLaunchOnPancake, launchOnPancake);
+        if(Objects.equals(status, "new")){
+            queryWrapper.ge(FourMemeToken::getProgress, Double.valueOf(0d));
+            queryWrapper.le(FourMemeToken::getProgress, Double.valueOf(0.6d));
+        }else if(Objects.equals(status, "early")){
+            queryWrapper.ge(FourMemeToken::getProgress, Double.valueOf(0.6d));
+        }
+        queryWrapper.last("limit 100");
+        List<FourMemeToken> fourMemeTokens = fourMemeTokenMapper.selectList(queryWrapper);
+        if (!CollectionUtils.isEmpty(fourMemeTokens)) {
+            fourMemeTokens.forEach(data -> {
+                MemeTokenDTO tokenDto = MemeTokenConverter.INSTANCE.toTokenDto(data);
+                dataList.add(tokenDto);
+            });
         }
         return dataList;
     }
