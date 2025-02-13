@@ -18,4 +18,6 @@ public class TokenMessageDto {
     private String price;
     private String volumeH24;
     private String marketCapUsd;
+    private Long publishTime;
+    private Double progress;
 }

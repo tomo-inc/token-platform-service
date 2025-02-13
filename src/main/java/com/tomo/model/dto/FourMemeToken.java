@@ -29,4 +29,6 @@ public class FourMemeToken {
     private String marketCapUsd;
     private Date createTime;
     private Date updateTime;
+    private Long publishTime;
+    private Double progress;
 }

@@ -43,6 +43,8 @@ public class FourMemeTokenConsumer {
                     fourMemeToken.setPriceChangeH24(priceChangeH24);
                     fourMemeToken.setVolumeH24(tokenMessageDto.getVolumeH24());
                     fourMemeToken.setMarketCapUsd(tokenMessageDto.getMarketCapUsd());
+                    fourMemeToken.setProgress(tokenMessageDto.getProgress());
+                    fourMemeToken.setPublishTime(tokenMessageDto.getPublishTime());
                     tokenService.updateToken(fourMemeToken);
                 }else {
                     fourMemeToken = new FourMemeToken();
@@ -56,6 +58,8 @@ public class FourMemeTokenConsumer {
                     fourMemeToken.setPriceChangeH24(priceChangeH24);
                     fourMemeToken.setVolumeH24(tokenMessageDto.getVolumeH24());
                     fourMemeToken.setMarketCapUsd(tokenMessageDto.getMarketCapUsd());
+                    fourMemeToken.setProgress(tokenMessageDto.getProgress());
+                    fourMemeToken.setPublishTime(tokenMessageDto.getPublishTime());
                     tokenService.addToken(fourMemeToken);
                     kafkaTemplate.send("four-meme-token-image-topic", fourMemeToken.getId()+"---"+fourMemeToken.getTokenAddress());
                 }
