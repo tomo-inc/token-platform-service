@@ -67,6 +67,7 @@ public class FourMemeTokenConsumer {
                     kafkaTemplate.send("four-meme-token-image-topic", fourMemeToken.getId()+"---"+fourMemeToken.getTokenAddress());
                 }
             }catch (Exception e){
+                log.error("save or update token fail {}",JSONUtil.toJsonStr(tokenMessageDto));
                 log.error("save or update token error", e);
             }
         }
