@@ -34,8 +34,8 @@ public class FourMemeTokenConsumer {
             try {
                 FourMemeToken fourMemeToken = tokenService.querByAddress(tokenAddress);
                 if (fourMemeToken != null) {
-                    fourMemeToken.setRiskTokenAddress(riseTokenAddress);
-                    fourMemeToken.setRiskTokenSymbol(tokenMessageDto.getRiseTokenSymbol());
+                    fourMemeToken.setRaiseTokenAddress(riseTokenAddress);
+                    fourMemeToken.setRaiseTokenAddress(tokenMessageDto.getRiseTokenSymbol());
                     fourMemeToken.setTokenName(tokenMessageDto.getName());
                     fourMemeToken.setTokenSymbol(tokenMessageDto.getSymbol());
                     fourMemeToken.setTokenPrecision(tokenMessageDto.getDecimals());
@@ -45,11 +45,12 @@ public class FourMemeTokenConsumer {
                     fourMemeToken.setMarketCapUsd(tokenMessageDto.getMarketCapUsd());
                     fourMemeToken.setProgress(tokenMessageDto.getProgress());
                     fourMemeToken.setPublishTime(tokenMessageDto.getPublishTime());
+                    fourMemeToken.setLaunchOnPancake(tokenMessageDto.getLaunchOnPancake());
                     tokenService.updateToken(fourMemeToken);
                 }else {
                     fourMemeToken = new FourMemeToken();
-                    fourMemeToken.setRiskTokenAddress(riseTokenAddress);
-                    fourMemeToken.setRiskTokenSymbol(tokenMessageDto.getRiseTokenSymbol());
+                    fourMemeToken.setRaiseTokenAddress(riseTokenAddress);
+                    fourMemeToken.setRaiseTokenAddress(tokenMessageDto.getRiseTokenSymbol());
                     fourMemeToken.setTokenAddress(tokenAddress);
                     fourMemeToken.setTokenName(tokenMessageDto.getName());
                     fourMemeToken.setTokenSymbol(tokenMessageDto.getSymbol());
@@ -60,6 +61,7 @@ public class FourMemeTokenConsumer {
                     fourMemeToken.setMarketCapUsd(tokenMessageDto.getMarketCapUsd());
                     fourMemeToken.setProgress(tokenMessageDto.getProgress());
                     fourMemeToken.setPublishTime(tokenMessageDto.getPublishTime());
+                    fourMemeToken.setLaunchOnPancake(tokenMessageDto.getLaunchOnPancake());
                     tokenService.addToken(fourMemeToken);
                     kafkaTemplate.send("four-meme-token-image-topic", fourMemeToken.getId()+"---"+fourMemeToken.getTokenAddress());
                 }

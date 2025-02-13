@@ -21,8 +21,8 @@ public class FourMemeToken {
     private String tokenSymbol;
     private Integer tokenPrecision;
     private String imageUrl;
-    private String riskTokenSymbol;
-    private String riskTokenAddress;
+    private String raiseTokenSymbol;
+    private String raiseTokenAddress;
     private String priceUsd;
     private String priceChangeH24;
     private String volumeH24;
@@ -31,4 +31,5 @@ public class FourMemeToken {
     private Date updateTime;
     private Long publishTime;
     private Double progress;
+    private Boolean launchOnPancake;
 }
