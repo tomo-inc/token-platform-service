@@ -1,4 +1,5 @@
 DB_HOST: 44.221.66.16:5432
+#DB_HOST: 54.89.219.107:5432
 DB_USERNAME: wallet_token
 DB_PASSWORD: bJNoseDojbnjk
 
@@ -7,3 +8,9 @@ REDIS_HOST: 172.31.26.48
 REDIS_PORT: 6379
 REDIS_USERNAME: 
 REDIS_PASSWORD: Tomoredis
+
+KAFKA_HOST: 44.221.66.16:9092
+
+backend:
+  client:
+    url: https://app.unyx.tech
