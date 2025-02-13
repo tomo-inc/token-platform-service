@@ -485,6 +485,9 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
         if (!CollectionUtils.isEmpty(nativeTokenPriceMap)) {
             for (OnchainTokenReq req : nativeTokenList) {
                 ChainCoinGeckoEnum chainCoinGeckoEnum = ChainUtil.getChainAndCoinGeckoMap().get(req.getChainId());
+                if (chainCoinGeckoEnum == null) {
+                    continue;
+                }
                 String coinGeckoCoinId = chainCoinGeckoEnum.getCoinGeckoEnum().getCoinId();
                 TokenPriceResp tokenPrice = nativeTokenPriceMap.get(coinGeckoCoinId);
                 if (tokenPrice == null) {
