@@ -84,6 +84,7 @@ public class TokenService {
         }else if(Objects.equals(status, "early")){
             queryWrapper.ge(FourMemeToken::getProgress, Double.valueOf(0.6d));
         }
+        queryWrapper.orderByDesc(FourMemeToken::getPublishTime);
         queryWrapper.last("limit 100");
         List<FourMemeToken> fourMemeTokens = fourMemeTokenMapper.selectList(queryWrapper);
         if (!CollectionUtils.isEmpty(fourMemeTokens)) {
