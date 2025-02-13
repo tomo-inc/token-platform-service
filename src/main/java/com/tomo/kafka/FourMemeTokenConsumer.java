@@ -6,6 +6,7 @@ import com.tomo.kafka.message.TokenMessageDto;
 import com.tomo.model.dto.FourMemeToken;
 import com.tomo.service.token.TokenService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -28,8 +29,8 @@ public class FourMemeTokenConsumer {
         List<TokenMessageDto> list = JSONUtil.toList(msg, TokenMessageDto.class);
         for (TokenMessageDto tokenMessageDto : list) {
             String tokenAddress = tokenMessageDto.getTokenAddress().toLowerCase();
-            String riseTokenAddress = tokenMessageDto.getRiseTokenAddress().toLowerCase();
             String priceChangeH24 = String.format("%.2f",Double.valueOf(tokenMessageDto.getPriceChangeH24()));
+            String riseTokenAddress = StringUtils.equalsIgnoreCase(tokenMessageDto.getRiseTokenSymbol(),"BNB") ? "" : tokenMessageDto.getRiseTokenAddress().toLowerCase();
 
             try {
                 FourMemeToken fourMemeToken = tokenService.querByAddress(tokenAddress);
