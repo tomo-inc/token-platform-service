@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 
 public class CoinGeckoClientConfig {
-    @Value("${coingecko.api-key:CG-RwRHu8QejZ9W7if6xMuz4AaK}")
+    @Value("${coingecko.api-key:CG-QFuLrVNPbZ4VoF4rgDXkCUAb}")
     private String apiKey ;
 
 
