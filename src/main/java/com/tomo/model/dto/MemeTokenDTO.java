@@ -23,7 +23,7 @@ public class MemeTokenDTO {
     private String raiseTokenAddress;
     private String priceUsd;
     private String priceChangeH24;
-    private String volumeH24;
+    private String volumeWei24;
     private String marketCapUsd;
     private Date createTime;
     private Date updateTime;

@@ -106,7 +106,7 @@ public class TokenService {
                 tokenDto.setSymbol(data.getTokenSymbol());
                 tokenDto.setDecimals(data.getTokenPrecision());
                 tokenDto.setFourMemeToken(true);
-                tokenDto.setVolumeH24(this.calVolume24(data.getVolumeH24(), data.getPriceUsd(), data.getTokenPrecision()));
+                tokenDto.setVolumeWei24(data.getVolumeH24());
                 dataList.add(tokenDto);
             });
         }
@@ -127,12 +127,5 @@ public class TokenService {
         LambdaQueryWrapper<FourMemeToken> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(FourMemeToken::getTokenAddress, tokenAddress);
         return fourMemeTokenMapper.selectOne(queryWrapper);
-    }
-
-    private String calVolume24(String originVolumeH24, String priceUsd, Integer tokenPrecision) {
-        if (StringUtils.isEmpty(originVolumeH24) || StringUtils.isEmpty(priceUsd)) {
-            return originVolumeH24;
-        }
-        return new BigDecimal(originVolumeH24).multiply(new BigDecimal(priceUsd)).divide(new BigDecimal(tokenPrecision)).toPlainString();
     }
 }
