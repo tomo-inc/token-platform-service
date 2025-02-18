@@ -26,6 +26,13 @@ public class TokenController {
         return ResultUtils.success(tokenDTOS);
     }
 
+    @GetMapping("/meme/detail")
+    public Result<TokenDTO> memeTokenDetail(@RequestHeader("authorization") String authorization, @RequestParam String tokenName) {
+        TokenDTO tokenDTO = tokenService.tokenDetail(authorization, tokenName);
+        return ResultUtils.success(tokenDTO);
+    }
+
+
     @GetMapping("/query/meme")
     public Result<List<MemeTokenDTO>> memeTokenQuery(@RequestParam String status, @RequestParam Boolean launchOnPancake ) {
         List<MemeTokenDTO> tokenDTOS = tokenService.memeTokenQuery(status, launchOnPancake);
