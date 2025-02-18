@@ -31,7 +31,6 @@ public class TokenService {
 
     public List<TokenDTO> tokenSearch(String authorization, String content, String chain) {
         List<TokenDTO> dataList = new ArrayList<>();
-        Date now = new Date();
         BackendResponseDTO<List<TokenDTO>> backEndTokenSearchRes = backendClient.tokenSearch(authorization, content, chain);
         LambdaQueryWrapper<FourMemeToken> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.like(FourMemeToken::getTokenName, "%" + content + "%")
@@ -39,31 +38,7 @@ public class TokenService {
                 .eq(FourMemeToken::getTokenAddress, content.toLowerCase());
         List<FourMemeToken> fourMemeTokens = fourMemeTokenMapper.selectList(queryWrapper);
         if (!CollectionUtils.isEmpty(fourMemeTokens)) {
-            List<TokenDTO> collect = fourMemeTokens.stream().map(data -> {
-                TokenDTO tokenDTO = TokenDTO.builder()
-                        .riseTokenSymbol(data.getRaiseTokenSymbol())
-                        .riseTokenAddress(StringUtils.equalsIgnoreCase(data.getRaiseTokenAddress(),"BNB") ? "" : data.getRaiseTokenAddress())
-                        .fourMemeToken(true)
-                        .id(Long.valueOf(data.getId()))
-                        .name("BSC-"+data.getTokenAddress())
-                        .displayName(data.getTokenName())
-                        .symbol(data.getTokenSymbol())
-                        .imageUrl(data.getImageUrl())
-                        .decimals(data.getTokenPrecision())
-                        .chain("BSC")
-                        .isNative(false)
-                        .address(data.getTokenAddress())
-                        .priceUsd(new BigDecimal(data.getPriceUsd()))
-                        .priceChangeH24(new BigDecimal(data.getPriceChangeH24()).doubleValue())
-                        .volumeH24(new BigDecimal(data.getVolumeH24()))
-                        .marketCapUsd(StringUtils.isNoneBlank(data.getMarketCapUsd()) ? new BigDecimal(data.getMarketCapUsd()) : BigDecimal.ZERO)
-                        .risk("SAFE")
-                        .createdTime(now)
-                        .updatedTime(now)
-                        .launchOnPancake(data.getLaunchOnPancake())
-                        .build();
-                return tokenDTO;
-            }).collect(Collectors.toList());
+            List<TokenDTO> collect = fourMemeTokens.stream().map(TokenService::transferToTokenDTO).collect(Collectors.toList());
             dataList.addAll(collect);
         }
 
@@ -72,6 +47,43 @@ public class TokenService {
             dataList.addAll(backEndTokenList);
         }
         return dataList;
+    }
+
+    public TokenDTO tokenDetail(String authorization, String tokenName) {
+        String[] splitArray = tokenName.split("-");
+        LambdaQueryWrapper<FourMemeToken> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(FourMemeToken::getTokenAddress, splitArray[1].toLowerCase());
+        List<FourMemeToken> fourMemeTokens = fourMemeTokenMapper.selectList(queryWrapper);
+        if(!CollectionUtils.isEmpty(fourMemeTokens)){
+            return transferToTokenDTO(fourMemeTokens.get(0));
+        }
+        BackendResponseDTO<TokenDTO> backEndTokenSearchRes = backendClient.tokenDetail(authorization, tokenName);
+        TokenDTO result = backEndTokenSearchRes.getResult();
+        return result;
+    }
+
+    private static TokenDTO transferToTokenDTO(FourMemeToken fourMemeToken) {
+        TokenDTO tokenDTO = TokenDTO.builder()
+                .riseTokenSymbol(fourMemeToken.getRaiseTokenSymbol())
+                .riseTokenAddress(StringUtils.equalsIgnoreCase(fourMemeToken.getRaiseTokenAddress(),"BNB") ? "" : fourMemeToken.getRaiseTokenAddress())
+                .fourMemeToken(true)
+                .id(Long.valueOf(fourMemeToken.getId()))
+                .name("BSC-"+fourMemeToken.getTokenAddress())
+                .displayName(fourMemeToken.getTokenName())
+                .symbol(fourMemeToken.getTokenSymbol())
+                .imageUrl(fourMemeToken.getImageUrl())
+                .decimals(fourMemeToken.getTokenPrecision())
+                .chain("BSC")
+                .isNative(false)
+                .address(fourMemeToken.getTokenAddress())
+                .priceUsd(new BigDecimal(fourMemeToken.getPriceUsd()))
+                .priceChangeH24(new BigDecimal(fourMemeToken.getPriceChangeH24()).doubleValue())
+                .volumeH24(new BigDecimal(fourMemeToken.getVolumeH24()))
+                .marketCapUsd(StringUtils.isNoneBlank(fourMemeToken.getMarketCapUsd()) ? new BigDecimal(fourMemeToken.getMarketCapUsd()) : BigDecimal.ZERO)
+                .risk("SAFE")
+                .launchOnPancake(fourMemeToken.getLaunchOnPancake())
+                .build();
+        return tokenDTO;
     }
 
     public List<MemeTokenDTO> memeTokenQuery(String status, Boolean launchOnPancake) {

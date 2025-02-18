@@ -15,4 +15,8 @@ public interface BackendClient {
     @GetMapping("/api/socialLogin/teleGram/wallet/tokens/search")
     BackendResponseDTO<List<TokenDTO>> tokenSearch(@RequestHeader("authorization") String authorization, @RequestParam String content, @RequestParam(required = false) String chain);
 
+
+    @GetMapping("/api/socialLogin/teleGram/getByName")
+    BackendResponseDTO<TokenDTO> tokenDetail(@RequestHeader("authorization") String authorization, @RequestParam String tokenName);
+
 }
