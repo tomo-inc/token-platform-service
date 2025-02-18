@@ -106,7 +106,7 @@ public class TokenService {
                 tokenDto.setSymbol(data.getTokenSymbol());
                 tokenDto.setDecimals(data.getTokenPrecision());
                 tokenDto.setFourMemeToken(true);
-                tokenDto.setVolumeWei24(data.getVolumeH24());
+                tokenDto.setVolumeWeiH24(data.getVolumeH24());
                 dataList.add(tokenDto);
             });
         }
