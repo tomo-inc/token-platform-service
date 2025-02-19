@@ -14,20 +14,21 @@ import java.util.Date;
 @NoArgsConstructor
 public class MemeTokenDTO {
     private Long id;
-    private String tokenName;
+    private String displayName;
     private String tokenAddress;
-    private String tokenSymbol;
-    private Integer tokenPrecision;
+    private String symbol;
+    private Integer decimals;
     private String imageUrl;
     private String raiseTokenSymbol;
     private String raiseTokenAddress;
     private String priceUsd;
     private String priceChangeH24;
-    private String volumeH24;
+    private String volumeWeiH24;
     private String marketCapUsd;
     private Date createTime;
     private Date updateTime;
     private Long publishTime;
     private Double progress;
     private Boolean launchOnPancake;
+    private Boolean fourMemeToken;
 }
