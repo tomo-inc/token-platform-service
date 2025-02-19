@@ -33,10 +33,17 @@ spring:
       host: ${REDIS_HOST}
       port: ${REDIS_PORT}
       database: 0
+      connect-timeout: 2000
       timeout:  2000
       username: ${REDIS_USERNAME}
       password: ${REDIS_PASSORD}
+      client-type: lettuce
       client-name: ${spring.application.name:token-platform-service}
+      ssl:
+        enabled: true
+      cluster:
+        nodes: ${REDIS_HOST}:${REDIS_PORT}
+        max-redirects: 3
 
 mybatis:
   mapper-locations: classpath:mappers/*.xml
