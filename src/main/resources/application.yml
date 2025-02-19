@@ -36,7 +36,7 @@ spring:
       connect-timeout: 2000
       timeout:  2000
       username: ${REDIS_USERNAME}
-      password: ${REDIS_PASSORD}
+      password: ${REDIS_PASSWORD}
       client-type: lettuce
       client-name: ${spring.application.name:token-platform-service}
       ssl:
