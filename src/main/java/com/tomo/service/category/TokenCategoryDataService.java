@@ -51,4 +51,5 @@ public interface TokenCategoryDataService extends IService<TokenCategoryCoinGeck
 
     boolean insertOrUpdate(TokenCategoryCoinGeckoDTO tokenCategoryCoinGeckoDTO);
 
+    void batchInsertOrUpdate(List<TokenCategoryCoinGeckoDTO> tokenCategoryUpdateList);
 }

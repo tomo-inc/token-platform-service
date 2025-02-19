@@ -17,6 +17,8 @@ public interface CoinGeckoService {
     // key: chainId+ "-" +address
     Map<String, TokenInfoDTO> batchOnchainCoinInfoAndPrice(List<OnchainTokenReq> tokenList, boolean include);
 
+    Map<String, TokenInfoDTO> batchOnchainCoinInfoAndPriceV2(List<OnchainTokenReq> rawTokenList, boolean include);
+
     Map<String, TokenInfoDTO> singleOnchainTokenInfoAndPrice(List<OnchainTokenReq> partition, boolean include);
 
     // 更新多个platform币价同时更新代币信息
