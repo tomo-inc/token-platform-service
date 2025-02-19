@@ -21,7 +21,6 @@ import java.util.UUID;
 @Slf4j
 @Component
 public class TokenImageUrlConsumer {
-    private static final String traceId = "traceId";
     @Autowired
     private TokenService tokenService;
     @Autowired
@@ -29,8 +28,8 @@ public class TokenImageUrlConsumer {
 
     @KafkaListener(topics = "four-meme-token-image-topic", groupId = "token-group")
     public void listen(String msg) {
+        String traceId = UUID.randomUUID().toString();
         try {
-            String traceId = UUID.randomUUID().toString();
             log.info(traceId+"token-image-topic msg "+msg);
             String[] split = msg.split("---");
             String tokenAddress = split[1];
