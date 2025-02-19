@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Component
@@ -28,19 +29,25 @@ public class TokenImageUrlConsumer {
 
     @KafkaListener(topics = "four-meme-token-image-topic", groupId = "token-group")
     public void listen(String msg) {
-        log.info("token-image-topic msg "+msg);
-        String[] split = msg.split("---");
-        String tokenAddress = split[1];
-        Long id = Long.parseLong(split[0]);
-        Result<List<TokenInfoRes>> result = fourMemeClient.tokenQuery(tokenAddress, 1, 1);
-        List<TokenInfoRes> dataList = result.getData();
-        if(CollectionUtils.isEmpty(dataList)){
-            return;
+        try {
+            String traceId = UUID.randomUUID().toString();
+            log.info(traceId+"token-image-topic msg "+msg);
+            String[] split = msg.split("---");
+            String tokenAddress = split[1];
+            Long id = Long.parseLong(split[0]);
+            Result<List<TokenInfoRes>> result = fourMemeClient.tokenQuery(tokenAddress, 1, 1);
+            List<TokenInfoRes> dataList = result.getData();
+            if(CollectionUtils.isEmpty(dataList)){
+                return;
+            }
+            TokenInfoRes tokenInfoRes = dataList.get(0);
+            FourMemeToken fourMemeToken = new FourMemeToken();
+            fourMemeToken.setId(id);
+            fourMemeToken.setImageUrl(tokenInfoRes.getImage());
+            tokenService.updateToken(fourMemeToken);
+        }catch (Exception e){
+            log.error(traceId+"fetch token image fail",e);
         }
-        TokenInfoRes tokenInfoRes = dataList.get(0);
-        FourMemeToken fourMemeToken = new FourMemeToken();
-        fourMemeToken.setId(id);
-        fourMemeToken.setImageUrl(tokenInfoRes.getImage());
-        tokenService.updateToken(fourMemeToken);
+
     }
 }
