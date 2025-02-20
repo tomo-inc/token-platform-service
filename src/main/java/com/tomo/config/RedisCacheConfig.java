@@ -33,7 +33,7 @@ public class RedisCacheConfig {
     private String host;
     @Value("${spring.data.redis.port}")
     private Integer port;
-    @Value("${srring.data.redis.username}")
+    @Value("${spring.data.redis.username}")
     private String username;
     @Value("${spring.data.redis.password}")
     private String pwd;
