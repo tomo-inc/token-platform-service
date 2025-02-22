@@ -19,10 +19,26 @@ public class TestController {
     @Autowired
     private FourMemeClient fourMemeClient;
 
-    @GetMapping("/token/image")
+    @GetMapping("four/meme/image")
     public Result<List<TokenInfoRes>> tokenImage(@RequestParam String tokenAddress) {
-        Result<List<TokenInfoRes>> result = fourMemeClient.tokenQuery(tokenAddress, 1, 1);
+        try {
+            Result<List<TokenInfoRes>> result = fourMemeClient.tokenQuery(tokenAddress, 1, 1);
 
-        return ResultUtils.success(result.getData());
+            return ResultUtils.success(result.getData());
+        }catch (Exception e){
+            log.info(tokenAddress+" "+getStackTrace(e));
+            log.error("token query fail",e);
+        }
+        return null;
     }
+    private String getStackTrace(Exception ex) {
+        StringBuilder sb = new StringBuilder();
+        StackTraceElement[] stackTrace = ex.getStackTrace();
+        int depth = stackTrace.length;
+        for (int i = 0; i < depth; i++) {
+            sb.append(stackTrace[i].toString()).append("\n");
+        }
+        return sb.toString();
+    }
+
 }
