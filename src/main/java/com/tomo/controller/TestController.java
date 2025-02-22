@@ -15,7 +15,6 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/v1/wallet/token")
 public class TestController {
     @Autowired
     private FourMemeClient fourMemeClient;
