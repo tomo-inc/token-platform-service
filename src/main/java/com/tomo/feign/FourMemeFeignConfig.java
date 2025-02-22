@@ -1,6 +1,7 @@
 package com.tomo.feign;
 
 import feign.Request;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.Credentials;
 import okhttp3.OkHttpClient;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@Slf4j
 @Configuration
 public class FourMemeFeignConfig {
     @Bean
@@ -23,7 +25,7 @@ public class FourMemeFeignConfig {
     private static List<String> proxyIps = new ArrayList<>();
     private final AtomicInteger counter = new AtomicInteger(0);
     static {
-        proxyIps.add("geo.g-w.info:10080");
+        proxyIps.add("http://geo.g-w.info:10080");
     }
 
 
@@ -44,6 +46,7 @@ public class FourMemeFeignConfig {
                     @Override
                     public void connectFailed(URI uri, SocketAddress sa, IOException ioe) {
                         // 处理代理连接失败（如标记失效代理）
+                        log.error("connect failed", ioe);
                     }
                 })
                 // 在 OkHttpClient 中添加代理认证

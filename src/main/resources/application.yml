@@ -1,3 +1,10 @@
+feign:
+  okhttp:
+    enabled: true
+
+logging:
+  level:
+    okhttp3: DEBUG
 spring:
   kafka:
     bootstrap-servers: ${KAFKA_HOST}
