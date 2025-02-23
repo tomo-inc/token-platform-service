@@ -64,6 +64,8 @@ public class TokenService {
 
     private static TokenDTO transferToTokenDTO(FourMemeToken fourMemeToken) {
         TokenDTO tokenDTO = TokenDTO.builder()
+                .progress(fourMemeToken.getProgress())
+                .publishTime(fourMemeToken.getPublishTime())
                 .riseTokenSymbol(fourMemeToken.getRaiseTokenSymbol())
                 .riseTokenAddress(StringUtils.equalsIgnoreCase(fourMemeToken.getRaiseTokenAddress(),"BNB") ? "" : fourMemeToken.getRaiseTokenAddress())
                 .fourMemeToken(true)

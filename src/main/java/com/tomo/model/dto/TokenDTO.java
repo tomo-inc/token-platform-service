@@ -13,6 +13,8 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TokenDTO {
+    private Long publishTime;
+    private Double progress;
     private Boolean launchOnPancake;
     private Boolean fourMemeToken;
     private String riseTokenSymbol;
