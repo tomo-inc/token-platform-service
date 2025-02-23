@@ -123,7 +123,7 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
             }
         });
         long l2 = System.currentTimeMillis();
-        log.info("CoinGeckoServiceImpl batchOnchainCoinInfoAndPrice time1:{}",l2-l1);
+        log.info("CoinGeckoServiceImpl batchOnchainCoinInfoAndPrice time1:{}", l2 - l1);
         List<PlatformTokenReq> nativeTokenList = nativeTokenMap
                 .stream()
                 .map(e -> {
@@ -139,25 +139,25 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
         Map<String, TokenInfoDTO> nativeTokenResultMap = batchPlatformCoinInfoAndPrice(nativeTokenList);
         resultMap.putAll(nativeTokenResultMap);
         long l3 = System.currentTimeMillis();
-        log.info("CoinGeckoServiceImpl batchOnchainCoinInfoAndPrice time2:{}",l3-l2);
+        log.info("CoinGeckoServiceImpl batchOnchainCoinInfoAndPrice time2:{}", l3 - l2);
 
         if (!CollectionUtils.isEmpty(first)) {
             //Map<String, TokenInfoDTO> existMap = updateOnchainPrice(first);
             resultMap.putAll(first);
         }
         long l4 = System.currentTimeMillis();
-        log.info("CoinGeckoServiceImpl batchOnchainCoinInfoAndPrice time3:{}",l4-l3);
+        log.info("CoinGeckoServiceImpl batchOnchainCoinInfoAndPrice time3:{}", l4 - l3);
         return resultMap;
     }
 
     /**
-     *
      * @param rawTokenList
-     * @param include  是否查询池子信息
+     * @param include      是否查询池子信息
      * @return
      */
     @Override
-    public Map<String, TokenInfoDTO> batchOnchainCoinInfoAndPriceV2(List<OnchainTokenReq> rawTokenList, boolean include) {
+    public Map<String, TokenInfoDTO> batchOnchainCoinInfoAndPriceV2(List<OnchainTokenReq> rawTokenList,
+                                                                    boolean include) {
         Map<String, TokenInfoDTO> resultMap = new ConcurrentHashMap<>();
         if (rawTokenList.size() > 300) {
             return resultMap;
@@ -179,16 +179,16 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
 
     }
 
-    private Map<String, TokenInfoDTO> handleNotExistToken( List<TokenBase> second, boolean include) {
+    private Map<String, TokenInfoDTO> handleNotExistToken(List<TokenBase> second, boolean include) {
         List<OnchainTokenReq> tokenList = second.stream().map(e -> new OnchainTokenReq(e.getChainId(), e.getAddress())).toList();
         //存在地址的数据
         Map<Long, List<OnchainTokenReq>> chainTokenMap = tokenList.stream()
-                        .filter(e -> StringUtils.hasText(e.getAddress()) && Objects.nonNull(e.getChainId()))
-                        .collect(Collectors.groupingBy(OnchainTokenReq::getChainId));
+                .filter(e -> StringUtils.hasText(e.getAddress()) && Objects.nonNull(e.getChainId()))
+                .collect(Collectors.groupingBy(OnchainTokenReq::getChainId));
         //不存在地址的数据
         List<OnchainTokenReq> nativeTokenMap = tokenList.stream()
-                        .filter(e -> !StringUtils.hasText(e.getAddress()) && Objects.nonNull(e.getChainId()))
-                        .toList();
+                .filter(e -> !StringUtils.hasText(e.getAddress()) && Objects.nonNull(e.getChainId()))
+                .toList();
         //处理链token
         Map<String, TokenInfoDTO> stringTokenInfoDTOMap = handleChainToken(chainTokenMap, include);
         Map<String, TokenInfoDTO> resultMap = new HashMap<>(stringTokenInfoDTOMap);
@@ -205,18 +205,19 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
                 .map(e -> {
                     PlatformTokenReq tokenReq = new PlatformTokenReq();
                     ChainCoinGeckoEnum chainCoinGeckoEnum = ChainUtil.getChainAndCoinGeckoMap().get(e.getChainId());
-                    if(chainCoinGeckoEnum!=null){
+                    if (chainCoinGeckoEnum != null) {
                         tokenReq.setCoingeckoCoinId(chainCoinGeckoEnum.getCoinGeckoEnum().getCoinId());
-                    }else{
-                        log.error("CoinGeckoServiceImpl batchOnchainCoinInfoAndPrice chainId not exist:{}",e.getChainId());
+                    } else {
+                        log.error("CoinGeckoServiceImpl batchOnchainCoinInfoAndPrice chainId not exist:{}", e.getChainId());
                     }
                     return tokenReq;
                 }).toList();
         return batchPlatformCoinInfoAndPrice(nativeTokenList);
     }
 
-    private Map<String, TokenInfoDTO>  handleChainToken(Map<Long, List<OnchainTokenReq>> chainTokenMap, boolean include) {
-        Map<String, TokenInfoDTO> resultMap=new HashMap<>();
+    private Map<String, TokenInfoDTO> handleChainToken(Map<Long, List<OnchainTokenReq>> chainTokenMap,
+                                                       boolean include) {
+        Map<String, TokenInfoDTO> resultMap = new HashMap<>();
         chainTokenMap.forEach((chainId, tokens) -> {
             // 分隔成30一组,三方接口限制
             List<List<OnchainTokenReq>> partitions = getPartitions(tokens, 30);
@@ -233,9 +234,9 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
     public Map<String, TokenInfoDTO> singleOnchainTokenInfoAndPrice(List<OnchainTokenReq> partition,
                                                                     boolean include) {
         Map<String, TokenInfoDTO> resultMap = new ConcurrentHashMap<>();
-        List<TokenCategoryCoinGeckoDTO> tokenCategoryUpdateList=new ArrayList<>();
-        List<TokenPriceDTO> tokenPriceDTOUpdateList=new ArrayList<>();
-        List<TokenInfoDTO> tokenInfoDTOUpdateList=new ArrayList<>();
+        List<TokenCategoryCoinGeckoDTO> tokenCategoryUpdateList = new ArrayList<>();
+        List<TokenPriceDTO> tokenPriceDTOUpdateList = new ArrayList<>();
+        List<TokenInfoDTO> tokenInfoDTOUpdateList = new ArrayList<>();
         try {
             if (CollectionUtils.isEmpty(partition)) {
                 return new HashMap<>();
@@ -276,7 +277,7 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
                 tokenInfoDTOUpdateList.add(tokenInfoDTO);
                 resultMap.put(ChainUtil.getCommonKey(tokenInfoDTO.getChainId(), tokenInfoDTO.getAddress()), tokenInfoDTO);
             });
-            CompletableFuture.runAsync(()->{
+            CompletableFuture.runAsync(() -> {
                 //批量更新 可以异步优化
                 tokenCategoryDataService.batchInsertOrUpdate(tokenCategoryUpdateList);
                 tokenPriceDataService.batchInsertOrUpdate(tokenPriceDTOUpdateList);
@@ -356,7 +357,7 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
                 .collect(Collectors.joining(","));
 
         Map<String, TokenPriceResp> map = coinGeckoClient.getPlatformTokenPrice(tokenIds);
-        return CollectionUtils.isEmpty(map)?new HashMap<>():map;
+        return CollectionUtils.isEmpty(map) ? new HashMap<>() : map;
     }
 
 
@@ -421,18 +422,18 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
                                       TokenPriceResp onlineTokenPrice,
                                       Map<String, TokenInfoDTO> resultMap,
                                       boolean isNative) {
-        if(CollectionUtils.isEmpty(coinGeckoEnumList)){
+        if (CollectionUtils.isEmpty(coinGeckoEnumList)) {
             return;
         }
-        List<TokenCategoryCoinGeckoDTO> tokenCategoryUpdateList=new ArrayList<>();
-        List<TokenPriceDTO> tokenPriceDTOUpdateList=new ArrayList<>();
-        List<TokenInfoDTO> tokenInfoDTOUpdateList=new ArrayList<>();
+        List<TokenCategoryCoinGeckoDTO> tokenCategoryUpdateList = new ArrayList<>();
+        List<TokenPriceDTO> tokenPriceDTOUpdateList = new ArrayList<>();
+        List<TokenInfoDTO> tokenInfoDTOUpdateList = new ArrayList<>();
         for (ChainCoinGeckoEnum coinGeckoEnum : coinGeckoEnumList) {
             coinGeckoDTO.setIsNative(isNative);
             if (coinGeckoEnum != null) {
                 coinGeckoDTO.setChainId(coinGeckoEnum.getChainId());
                 TokenPriceDTO tokenPriceDTO = new TokenPriceDTO();
-                CoinInfoResp.DetailPlatform detailPlatform = onlineTokenInfo.getDetailPlatforms().getOrDefault(coinGeckoEnum.getCoinGeckoEnum().getPlatformChainId(),null);
+                CoinInfoResp.DetailPlatform detailPlatform = onlineTokenInfo.getDetailPlatforms().getOrDefault(coinGeckoEnum.getCoinGeckoEnum().getPlatformChainId(), null);
                 setTokenInfoAndPrice(coinGeckoEnum.getChainId(), detailPlatform, onlineTokenInfo, onlineTokenPrice, coinGeckoDTO, tokenPriceDTO);
                 TokenInfoDTO tokenInfoDTO = convertTokenInfo(coinGeckoDTO, tokenPriceDTO, new TokenRiskGoplusDTO());
                 tokenCategoryUpdateList.add(coinGeckoDTO);
@@ -441,7 +442,7 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
                 resultMap.put(ChainUtil.getCommonKey(tokenInfoDTO.getChainId(), tokenInfoDTO.getAddress()), tokenInfoDTO);
             }
         }
-        CompletableFuture.runAsync(()->{
+        CompletableFuture.runAsync(() -> {
             //批量更新 可以异步优化
             tokenCategoryDataService.batchInsertOrUpdate(tokenCategoryUpdateList);
             tokenPriceDataService.batchInsertOrUpdate(tokenPriceDTOUpdateList);
@@ -523,7 +524,7 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
                     TokenInfoDTO tokenInfoDTO = first.get(ChainUtil.getCommonKey(chainId, key));
                     if (tokenInfoDTO == null) {
                         // TODO Fix the capitalization and lowercase issues. To be optimized.
-                        tokenInfoDTO = first.values().stream().filter(e -> e.getAddress().equalsIgnoreCase(key)).findFirst().orElse(null);
+                        tokenInfoDTO = first.values().stream().filter(e -> StringUtils.hasText(e.getAddress()) && e.getAddress().equalsIgnoreCase(key)).findFirst().orElse(null);
                         if (tokenInfoDTO == null) {
                             log.warn("updateOnchainPrice tokenInfoDTO is null");
                             return;
