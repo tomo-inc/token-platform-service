@@ -14,4 +14,7 @@ public interface FourMemeClient {
     @GetMapping("/v1/private/token/query")
     Result<List<TokenInfoRes>> tokenQuery(@RequestParam("tokenName") String tokenName,@RequestParam("pageIndex") Integer pageIndex,@RequestParam("pageSize") Integer pageSize);
 
+
+    @GetMapping("/v1/private/token/get")
+    Result<TokenInfoRes> getToken(@RequestParam("address") String address);
 }
