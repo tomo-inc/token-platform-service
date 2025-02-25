@@ -33,13 +33,13 @@ public class FourMemeTokenConsumer {
             String tokenAddress = tokenMessageDto.getTokenAddress().toLowerCase();
             String priceChangeH24 = String.format("%.2f",Double.valueOf(tokenMessageDto.getPriceChangeH24()));
             String riseTokenAddress = StringUtils.equalsIgnoreCase(tokenMessageDto.getRiseTokenSymbol(),"BNB") ? "" : tokenMessageDto.getRiseTokenAddress().toLowerCase();
-
+            String tokenName = tokenMessageDto.getName();
             try {
                 FourMemeToken fourMemeToken = tokenService.querByAddress(tokenAddress);
                 if (fourMemeToken != null) {
                     fourMemeToken.setRaiseTokenAddress(riseTokenAddress);
-                    fourMemeToken.setRaiseTokenAddress(tokenMessageDto.getRiseTokenSymbol());
-                    fourMemeToken.setTokenName(tokenMessageDto.getName());
+                    fourMemeToken.setRaiseTokenSymbol(tokenMessageDto.getRiseTokenSymbol());
+                    fourMemeToken.setTokenName(tokenName);
                     fourMemeToken.setTokenSymbol(tokenMessageDto.getSymbol());
                     fourMemeToken.setTokenPrecision(tokenMessageDto.getDecimals());
                     fourMemeToken.setPriceUsd(tokenMessageDto.getPrice());
@@ -57,9 +57,9 @@ public class FourMemeTokenConsumer {
                 }else {
                     fourMemeToken = new FourMemeToken();
                     fourMemeToken.setRaiseTokenAddress(riseTokenAddress);
-                    fourMemeToken.setRaiseTokenAddress(tokenMessageDto.getRiseTokenSymbol());
+                    fourMemeToken.setRaiseTokenSymbol(tokenMessageDto.getRiseTokenSymbol());
                     fourMemeToken.setTokenAddress(tokenAddress);
-                    fourMemeToken.setTokenName(tokenMessageDto.getName());
+                    fourMemeToken.setTokenName(tokenName);
                     fourMemeToken.setTokenSymbol(tokenMessageDto.getSymbol());
                     fourMemeToken.setTokenPrecision(tokenMessageDto.getDecimals());
                     fourMemeToken.setPriceUsd(tokenMessageDto.getPrice());
