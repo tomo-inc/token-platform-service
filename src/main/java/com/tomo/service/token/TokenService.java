@@ -36,6 +36,7 @@ public class TokenService {
         queryWrapper.like(FourMemeToken::getTokenName, "%" + content + "%")
                 .or()
                 .eq(FourMemeToken::getTokenAddress, content.toLowerCase());
+        queryWrapper.eq(FourMemeToken::getLaunchOnPancake, false);
         List<FourMemeToken> fourMemeTokens = fourMemeTokenMapper.selectList(queryWrapper);
         if (!CollectionUtils.isEmpty(fourMemeTokens)) {
             List<TokenDTO> collect = fourMemeTokens.stream().map(TokenService::transferToTokenDTO).collect(Collectors.toList());
