@@ -1,0 +1,321 @@
+syntax = "proto3";
+
+option go_package = "github.com/tomo-inc/chain-quote-indexer";
+
+option objc_class_prefix = "indexer";
+
+package chain_quote_indexer;
+import "google/protobuf/wrappers.proto";
+
+
+service ChainQuoteIndexer {
+  // 获取Token 信息
+  rpc GetToken(TokenRequest) returns (TokenResponse) {}
+  // 获取代币信息，含币价(USD)
+  rpc GetCoin(CoinRequest) returns (Coin) {}
+  // 获取池子信息，含池子大小
+  rpc GetPool(PoolRequest) returns (Pool) {}
+  // 获取多个代币信息，含币价(USD)
+  rpc FindCoin(CoinRequest) returns (MapCoin) {}
+  // 获取多个池子信息，含池子大小
+  rpc FindPool(PoolRequest) returns (MapPool) {}
+
+  // 获取代币行情
+  rpc GetQuote(QuoteRequest) returns (Quote) {}
+  // 获取多个代币行情
+  rpc FindQuotes(QuoteRequest) returns (MapQuote) {}
+
+  // 获取token holders列表和 total holder number 按比例倒序 前30的holder
+  rpc ListHoldersByTokenAddress(TokenRequest) returns (TokenHolders) {}
+  // 获取token holder number
+  rpc GetHolderCountByTokenAddress(TokenRequest) returns (TokenHolderNumber) {}
+  // 获取 token address 交易记录（按出块时间倒序）
+  rpc ListUserTransactionsByTokenAddress(UserTokenRequest) returns (PageTransaction) {}
+
+  // token address 池子查询（按token所在的池子总量排序）
+  rpc QueryPoolsByAddress(AddrRequest) returns (PagePool) {}
+  // token address 流动性变更记录（按出块时间排序）
+  rpc QueryLiquiditiesByAddress(AddrRequest) returns (PageLiquidity) {}
+  // token address 交易变更记录（按出块时间排序）
+  rpc QueryTransactionsByAddress(TxRequest) returns (PageTransaction) {}
+  // token address AMM(Swap Factory)查询（按成交量排序）
+  rpc QueryFactoriesByAddress(AddrRequest) returns (PageFactory) {}
+  // token address k线查询
+  rpc QueryKlinesByAddress(QuoteRequest) returns (PageLine) {}
+  // token address 渠道(Swap Router)查询（按成交量排序）
+  rpc QueryRoutersByAddress(AddrRequest) returns (PageRouter) {}
+}
+
+message QuoteRequest {
+  int64 chain_id = 1;
+  string addr = 2;
+  string mark = 3; // 1min, 2min, 1hour, 1day, 1week, 1month, 1year
+  int64 ts = 4;
+  int64 tz = 5;
+  int64 offset = 6;
+  repeated string addrs = 7;
+}
+
+
+message AddrRequest {
+  int64 chain_id = 1;
+  string addr = 2;
+  int64 page = 3;
+  int64 size = 4;
+}
+
+message TxRequest {
+  int64 chain_id = 1;
+  string addr = 2;
+  int64 page = 3;
+  int64 size = 4;
+  string from = 5;
+  google.protobuf.FloatValue price_min = 6;
+  google.protobuf.FloatValue price_max = 7;
+}
+
+
+message Line {
+  string addr = 1;
+  double high = 2;
+  double low = 3;
+  double open = 4;
+  double close = 5;
+  string buy_amount = 6;
+  string sell_amount = 7;
+  double buy_value = 8;
+  double sell_value = 9;
+  int64 time = 10;
+  string mark = 11;
+}
+
+message Quote {
+  string addr = 1;
+  double price = 2;
+  double change = 3;
+  double high = 4;
+  double low = 5;
+  double open = 6;
+  double close = 7;
+  string volume_24h = 8;
+  double volume_24h_usd = 9;
+  repeated Line items = 10;
+  int64 time = 11;
+}
+
+message MapQuote {
+  map<string, Quote> items = 1;
+}
+
+message Coin {
+  string addr = 1;
+  string name = 2;
+  string symbol = 3;
+  int32 decimals = 4;
+  double price = 5;
+  int64 time = 6;
+  Quote quote = 7;
+  int64 chainId = 8;
+}
+
+message Token {
+  string addr = 1;
+  string name = 2;
+  string symbol = 3;
+  int32 decimals = 4;
+}
+
+message Pool {
+  string addr = 1;
+  string name = 2;
+  string factory = 3;
+  string protocol = 4;
+  int64 fee = 5;
+  repeated Token tokens = 6;
+  repeated string amounts = 7;
+  repeated double values = 8;
+  int64 time = 9;
+  int64 tx_time = 13;
+  string tx_from = 14;
+  string tx_hash = 15;
+}
+
+// request
+
+message PoolRequest {
+  int64 chain_id = 1;
+  string addr = 2;
+  repeated string addrs = 3;
+}
+
+message CoinRequest {
+  int64 chain_id = 1;
+  string addr = 2;
+  repeated string addrs = 3;
+}
+
+message TokenRequest {
+  int64 chain_id = 1;
+  string addr = 2;
+  repeated string addrs = 3;
+}
+
+
+message UserTokenRequest {
+  int64 chain_id = 1;
+  string addr = 2;
+  int64 page = 3;
+  int64 size = 4;
+}
+
+
+
+
+
+
+// response
+message TokenResponse {
+  string addr = 1;
+  string name = 2;
+  string symbol = 3;
+  int32 decimals = 4;
+  int64 time = 6;
+  int64 chainId = 8;
+}
+
+message MapPool {
+  map<string, Pool> items = 1;
+}
+
+message MapCoin {
+  map<string, Coin> items = 1;
+}
+
+
+message PagePool {
+  int64 page = 1;
+  int64 size = 2;
+  int64 total = 3;
+  repeated Pool items = 4;
+}
+
+message Liquidity {
+  string addr = 1;
+  string router = 2;
+  string factory = 3;
+  string pool = 4;
+  string side = 5;
+  string amount = 6;
+  double value = 7;
+  string key = 8;
+  repeated Token tokens = 9;
+  repeated string amounts = 10;
+  repeated double values = 11;
+  int64 time = 13;
+  string tx_from = 14;
+  string tx_hash = 15;
+}
+
+message PageLiquidity{
+  int64 page = 1;
+  int64 size = 2;
+  int64 total = 3;
+  repeated Liquidity items = 4;
+}
+
+message Router {
+  string addr = 1;
+  StatVolume data = 2;
+}
+
+message MapRouter {
+  map<string, Router> items = 1;
+}
+
+message PageRouter {
+  int64 page = 1;
+  int64 size = 2;
+  int64 total = 3;
+  repeated Router items = 4;
+}
+message PageLine {
+  int64 min_time = 1;
+  int64 max_time = 2;
+  repeated Line items = 3;
+}
+
+
+message StatVolume {
+  string addr = 1;
+  string buy_amount = 2;
+  string sell_amount = 3;
+  string add_amount = 4;
+  string remove_amount = 5;
+  double buy_value = 6;
+  double sell_value = 7;
+  double add_value = 8;
+  double remove_value = 9;
+  int64 time = 10;
+  int64 txn = 11;
+}
+
+message ListStatVolume {
+  repeated StatVolume items = 1;
+}
+
+
+message PageFactory {
+  int64 page = 1;
+  int64 size = 2;
+  int64 total = 3;
+  repeated Factory items = 4;
+}
+
+
+message Factory {
+  string addr = 1;
+  StatVolume data = 2;
+}
+
+message MapFactory {
+  map<string, Factory> items = 1;
+}
+message Transaction {
+  string addr = 1;
+  string router = 2;
+  string factory = 3;
+  string pool = 4;
+  string side = 5;
+  string amount = 6;
+  string price = 7;
+  double value = 8;
+  Token token = 9;
+  int64 time = 10;
+  string tx_from = 11;
+  string tx_hash = 12;
+  string volume=13;
+}
+
+message PageTransaction {
+  int64 page = 1;
+  int64 size = 2;
+  int64 total = 3;
+  repeated Transaction items = 4;
+}
+
+message TokenHolders {
+  Token token = 1;
+  int64 total = 2;
+  repeated TokenHolder items = 3;
+}
+
+message TokenHolder {
+  string addr = 1;
+  string amount = 2;
+  double value = 3;
+  double holding = 4;
+}
+
+message TokenHolderNumber {
+  int64 count = 1;
+}

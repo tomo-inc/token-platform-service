@@ -1,8 +1,12 @@
 package com.tomo.service.token;
 
+import chain_quote_indexer.ChainQuoteIndexerOuterClass;
+import cn.hutool.core.map.MapUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.tomo.feign.BackendClient;
+import com.tomo.grpc.ChainQuoteIndexerClient;
 import com.tomo.mapper.FourMemeTokenMapper;
+import com.tomo.model.ChainEnum;
 import com.tomo.model.convert.MemeTokenConverter;
 import com.tomo.model.dto.FourMemeToken;
 import com.tomo.model.dto.MemeTokenDTO;
@@ -15,10 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,6 +29,8 @@ public class TokenService {
     private BackendClient backendClient;
     @Autowired
     private FourMemeTokenMapper fourMemeTokenMapper;
+    @Autowired
+    private ChainQuoteIndexerClient chainQuoteIndexerClient;
 
     public List<TokenDTO> tokenSearch(String authorization, String content, String chain) {
         List<TokenDTO> dataList = new ArrayList<>();
@@ -47,6 +50,8 @@ public class TokenService {
         if(!CollectionUtils.isEmpty(backEndTokenList)){
             dataList.addAll(backEndTokenList);
         }
+
+        this.completeDataByQuote(dataList);
         return dataList;
     }
 
@@ -60,6 +65,8 @@ public class TokenService {
         }
         BackendResponseDTO<TokenDTO> backEndTokenSearchRes = backendClient.tokenDetail(authorization, tokenName);
         TokenDTO result = backEndTokenSearchRes.getResult();
+
+        this.completeDataByQuote(Collections.singletonList(result));
         return result;
     }
 
@@ -113,6 +120,8 @@ public class TokenService {
                 dataList.add(tokenDto);
             });
         }
+
+        this.completeDataByQuoteV2(dataList);
         return dataList;
     }
 
@@ -130,5 +139,51 @@ public class TokenService {
         LambdaQueryWrapper<FourMemeToken> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(FourMemeToken::getTokenAddress, tokenAddress);
         return fourMemeTokenMapper.selectOne(queryWrapper);
+    }
+
+    private void completeDataByQuote(List<TokenDTO> list){
+        final int batchSize = 10;
+
+        for (int i = 0; i < list.size(); i += batchSize) {
+            List<TokenDTO> batch = list.subList(i, Math.min(i + batchSize, list.size()));
+            List<String> addresses = batch.stream().map(TokenDTO::getAddress).collect(Collectors.toList());
+            Map<String, ChainQuoteIndexerOuterClass.Quote> quotes = chainQuoteIndexerClient.findQuotes(
+                    ChainEnum.BSC.getChainIndex(), addresses);
+
+            if (MapUtil.isEmpty(quotes)) {
+                return;
+            }
+            for (TokenDTO tokenDTO : batch) {
+                String address = tokenDTO.getAddress();
+                ChainQuoteIndexerOuterClass.Quote quote = quotes.get(address);
+                if (quote != null) {
+                    tokenDTO.setPriceChangeH24(quote.getChange());
+                    tokenDTO.setVolumeH24(new BigDecimal(quote.getVolume24H()));
+                }
+            }
+        }
+    }
+
+    private void completeDataByQuoteV2(List<MemeTokenDTO> list){
+        final int batchSize = 10;
+
+        for (int i = 0; i < list.size(); i += batchSize) {
+            List<MemeTokenDTO> batch = list.subList(i, Math.min(i + batchSize, list.size()));
+            List<String> addresses = batch.stream().map(MemeTokenDTO::getTokenAddress).collect(Collectors.toList());
+            Map<String, ChainQuoteIndexerOuterClass.Quote> quotes = chainQuoteIndexerClient.findQuotes(
+                    ChainEnum.BSC.getChainIndex(), addresses);
+
+            if (MapUtil.isEmpty(quotes)) {
+                return;
+            }
+            for (MemeTokenDTO tokenDTO : batch) {
+                String address = tokenDTO.getTokenAddress();
+                ChainQuoteIndexerOuterClass.Quote quote = quotes.get(address);
+                if (quote != null) {
+                    tokenDTO.setPriceChangeH24(Double.toString(quote.getChange()));
+                    tokenDTO.setVolumeH24(quote.getVolume24H());
+                }
+            }
+        }
     }
 }
