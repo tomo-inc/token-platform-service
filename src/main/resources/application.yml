@@ -58,3 +58,9 @@ management:
 backend:
   client:
     url: https://apps-prod.unyx.tech
+
+#grpc
+grpc:
+  client:
+    host: ${GRPC_HOST}
+    port: ${GRPC_PORT}
