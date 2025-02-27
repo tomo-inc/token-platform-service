@@ -13,6 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TokenDTO {
+    private BigDecimal raiseValue;
     private Long publishTime;
     private Double progress;
     private Boolean launchOnPancake;

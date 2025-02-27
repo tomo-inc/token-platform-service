@@ -87,6 +87,14 @@ public class TokenService {
 
                 }
                 tokenDTO.setImageUrl(data.getImage());
+                String raiseTokenName = StringUtils.isNotBlank(fourMemeToken.getRaiseTokenAddress()) ? "BSC-"+fourMemeToken.getRaiseTokenAddress() : fourMemeToken.getRaiseTokenSymbol();
+                BackendResponseDTO<TokenDTO> backEndTokenSearchRes = backendClient.tokenDetail(authorization, raiseTokenName);
+                TokenDTO result = backEndTokenSearchRes.getResult();
+                if(Objects.isNull(result)){
+                    tokenDTO.setRaiseValue(new BigDecimal(data.getRaisedAmount()));
+                }else{
+                    tokenDTO.setRaiseValue(result.getPriceUsd().multiply(new BigDecimal(data.getRaisedAmount())));
+                }
             }
 
             return tokenDTO;

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TokenInfoRes {
+    private String raisedAmount;
     private String saleAmount;
     private String totalAmount;
     private String address;
