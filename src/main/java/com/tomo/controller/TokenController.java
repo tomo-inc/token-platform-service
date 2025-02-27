@@ -34,8 +34,8 @@ public class TokenController {
 
 
     @GetMapping("/query/meme")
-    public Result<List<MemeTokenDTO>> memeTokenQuery(@RequestParam String status, @RequestParam Boolean launchOnPancake ) {
-        List<MemeTokenDTO> tokenDTOS = tokenService.memeTokenQuery(status, launchOnPancake);
+    public Result<List<MemeTokenDTO>> memeTokenQuery(@RequestParam(required = false) String status, @RequestParam Boolean launchOnPancake, @RequestParam(required = false) String orderByField,@RequestParam(required = false) String orderByRule) {
+        List<MemeTokenDTO> tokenDTOS = tokenService.memeTokenQuery(status, launchOnPancake, orderByField, orderByRule);
         return ResultUtils.success(tokenDTOS);
     }
 

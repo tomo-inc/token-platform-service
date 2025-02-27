@@ -8,6 +8,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TokenInfoRes {
+    private String saleAmount;
+    private String totalAmount;
     private String address;
     private String image;
+    private TokenPriceDto tokenPrice;
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class TokenPriceDto{
+        private String price;
+    }
 }
