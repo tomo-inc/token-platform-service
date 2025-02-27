@@ -20,9 +20,9 @@ public class TestController {
     private FourMemeClient fourMemeClient;
 
     @GetMapping("/four/meme/image")
-    public Result<List<TokenInfoRes>> tokenImage(@RequestParam String tokenAddress) {
+    public Result<TokenInfoRes> tokenImage(@RequestParam String tokenAddress) {
         try {
-            Result<List<TokenInfoRes>> result = fourMemeClient.tokenQuery(tokenAddress, 1, 1);
+            Result<TokenInfoRes> result = fourMemeClient.getToken(tokenAddress);
 
             return ResultUtils.success(result.getData());
         }catch (Exception e){
