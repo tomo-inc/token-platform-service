@@ -81,6 +81,7 @@ public class TokenService {
                 tokenDTO.setFdvUsd(new BigDecimal(saleAmount).multiply(StringUtils.isNotBlank(price) ? new BigDecimal(price) : BigDecimal.ZERO));
                 if(StringUtils.isBlank(fourMemeToken.getImageUrl())){
                     FourMemeToken updateToken = new FourMemeToken();
+                    updateToken.setId(fourMemeToken.getId());
                     updateToken.setImageUrl(data.getImage());
                     updateToken.setTokenName(fourMemeToken.getTokenName());
                     fourMemeTokenMapper.updateById(updateToken);
