@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Slf4j
@@ -34,12 +35,11 @@ public class TokenImageUrlConsumer {
             String[] split = msg.split("---");
             String tokenAddress = split[1];
             Long id = Long.parseLong(split[0]);
-            Result<List<TokenInfoRes>> result = fourMemeClient.tokenQuery(tokenAddress, 1, 1);
-            List<TokenInfoRes> dataList = result.getData();
-            if(CollectionUtils.isEmpty(dataList)){
+            Result<TokenInfoRes> result = fourMemeClient.getToken(tokenAddress);
+            TokenInfoRes tokenInfoRes = result.getData();
+            if(Objects.isNull(tokenInfoRes)){
                 return;
             }
-            TokenInfoRes tokenInfoRes = dataList.get(0);
             FourMemeToken fourMemeToken = new FourMemeToken();
             fourMemeToken.setId(id);
             fourMemeToken.setImageUrl(tokenInfoRes.getImage());
