@@ -155,27 +155,45 @@ public class TokenService {
 
     @NotNull
     private static QueryWrapper<FourMemeToken> getFourMemeTokenQueryWrapper(String status, Boolean launchOnPancake, String orderByField, String orderByRule) {
+        orderByField = getOrderByField(orderByField);
         QueryWrapper<FourMemeToken> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("launch_on_pancake", launchOnPancake);
         if(Objects.equals(status, "new")){
             queryWrapper.ge("progress", Double.valueOf(0d));
             queryWrapper.le("progress", Double.valueOf(0.6d));
-            queryWrapper.orderByDesc("publish_time");
+            if(StringUtils.isNoneBlank(orderByField) && StringUtils.isNoneBlank(orderByRule)){
+                if ("asc".equalsIgnoreCase(orderByRule)) {
+                    queryWrapper.orderByAsc(orderByField);
+                } else {
+                    queryWrapper.orderByDesc(orderByField);
+                }
+            }else{
+                queryWrapper.orderByDesc("publish_time");
+            }
         }else if(Objects.equals(status, "early")){
             queryWrapper.ge("progress", Double.valueOf(0.6d));
-            queryWrapper.orderByDesc("progress");
+            if(StringUtils.isNoneBlank(orderByField) && StringUtils.isNoneBlank(orderByRule)){
+                if ("asc".equalsIgnoreCase(orderByRule)) {
+                    queryWrapper.orderByAsc(orderByField);
+                } else {
+                    queryWrapper.orderByDesc(orderByField);
+                }
+            }else{
+                queryWrapper.orderByDesc("progress");
+            }
         }else{
-            queryWrapper.orderByDesc("price_change_h24");
-        }
-        orderByField = getOrderByField(orderByField);
-        if(StringUtils.isNoneBlank(orderByField) && StringUtils.isNoneBlank(orderByRule)){
-            if ("asc".equalsIgnoreCase(orderByRule)) {
-                queryWrapper.orderByAsc(orderByField);
-            } else {
-                queryWrapper.orderByDesc(orderByField);
+            if(StringUtils.isNoneBlank(orderByField) && StringUtils.isNoneBlank(orderByRule)){
+                if ("asc".equalsIgnoreCase(orderByRule)) {
+                    queryWrapper.orderByAsc(orderByField);
+                } else {
+                    queryWrapper.orderByDesc(orderByField);
+                }
+            }else{
+                queryWrapper.orderByDesc("price_change_h24");
             }
 
         }
+
         queryWrapper.last("limit 100");
         return queryWrapper;
     }
