@@ -9,6 +9,11 @@ DB_PASSWORD: bJNoseDojbnjk
 #REDIS_USERNAME:
 #REDIS_PASSWORD: Tomoredis
 
+#REDIS_HOST: 127.0.0.1
+#REDIS_PORT: 6379
+##REDIS_USERNAME: tomodev
+#REDIS_PASSWORD: YRrbaY7m
+
 REDIS_HOST: clustercfg.redis-tomo.10mwyg.use1.cache.amazonaws.com
 REDIS_PORT: 6379
 REDIS_USERNAME: tomodev

@@ -7,6 +7,8 @@ import com.tomo.model.dto.TokenRankDTO;
 import com.tomo.model.req.OnchainTokenReq;
 import com.tomo.model.req.PlatformTokenReq;
 import com.tomo.model.resp.CoinPriceResp;
+import com.tomo.model.resp.OnChainTokenInfo;
+import com.tomo.model.resp.OnChainTokenPrice;
 import com.tomo.model.resp.Result;
 import com.tomo.service.category.CoinGeckoService;
 import com.tomo.service.category.TokenInfoService;
@@ -59,6 +61,18 @@ public class TokenCategoryController {
         return ResultUtils.success(null);
     }
 
+
+    @PostMapping("/query/onchain/token-infos")
+    public Result<List<OnChainTokenInfo>> queryOnChainTokenInfos(@RequestBody List<OnchainTokenReq> onchainTokenReqs) {
+        List<OnChainTokenInfo> tokenInfos = coinGeckoService.queryOnchainTokenInfos(onchainTokenReqs);
+        return ResultUtils.success(tokenInfos);
+    }
+
+    @PostMapping("/query/onchain/token-prices")
+    public Result<List<OnChainTokenPrice>> queryOnChainTokenPrices(@RequestBody List<OnchainTokenReq> onchainTokenReqs) {
+        List<OnChainTokenPrice> tokenPrices = coinGeckoService.queryOnChainTokenPrices(onchainTokenReqs);
+        return ResultUtils.success(tokenPrices);
+    }
 
     /**
      * 查询币价和代币信息

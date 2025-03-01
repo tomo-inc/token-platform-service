@@ -78,3 +78,21 @@ grpc:
   client:
     host: ${GRPC_HOST}
     port: ${GRPC_PORT}
+
+cgs:
+  onchain:
+    token:
+      info:
+        concurrent: 10 # for api fetch concurrent
+        chuck: 50 # for element size per fetch
+
+
+cache:
+  key:
+    token:
+      info:
+        prefix: TPS_TOKEN_INFO_
+      price:
+        prefix: TPS_TOKEN_PRICE_
+      hotkeys:
+        prefix: TPS_TOKEN_HOTKEYS
