@@ -65,3 +65,25 @@ management:
 backend:
   client:
     url: https://apps-prod.unyx.tech
+
+#grpc
+grpc:
+  client:
+    host: ${GRPC_HOST}
+    port: ${GRPC_PORT}
+
+cgs:
+  onchain:
+    token:
+      info:
+        concurrent: 10 # for api fetch concurrent
+        chuck: 50 # for element size per fetch
+
+
+cache:
+  key:
+    token:
+      info:
+        prefix: TPS:TOKEN_INFO_
+      price:
+        prefix: TPS:TOKEN_PRICE_
