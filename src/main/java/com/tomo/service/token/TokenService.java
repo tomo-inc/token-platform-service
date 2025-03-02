@@ -208,6 +208,8 @@ public class TokenService {
             return "volume_h24";
         }else if (StringUtils.equalsIgnoreCase(orderByField, "marketCapUsd")){
             return "market_cap_usd";
+        }else if (StringUtils.equalsIgnoreCase(orderByField, "publishTime")){
+            return "publish_time";
         }else{
             return null;
         }
