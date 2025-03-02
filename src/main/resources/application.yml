@@ -91,8 +91,6 @@ cache:
   key:
     token:
       info:
-        prefix: TPS_TOKEN_INFO_
+        prefix: TPS:TOKEN_INFO_
       price:
-        prefix: TPS_TOKEN_PRICE_
-      hotkeys:
-        prefix: TPS_TOKEN_HOTKEYS
+        prefix: TPS:TOKEN_PRICE_
