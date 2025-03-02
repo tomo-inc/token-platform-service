@@ -946,6 +946,7 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
             onChainTokenInfo.setChainName(ChainUtil.getChainAndCoinGeckoMap().get(value.getChainId()).getChainEnum().getChainName());
             onChainTokenInfo.setTokenName(value.getName());
             onChainTokenInfo.setTokenSymbol(value.getSymbol());
+            onChainTokenInfo.setDecimals(value.getDecimals());
             onChainTokenInfos.add(onChainTokenInfo);
 
             OnChainTokenPrice onChainTokenPrice = new OnChainTokenPrice();

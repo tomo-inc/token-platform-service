@@ -13,4 +13,6 @@ public class OnChainTokenInfo {
     private String tokenName;
 
     private String tokenSymbol;
+
+    private Integer decimals;
 }
