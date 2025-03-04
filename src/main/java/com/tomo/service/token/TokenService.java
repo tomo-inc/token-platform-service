@@ -40,6 +40,7 @@ public class TokenService {
     private ChainQuoteIndexerClient chainQuoteIndexerClient;
 
     public List<TokenDTO> tokenSearch(String authorization, String content, String chain) {
+        Set<String> nameSet = new HashSet<>();
         List<TokenDTO> dataList = new ArrayList<>();
         BackendResponseDTO<List<TokenDTO>> backEndTokenSearchRes = backendClient.tokenSearch(authorization, content, chain);
         LambdaQueryWrapper<FourMemeToken> queryWrapper = new LambdaQueryWrapper<>();
@@ -48,14 +49,15 @@ public class TokenService {
                 .eq(FourMemeToken::getTokenAddress, content.toLowerCase());
         queryWrapper.eq(FourMemeToken::getLaunchOnPancake, false);
         List<FourMemeToken> fourMemeTokens = fourMemeTokenMapper.selectList(queryWrapper);
-        if (!CollectionUtils.isEmpty(fourMemeTokens)) {
-            List<TokenDTO> collect = fourMemeTokens.stream().map(TokenService::transferToTokenDTO).collect(Collectors.toList());
-            dataList.addAll(collect);
-        }
-
         List<TokenDTO> backEndTokenList = backEndTokenSearchRes.getResult();
+
         if(!CollectionUtils.isEmpty(backEndTokenList)){
             dataList.addAll(backEndTokenList);
+            nameSet.addAll(backEndTokenList.stream().map(TokenDTO::getName).collect(Collectors.toSet()));
+        }
+        if (!CollectionUtils.isEmpty(fourMemeTokens)) {
+            List<TokenDTO> collect = fourMemeTokens.stream().map(TokenService::transferToTokenDTO).filter(data -> !nameSet.contains(data.getName())).collect(Collectors.toList());
+            dataList.addAll(collect);
         }
 
         this.completeDataByQuote(dataList);
@@ -115,7 +117,7 @@ public class TokenService {
                 .riseTokenAddress(StringUtils.equalsIgnoreCase(fourMemeToken.getRaiseTokenAddress(),"BNB") ? "" : fourMemeToken.getRaiseTokenAddress())
                 .fourMemeToken(true)
                 .id(Long.valueOf(fourMemeToken.getId()))
-                .name("BSC-"+fourMemeToken.getTokenAddress())
+                .name("BSC-"+fourMemeToken.getTokenAddress().toLowerCase())
                 .displayName(fourMemeToken.getTokenName())
                 .symbol(fourMemeToken.getTokenSymbol())
                 .imageUrl(fourMemeToken.getImageUrl())
