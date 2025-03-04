@@ -9,18 +9,15 @@ import com.tomo.model.req.PlatformTokenReq;
 import com.tomo.model.resp.CoinPriceResp;
 import com.tomo.model.resp.OnChainTokenInfo;
 import com.tomo.model.resp.OnChainTokenPrice;
+import com.tomo.model.resp.OnChainTokenInfo;
+import com.tomo.model.resp.OnChainTokenPrice;
 import com.tomo.model.resp.Result;
 import com.tomo.service.category.CoinGeckoService;
 import com.tomo.service.category.TokenInfoService;
 import com.tomo.service.category.TokenRankService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -76,6 +73,7 @@ public class TokenCategoryController {
 
     /**
      * 查询币价和代币信息
+     *
      * @param onchainTokenReqs
      * @return
      */
@@ -88,14 +86,13 @@ public class TokenCategoryController {
     }
     /**
      * 查询币价和代币信息
+     *
      * @param onchainTokenReqs
      * @return
      */
     @PostMapping("/query/token-info-price/onchain/exact2")
     public Result<Map<String, TokenInfoDTO>> exactQueryOnchainToken2(@RequestBody List<OnchainTokenReq> onchainTokenReqs) {
-        long l = System.currentTimeMillis();
         Map<String, TokenInfoDTO> tokenInfoDTOMap = coinGeckoService.batchOnchainCoinInfoAndPriceV2(onchainTokenReqs, false);
-        System.out.println(System.currentTimeMillis()-l);
         return ResultUtils.success(tokenInfoDTOMap);
     }
 
