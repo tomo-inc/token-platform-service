@@ -770,7 +770,7 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
             List<List<OnchainTokenReq>> partitions = getPartitions(tokens, 30);
             // 遍历每组
             for (List<OnchainTokenReq> partition : partitions) {
-                Map<String, TokenInfoDTO> map = singleOnchainTokenInfoAndPrice(partition, false);
+                Map<String, TokenInfoDTO> map = singleOnchainTokenInfoAndPrice(partition, false,true);
                 for (TokenInfoDTO dto : map.values()) {
                     CoinPriceResp coinPriceResp = buildCoinPriceResp(dto);
                     resultList.add(coinPriceResp);
