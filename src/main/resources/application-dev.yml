@@ -23,7 +23,7 @@ REDIS_PASSWORD: x+9wXwHTNoLzLWb4
 KAFKA_HOST: boot-4ev.tomo.ne4173.c7.kafka.us-east-1.amazonaws.com:9092,boot-nd8.tomo.ne4173.c7.kafka.us-east-1.amazonaws.com:9092,boot-9sy.tomo.ne4173.c7.kafka.us-east-1.amazonaws.com:9092
 
 GRPC_HOST: 34.226.83.200
-GRPC_PORT: 31778
+GRPC_PORT: 31805
 
 backend:
   client:
