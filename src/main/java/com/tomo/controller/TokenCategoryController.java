@@ -50,7 +50,7 @@ public class TokenCategoryController {
             if (TokenInfoService.needUpdate(tokenInfoDTO.getUpdateTime().getTime())) {
                 PlatformTokenReq tokenCategoryCoinGeckoDTO = new PlatformTokenReq();
                 tokenCategoryCoinGeckoDTO.setCoingeckoCoinId(tokenInfoDTO.getCoingeckoCoinId());
-                Map<String, TokenInfoDTO> tokenInfoDTOMap = coinGeckoService.singlePlatformTokenInfoAndPrice(tokenCategoryCoinGeckoDTO);
+                Map<String, TokenInfoDTO> tokenInfoDTOMap = coinGeckoService.singlePlatformTokenInfoAndPrice(tokenCategoryCoinGeckoDTO,false);
                 return ResultUtils.success(tokenInfoDTOMap.get(ChainUtil.getCommonKey(tokenInfoDTO.getChainId(), tokenInfoDTO.getAddress())));
             }
             return ResultUtils.success(tokenInfoDTO);
