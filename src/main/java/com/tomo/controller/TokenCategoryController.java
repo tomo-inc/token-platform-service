@@ -6,18 +6,16 @@ import com.tomo.model.dto.TokenInfoDTO;
 import com.tomo.model.dto.TokenRankDTO;
 import com.tomo.model.req.OnchainTokenReq;
 import com.tomo.model.req.PlatformTokenReq;
+import com.tomo.model.resp.CoinPriceResp;
+import com.tomo.model.resp.OnChainTokenInfo;
+import com.tomo.model.resp.OnChainTokenPrice;
 import com.tomo.model.resp.Result;
 import com.tomo.service.category.CoinGeckoService;
 import com.tomo.service.category.TokenInfoService;
 import com.tomo.service.category.TokenRankService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -59,15 +57,50 @@ public class TokenCategoryController {
     }
 
 
+    @PostMapping("/query/onchain/token-infos")
+    public Result<List<OnChainTokenInfo>> queryOnChainTokenInfos(@RequestBody List<OnchainTokenReq> onchainTokenReqs) {
+        List<OnChainTokenInfo> tokenInfos = coinGeckoService.queryOnchainTokenInfos(onchainTokenReqs);
+        return ResultUtils.success(tokenInfos);
+    }
+
+    @PostMapping("/query/onchain/token-prices")
+    public Result<List<OnChainTokenPrice>> queryOnChainTokenPrices(@RequestBody List<OnchainTokenReq> onchainTokenReqs) {
+        List<OnChainTokenPrice> tokenPrices = coinGeckoService.queryOnChainTokenPrices(onchainTokenReqs);
+        return ResultUtils.success(tokenPrices);
+    }
+
     /**
      * 查询币价和代币信息
+     *
      * @param onchainTokenReqs
      * @return
      */
     @PostMapping("/query/token-info-price/onchain/exact")
     public Result<Map<String, TokenInfoDTO>> exactQueryOnchainToken(@RequestBody List<OnchainTokenReq> onchainTokenReqs) {
+        long l = System.currentTimeMillis();
         Map<String, TokenInfoDTO> tokenInfoDTOMap = coinGeckoService.batchOnchainCoinInfoAndPrice(onchainTokenReqs, false);
+        System.out.println(System.currentTimeMillis() - l);
         return ResultUtils.success(tokenInfoDTOMap);
+    }
+
+    /**
+     * 查询币价和代币信息
+     *
+     * @param onchainTokenReqs
+     * @return
+     */
+    @PostMapping("/query/token-info-price/onchain/exact2")
+    public Result<Map<String, TokenInfoDTO>> exactQueryOnchainToken2(@RequestBody List<OnchainTokenReq> onchainTokenReqs) {
+        long l = System.currentTimeMillis();
+        Map<String, TokenInfoDTO> tokenInfoDTOMap = coinGeckoService.batchOnchainCoinInfoAndPriceV2(onchainTokenReqs, false);
+        System.out.println(System.currentTimeMillis() - l);
+        return ResultUtils.success(tokenInfoDTOMap);
+    }
+
+    @PostMapping("/query/token-price/onchain/exact")
+    public Result<List<CoinPriceResp>> exactQueryTokenPrice(@RequestBody List<OnchainTokenReq> onchainTokenReqs) {
+        List<CoinPriceResp> list = coinGeckoService.batchOnchainCoinPrice(onchainTokenReqs, false);
+        return ResultUtils.success(list);
     }
 
     @PostMapping("/query/token-info-price/native/token")

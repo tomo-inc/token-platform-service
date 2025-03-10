@@ -4,10 +4,20 @@ DB_USERNAME: wallet_token
 DB_PASSWORD: bJNoseDojbnjk
 
 
-REDIS_HOST: 172.31.26.48
+#REDIS_HOST: 172.31.26.48
+#REDIS_PORT: 6379
+#REDIS_USERNAME:
+#REDIS_PASSWORD: Tomoredis
+
+#REDIS_HOST: 127.0.0.1
+#REDIS_PORT: 6379
+##REDIS_USERNAME: tomodev
+#REDIS_PASSWORD: YRrbaY7m
+
+REDIS_HOST: clustercfg.redis-tomo.10mwyg.use1.cache.amazonaws.com
 REDIS_PORT: 6379
-REDIS_USERNAME: token_symbol
-REDIS_PASSWORD: Tomoredis
+REDIS_USERNAME: tomodev
+REDIS_PASSWORD: x+9wXwHTNoLzLWb4
 
 #KAFKA_HOST: 44.221.66.16:9092
 KAFKA_HOST: boot-4ev.tomo.ne4173.c7.kafka.us-east-1.amazonaws.com:9092,boot-nd8.tomo.ne4173.c7.kafka.us-east-1.amazonaws.com:9092,boot-9sy.tomo.ne4173.c7.kafka.us-east-1.amazonaws.com:9092

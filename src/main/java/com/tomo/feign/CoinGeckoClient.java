@@ -27,6 +27,12 @@ public interface CoinGeckoClient {
     @GetMapping("/coins/list?include_platform=false")
     List<CoinSimpleInfoResp> getAllCoinList();
 
+    @GetMapping("/coins/list?include_platform=false&status={active}")
+    List<CoinSimpleInfoResp> getAllCoinList(@PathVariable Boolean active);
+
+    @GetMapping("/simple/price?ids={coinIds}&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true&include_last_updated_at=false")
+    Map<String, TokenPriceResp> getPlatformTokenPrices(@PathVariable("coinIds") String coinIds);
+
     @GetMapping("/simple/price?ids={coinId}&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true&include_last_updated_at=false")
     Map<String, TokenPriceResp> getPlatformTokenPrice(@PathVariable("coinId") String coinId);
 

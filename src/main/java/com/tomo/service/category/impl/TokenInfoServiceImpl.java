@@ -26,7 +26,10 @@ public class TokenInfoServiceImpl extends ServiceImpl<TokenInfoMapper, TokenInfo
     public boolean insertOrUpdate(TokenInfoDTO tokenInfoDTO) {
         return tokenInfoMapper.insertOrUpdate(tokenInfoDTO);
     }
-
+    @Override
+    public boolean batchInsertOrUpdate(List<TokenInfoDTO> tokenInfoDTOs) {
+        return tokenInfoMapper.batchInsertOrUpdate(tokenInfoDTOs);
+    }
     @Override
     public TokenInfoDTO exactQueryToken(Long chainId, String address) {
         LambdaQueryWrapper<TokenInfoDTO> queryWrapper = new LambdaQueryWrapper<>();
