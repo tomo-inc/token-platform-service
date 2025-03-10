@@ -51,7 +51,7 @@ public enum CoinGeckoEnum {
     SAGA("saga", "saga-2", "", ""),
     ZENON("zenon", "zenon-2", "", ""),
     DFK_CHAIN("defi-kingdoms-blockchain", "defi-kingdoms", "53935", ""),
-    TRON("tron", "tron", "", ""),
+    TRON("tron", "tron", "", "tron"),
     ROOTSTOCK_RSK("rootstock", "rootstock", "30", ""),
     TITANCHAIN("titanchain", "tokenize-xchange", "18888", ""),
     OMNIA("omnia", "omniaverse", "2342", ""),
