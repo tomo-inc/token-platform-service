@@ -327,7 +327,7 @@ public enum CoinGeckoEnum {
     REDSTONE("redstone", "weth", "690", ""),
     ETHEREUM("ethereum", "ethereum", "1", "eth"),
     SCROLL("scroll", "weth", "534352", "scroll"),
-    DOGECHAIN("dogechain", "dogechain", "2000", "dogechain"),
+    DOGECHAIN("dogechain", "dogecoin", "2000", "dogechain"),
     SHIDEN_NETWORK("shiden network", "shiden", "336", ""),
     CRONOS_ZKEVM("cronos-zkevm", "cronos-zkevm-cro", "388", ""),
     X_LAYER("x-layer", "okb", "196", ""),
