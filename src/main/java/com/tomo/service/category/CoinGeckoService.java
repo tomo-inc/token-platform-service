@@ -30,11 +30,11 @@ public interface CoinGeckoService {
 
     // 更新多个platform币价同时更新代币信息
     // key: chainId+ "-" +address
-    Map<String, TokenInfoDTO> batchPlatformCoinInfoAndPrice(List<PlatformTokenReq> tokenList);
+    Map<String, TokenInfoDTO> batchPlatformCoinInfoAndPrice(List<PlatformTokenReq> tokenList,boolean onlyOne);
 
     // 更新单个platform币价同时更新代币信息
     // key: chainId+ "-" +address
-    Map<String, TokenInfoDTO> singlePlatformTokenInfoAndPrice(PlatformTokenReq token);
+    Map<String, TokenInfoDTO> singlePlatformTokenInfoAndPrice(PlatformTokenReq token, boolean onlyOne);
 
     Map<String, TokenInfoDTO> updateNativeOrPlatformPrice(List<PlatformTokenReq> tokens);
 
