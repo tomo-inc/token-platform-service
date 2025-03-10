@@ -33,8 +33,8 @@ public class RedisCacheConfig {
     private String host;
     @Value("${spring.data.redis.port}")
     private Integer port;
-//    @Value("${spring.data.redis.username}")
-//    private String username;
+    @Value("${spring.data.redis.username}")
+    private String username;
     @Value("${spring.data.redis.password}")
     private String pwd;
     @Value("${spring.data.redis.timeout}")
@@ -49,12 +49,12 @@ public class RedisCacheConfig {
                 .readFrom(ReadFrom.REPLICA_PREFERRED)
                 .commandTimeout(Duration.ofMillis(redisTimeout))
                 .clientOptions(ClusterClientOptions.builder().topologyRefreshOptions(topologyRefreshOptions).build())
-//                .useSsl()
+                .useSsl()
                 .build();
 
         // Redis 连接配置
         RedisClusterConfiguration clusterConfiguration = new RedisClusterConfiguration(Arrays.asList(host + ":" + port));
-//        clusterConfiguration.setUsername(username);
+        clusterConfiguration.setUsername(username);
         clusterConfiguration.setPassword(pwd);
 
         return new LettuceConnectionFactory(clusterConfiguration, clientConfig);
