@@ -571,7 +571,7 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
         } catch (Exception e) {
             log.error(e.getMessage());
         }
-        return resultMap;
+        return dealWithSpecialCase(resultMap);
     }
 
     private void batchSetPlatformInfo(List<ChainCoinGeckoEnum> coinGeckoEnumList,
@@ -843,5 +843,18 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
         }
 
 
+    }
+
+
+    private Map<String, TokenInfoDTO> dealWithSpecialCase(Map<String, TokenInfoDTO> resultMap) {
+        // special case: POL (ex: matic)
+        TokenInfoDTO polTokenInfo = resultMap.remove("137-0x0000000000000000000000000000000000001010");
+        if (polTokenInfo != null) {
+            polTokenInfo.setAddress("");
+            resultMap.put("137", polTokenInfo);
+        }
+
+
+        return resultMap;
     }
 }
