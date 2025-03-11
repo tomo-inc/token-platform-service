@@ -291,7 +291,7 @@ public enum CoinGeckoEnum {
     MILKOMEDA_CARDANO("milkomeda-cardano", "cardano", "2001", ""),
     HAQQ_NETWORK("haqq-network", "islamic-coin", "11235", ""),
     SORA("sora", "sora", "", ""),
-    POLYGON_POS("polygon-pos", "matic-network", "137", "polygon_pos"),
+    POLYGON_POS("polygon-pos", "polygon-ecosystem-token", "137", "polygon_pos"),
     ZKSYNC("zksync", "ethereum", "324", "zksync"),
     BITROCK("bitrock", "bitrock", "7171", "bitrock"),
     MOONRIVER("moonriver", "moonriver", "1285", "movr"),

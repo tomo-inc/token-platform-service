@@ -317,7 +317,7 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
                     }
                     return tokenReq;
                 }).toList();
-        Map<String, TokenInfoDTO> nativeTokenResultMap = batchPlatformCoinInfoAndPrice(nativeTokenList, true);
+        Map<String, TokenInfoDTO> nativeTokenResultMap = batchPlatformCoinInfoAndPrice(nativeTokenList);
         resultMap.putAll(nativeTokenResultMap);
         long l3 = System.currentTimeMillis();
         log.info("CoinGeckoServiceImpl batchOnchainCoinInfoAndPrice time2:{}", l3 - l2);
@@ -392,7 +392,7 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
                     }
                     return tokenReq;
                 }).toList();
-        return batchPlatformCoinInfoAndPrice(nativeTokenList, true);
+        return batchPlatformCoinInfoAndPrice(nativeTokenList);
     }
 
     private Map<String, TokenInfoDTO> handleChainToken(Map<Long, List<OnchainTokenReq>> chainTokenMap, boolean include) {
@@ -534,7 +534,7 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
 
 
     @Override
-    public Map<String, TokenInfoDTO> batchPlatformCoinInfoAndPrice(List<PlatformTokenReq> tokenList, boolean onlyOne) {
+    public Map<String, TokenInfoDTO> batchPlatformCoinInfoAndPrice(List<PlatformTokenReq> tokenList) {
         Map<String, TokenInfoDTO> resultMap = new ConcurrentHashMap<>();
         if (tokenList.size() > 300) {
             return resultMap;
@@ -543,14 +543,14 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
             return resultMap;
         }
         for (PlatformTokenReq tokenReq : tokenList) {
-            Map<String, TokenInfoDTO> map = singlePlatformTokenInfoAndPrice(tokenReq, onlyOne);
+            Map<String, TokenInfoDTO> map = singlePlatformTokenInfoAndPrice(tokenReq);
             resultMap.putAll(map);
         }
         return resultMap;
     }
 
     @Override
-    public Map<String, TokenInfoDTO> singlePlatformTokenInfoAndPrice(PlatformTokenReq token, boolean onlyOne) {
+    public Map<String, TokenInfoDTO> singlePlatformTokenInfoAndPrice(PlatformTokenReq token) {
         Map<String, TokenInfoDTO> resultMap = new HashMap<>();
         try {// coingecko请求基本数据
             CompletableFuture<CoinInfoResp> onlineTokenInfoFuture = CompletableFuture.supplyAsync(() -> coinGeckoClient.getPlatformCoinInfo(token.getCoingeckoCoinId()));
@@ -586,10 +586,7 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
         } catch (Exception e) {
             log.error(e.getMessage());
         }
-        if (resultMap.size() > 1 && onlyOne) {
-            return resultMap.entrySet().stream().limit(1).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-        }
-        return resultMap;
+        return dealWithSpecialCase(resultMap);
     }
 
     private void batchSetPlatformInfo(List<ChainCoinGeckoEnum> coinGeckoEnumList,
@@ -966,5 +963,18 @@ public class CoinGeckoServiceImpl implements CoinGeckoService {
         }
 
 
+    }
+
+
+    private Map<String, TokenInfoDTO> dealWithSpecialCase(Map<String, TokenInfoDTO> resultMap) {
+        // special case: POL (ex: matic)
+        TokenInfoDTO polTokenInfo = resultMap.remove("137-0x0000000000000000000000000000000000001010");
+        if (polTokenInfo != null) {
+            polTokenInfo.setAddress("");
+            resultMap.put("137", polTokenInfo);
+        }
+
+
+        return resultMap;
     }
 }
