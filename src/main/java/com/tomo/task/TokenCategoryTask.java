@@ -26,12 +26,12 @@ public class TokenCategoryTask {
     @Autowired
     CoinGeckoClient coinGeckoClient;
 
-    public void allNativeToken() {
+    public void allNativeToken(){
         List<NativeCoinSimpleInfoResp> allNativeCoinList = coinGeckoClient.getAllNativeCoinList();
         List<PlatformTokenReq> list = new ArrayList<>();
         Map<String, ChainCoinGeckoEnum> coinGeckoChainInfoMap = ChainUtil.getCoinGeckoChainInfoMap();
         for (NativeCoinSimpleInfoResp nativeCoinSimpleInfoResp : allNativeCoinList) {
-            if (!coinGeckoChainInfoMap.containsKey(nativeCoinSimpleInfoResp.getId())) {
+            if (!coinGeckoChainInfoMap.containsKey(nativeCoinSimpleInfoResp.getId())){
                 continue;
             }
             PlatformTokenReq tokenReq = new PlatformTokenReq();
@@ -41,7 +41,7 @@ public class TokenCategoryTask {
                 list.add(tokenReq);
             }
         }
-        coinGeckoService.batchPlatformCoinInfoAndPrice(list, false);
+        coinGeckoService.batchPlatformCoinInfoAndPrice(list);
     }
 
     public void allTokenBriefInfoTask() {
@@ -55,7 +55,7 @@ public class TokenCategoryTask {
                 list.add(tokenReq);
             }
         }
-        coinGeckoService.batchPlatformCoinInfoAndPrice(list, false);
+        coinGeckoService.batchPlatformCoinInfoAndPrice(list);
     }
 
 
