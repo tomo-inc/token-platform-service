@@ -6,7 +6,6 @@ import com.tomo.model.dto.TokenDTO;
 import com.tomo.model.req.MemeTokenQueryReq;
 import com.tomo.model.resp.Result;
 import com.tomo.service.token.TokenService;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +35,12 @@ public class TokenController {
     @GetMapping("/query/meme")
     public Result<List<MemeTokenDTO>> memeTokenQuery(@RequestParam(required = false) String status, @RequestParam Boolean launchOnPancake, @RequestParam(required = false) String orderByField,@RequestParam(required = false) String orderByRule) {
         List<MemeTokenDTO> tokenDTOS = tokenService.memeTokenQuery(status, launchOnPancake, orderByField, orderByRule);
+        return ResultUtils.success(tokenDTOS);
+    }
+
+    @PostMapping("/meme/queryByAddress")
+    public Result<List<MemeTokenDTO>> queryByAddress(@RequestBody List<String> addRessList) {
+        List<MemeTokenDTO> tokenDTOS = tokenService.queryByAddress(addRessList);
         return ResultUtils.success(tokenDTOS);
     }
 

@@ -9,8 +9,6 @@ import com.tomo.model.req.PlatformTokenReq;
 import com.tomo.model.resp.CoinPriceResp;
 import com.tomo.model.resp.OnChainTokenInfo;
 import com.tomo.model.resp.OnChainTokenPrice;
-import com.tomo.model.resp.OnChainTokenInfo;
-import com.tomo.model.resp.OnChainTokenPrice;
 import com.tomo.model.resp.Result;
 import com.tomo.service.category.CoinGeckoService;
 import com.tomo.service.category.TokenInfoService;
