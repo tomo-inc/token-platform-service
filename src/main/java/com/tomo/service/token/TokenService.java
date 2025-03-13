@@ -135,6 +135,25 @@ public class TokenService {
         return tokenDTO;
     }
 
+
+    public List<MemeTokenDTO> queryByAddress(List<String> addressList) {
+        List<MemeTokenDTO> dataList = new ArrayList<>();
+        QueryWrapper<FourMemeToken> queryWrapper = new QueryWrapper<>();
+        queryWrapper.in("token_address", addressList);
+        List<FourMemeToken> fourMemeTokens = fourMemeTokenMapper.selectList(queryWrapper);
+        if (!CollectionUtils.isEmpty(fourMemeTokens)) {
+            fourMemeTokens.forEach(data -> {
+                MemeTokenDTO tokenDto = MemeTokenConverter.INSTANCE.toTokenDto(data);
+                tokenDto.setDisplayName(data.getTokenName());
+                tokenDto.setSymbol(data.getTokenSymbol());
+                tokenDto.setDecimals(data.getTokenPrecision());
+                tokenDto.setFourMemeToken(true);
+                tokenDto.setVolumeWeiH24(data.getVolumeH24());
+                dataList.add(tokenDto);
+            });
+        }
+        return dataList;
+    }
     public List<MemeTokenDTO> memeTokenQuery(String status, Boolean launchOnPancake, String orderByField,String orderByRule) {
         List<MemeTokenDTO> dataList = new ArrayList<>();
         QueryWrapper<FourMemeToken> queryWrapper = getFourMemeTokenQueryWrapper(status, launchOnPancake, orderByField, orderByRule);
