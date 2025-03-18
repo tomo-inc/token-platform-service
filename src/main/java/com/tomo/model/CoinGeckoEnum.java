@@ -103,7 +103,7 @@ public enum CoinGeckoEnum {
     ABSTRACT("abstract", "ethereum", "", ""),
     INK("ink", "ethereum", "57073", ""),
     DRC_20("drc-20", "dogecoin", "", ""),
-    BERACHAIN("berachain", "berachain-bera", "", ""),
+    BERACHAIN("berachain", "berachain-bera", "", "berachain"),
     ZETACHAIN("zetachain", "zetachain", "7000", ""),
     SYSCOIN_NEVM("syscoin", "syscoin", "57", ""),
     CASPER_NETWORK("casper-network", "casper-network", "", ""),

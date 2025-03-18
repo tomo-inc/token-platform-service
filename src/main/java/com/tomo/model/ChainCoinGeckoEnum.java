@@ -43,6 +43,7 @@ public enum ChainCoinGeckoEnum {
 //    TON_TEST(1101L,"TON Testnet"),
     DOGE(3L,CoinGeckoEnum.DOGECHAIN,ChainEnum.DOGE),
     COSMOS(4L,CoinGeckoEnum.COSMOS,ChainEnum.COSMOS),
+    BERACHAIN(80094L,CoinGeckoEnum.BERACHAIN,ChainEnum.BERACHAIN_BARTIO),
     ;
     private final Long chainId;
     private final CoinGeckoEnum coinGeckoEnum;
