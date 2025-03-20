@@ -269,7 +269,7 @@ public class TokenService {
                 ChainQuoteIndexerOuterClass.Quote quote = quotes.get(address);
                 if (quote != null) {
                     tokenDTO.setPriceChangeH24(quote.getChange());
-                    tokenDTO.setVolumeH24(new BigDecimal(quote.getVolume24H()));
+                    tokenDTO.setVolumeH24(new BigDecimal(quote.getVolume24HUsd()));
                 }
             }
         }
@@ -292,7 +292,7 @@ public class TokenService {
                 ChainQuoteIndexerOuterClass.Quote quote = quotes.get(address);
                 if (quote != null) {
                     tokenDTO.setPriceChangeH24(Double.toString(quote.getChange()));
-                    tokenDTO.setVolumeH24(quote.getVolume24H());
+                    tokenDTO.setVolumeH24(String.valueOf(quote.getVolume24HUsd()));
                 }
             }
         }
