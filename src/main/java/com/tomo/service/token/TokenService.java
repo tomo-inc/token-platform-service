@@ -57,10 +57,11 @@ public class TokenService {
         }
         if (!CollectionUtils.isEmpty(fourMemeTokens)) {
             List<TokenDTO> collect = fourMemeTokens.stream().map(TokenService::transferToTokenDTO).filter(data -> !nameSet.contains(data.getName())).collect(Collectors.toList());
+            this.completeDataByQuote(collect);
             dataList.addAll(collect);
         }
 
-        this.completeDataByQuote(dataList);
+
         return dataList;
     }
 
@@ -257,7 +258,7 @@ public class TokenService {
 
         for (int i = 0; i < list.size(); i += batchSize) {
             List<TokenDTO> batch = list.subList(i, Math.min(i + batchSize, list.size()));
-            List<String> addresses = batch.stream().filter(TokenDTO::getFourMemeToken).map(TokenDTO::getAddress).collect(Collectors.toList());
+            List<String> addresses = batch.stream().map(TokenDTO::getAddress).collect(Collectors.toList());
             Map<String, ChainQuoteIndexerOuterClass.Quote> quotes = chainQuoteIndexerClient.findQuotes(
                     ChainEnum.BSC.getChainIndex(), addresses);
 
