@@ -67,7 +67,7 @@ public class TokenService {
     public TokenDTO tokenDetail(String authorization, String tokenName) {
         String[] splitArray = tokenName.split("-");
         LambdaQueryWrapper<FourMemeToken> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(FourMemeToken::getTokenAddress, splitArray[1].toLowerCase());
+        queryWrapper.eq(FourMemeToken::getTokenAddress, splitArray[1].toLowerCase()).eq(FourMemeToken::getLaunchOnPancake, false);
         List<FourMemeToken> fourMemeTokens = fourMemeTokenMapper.selectList(queryWrapper);
         if(!CollectionUtils.isEmpty(fourMemeTokens)){
             FourMemeToken fourMemeToken = fourMemeTokens.get(0);
