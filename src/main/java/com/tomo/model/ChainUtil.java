@@ -16,19 +16,28 @@ public class ChainUtil {
 //    @Getter
 //    public static Map<Long, ChainInfoEnum> okxChainInfoMap = Arrays.stream(ChainInfoEnum.values()).collect(Collectors.toMap(ChainInfoEnum::getOkxId, Function.identity()));
 
+    @Getter
+    private static Map<Long, String> nativeTokenAddrMap = new HashMap<>();
+
+    static {
+        nativeTokenAddrMap.put(784L, "0x2::sui::SUI");
+        nativeTokenAddrMap.put(1100L, "EQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAM9c");
+    }
+
     // platformid -> enum
     @Getter
     public static Map<String, ChainCoinGeckoEnum> coinGeckoChainInfoMap = Arrays
             .stream(ChainCoinGeckoEnum.values())
             .collect(
-                    Collectors.toMap(e-> e.getCoinGeckoEnum().getPlatformChainId(),
-                                    Function.identity()
+                    Collectors.toMap(e -> e.getCoinGeckoEnum().getPlatformChainId(),
+                            Function.identity()
                     )
             );
 
     // coinId -> enum
     @Getter
     public static HashMap<String, List<ChainCoinGeckoEnum>> nativeIdToEnum = new HashMap<>();
+
     static {
         Arrays.stream(ChainCoinGeckoEnum.values())
                 .forEach(e -> {
@@ -44,26 +53,26 @@ public class ChainUtil {
     }
 
 
-
     // chainid -> ChainEnum
-    public static Map<Long,ChainEnum> chainIdMap = Arrays
+    public static Map<Long, ChainEnum> chainIdMap = Arrays
             .stream(ChainEnum.values())
             .collect(Collectors.toMap(ChainEnum::getChainId, Function.identity()));
 
 
     // chainId -> chain and coingecko
     @Getter
-    public static Map<Long,ChainCoinGeckoEnum> chainAndCoinGeckoMap = Arrays
+    public static Map<Long, ChainCoinGeckoEnum> chainAndCoinGeckoMap = Arrays
             .stream(ChainCoinGeckoEnum.values())
             .collect(Collectors.toMap(ChainCoinGeckoEnum::getChainId, Function.identity()));
 
 
+    public static String getCommonKey(Long chainId, String address) {
 
-    public static String getCommonKey(Long chainId,String address) {
-        if (StringUtils.hasText(address)) {
-            return chainId + "-" + address;
-        }else {
+        if (!StringUtils.hasText(address) || address.equalsIgnoreCase(nativeTokenAddrMap.get(chainId))) {
             return chainId.toString();
+        } else {
+            return chainId + "-" + address;
+
         }
     }
 }
