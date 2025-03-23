@@ -57,10 +57,11 @@ public class TokenService {
         }
         if (!CollectionUtils.isEmpty(fourMemeTokens)) {
             List<TokenDTO> collect = fourMemeTokens.stream().map(TokenService::transferToTokenDTO).filter(data -> !nameSet.contains(data.getName())).collect(Collectors.toList());
+            this.completeDataByQuote(collect);
             dataList.addAll(collect);
         }
 
-        this.completeDataByQuote(dataList);
+
         return dataList;
     }
 
@@ -73,7 +74,7 @@ public class TokenService {
 
         String[] splitArray = tokenName.split("-");
         LambdaQueryWrapper<FourMemeToken> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(FourMemeToken::getTokenAddress, splitArray[1].toLowerCase());
+        queryWrapper.eq(FourMemeToken::getTokenAddress, splitArray[1].toLowerCase()).eq(FourMemeToken::getLaunchOnPancake, false);
         List<FourMemeToken> fourMemeTokens = fourMemeTokenMapper.selectList(queryWrapper);
         if(!CollectionUtils.isEmpty(fourMemeTokens)){
             FourMemeToken fourMemeToken = fourMemeTokens.get(0);
@@ -273,7 +274,7 @@ public class TokenService {
                 ChainQuoteIndexerOuterClass.Quote quote = quotes.get(address);
                 if (quote != null) {
                     tokenDTO.setPriceChangeH24(quote.getChange());
-                    tokenDTO.setVolumeH24(new BigDecimal(quote.getVolume24H()));
+                    tokenDTO.setVolumeH24(new BigDecimal(quote.getVolume24HUsd()));
                 }
             }
         }
@@ -296,7 +297,7 @@ public class TokenService {
                 ChainQuoteIndexerOuterClass.Quote quote = quotes.get(address);
                 if (quote != null) {
                     tokenDTO.setPriceChangeH24(Double.toString(quote.getChange()));
-                    tokenDTO.setVolumeH24(quote.getVolume24H());
+                    tokenDTO.setVolumeH24(String.valueOf(quote.getVolume24HUsd()));
                 }
             }
         }
