@@ -66,6 +66,12 @@ public class TokenService {
     }
 
     public TokenDTO tokenDetail(String authorization, String tokenName) {
+
+        BackendResponseDTO<TokenDTO> backEndTokenSearchRes = backendClient.tokenDetail(authorization, tokenName);
+        if(Objects.nonNull(backEndTokenSearchRes) && Objects.nonNull(backEndTokenSearchRes.getResult())){
+            return backEndTokenSearchRes.getResult();
+        }
+
         String[] splitArray = tokenName.split("-");
         LambdaQueryWrapper<FourMemeToken> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(FourMemeToken::getTokenAddress, splitArray[1].toLowerCase()).eq(FourMemeToken::getLaunchOnPancake, false);
@@ -80,8 +86,6 @@ public class TokenService {
                 String saleAmount = data.getSaleAmount();
                 String price = data.getTokenPrice().getPrice();
                 tokenDTO.setTotalSupply(StringUtils.isNotBlank(totalAmount) ? new BigDecimal(totalAmount) : BigDecimal.ZERO);
-                tokenDTO.setMarketCapUsd(tokenDTO.getTotalSupply().multiply(StringUtils.isNotBlank(price) ? new BigDecimal(price) : BigDecimal.ZERO));
-                tokenDTO.setFdvUsd(new BigDecimal(saleAmount).multiply(StringUtils.isNotBlank(price) ? new BigDecimal(price) : BigDecimal.ZERO));
                 if(StringUtils.isBlank(fourMemeToken.getImageUrl())){
                     FourMemeToken updateToken = new FourMemeToken();
                     updateToken.setId(fourMemeToken.getId());
@@ -92,22 +96,22 @@ public class TokenService {
                 }
                 tokenDTO.setImageUrl(data.getImage());
                 String raiseTokenName = StringUtils.isNotBlank(fourMemeToken.getRaiseTokenAddress()) ? "BSC-"+fourMemeToken.getRaiseTokenAddress() : fourMemeToken.getRaiseTokenSymbol();
-                BackendResponseDTO<TokenDTO> backEndTokenSearchRes = backendClient.tokenDetail(authorization, raiseTokenName);
-                TokenDTO result = backEndTokenSearchRes.getResult();
+                BackendResponseDTO<TokenDTO>  raiseTokenRes = backendClient.tokenDetail(authorization, raiseTokenName);
+                TokenDTO result = raiseTokenRes.getResult();
                 if(Objects.isNull(result)){
                     tokenDTO.setRaiseValue(new BigDecimal(data.getRaisedAmount()));
+                    tokenDTO.setMarketCapUsd(tokenDTO.getTotalSupply().multiply(StringUtils.isNotBlank(price) ? new BigDecimal(price) : BigDecimal.ZERO));
+                    tokenDTO.setFdvUsd(new BigDecimal(saleAmount).multiply(StringUtils.isNotBlank(price) ? new BigDecimal(price) : BigDecimal.ZERO));
                 }else{
                     tokenDTO.setRaiseValue(result.getPriceUsd().multiply(new BigDecimal(data.getRaisedAmount())));
+                    tokenDTO.setMarketCapUsd(tokenDTO.getTotalSupply().multiply(StringUtils.isNotBlank(price) ? new BigDecimal(price) : BigDecimal.ZERO).multiply(result.getPriceUsd()));
+                    tokenDTO.setFdvUsd(new BigDecimal(saleAmount).multiply(StringUtils.isNotBlank(price) ? new BigDecimal(price) : BigDecimal.ZERO).multiply(result.getPriceUsd()));
                 }
             }
-
+            this.completeDataByQuote(Collections.singletonList(tokenDTO));
             return tokenDTO;
         }
-        BackendResponseDTO<TokenDTO> backEndTokenSearchRes = backendClient.tokenDetail(authorization, tokenName);
-        TokenDTO result = backEndTokenSearchRes.getResult();
-
-        this.completeDataByQuote(Collections.singletonList(result));
-        return result;
+        return null;
     }
 
     private static TokenDTO transferToTokenDTO(FourMemeToken fourMemeToken) {
