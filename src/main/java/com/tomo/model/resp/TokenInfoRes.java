@@ -20,5 +20,6 @@ public class TokenInfoRes {
     @NoArgsConstructor
     public static class TokenPriceDto{
         private String price;
+        private String maxPrice;
     }
 }
