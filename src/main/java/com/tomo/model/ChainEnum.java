@@ -34,6 +34,7 @@ public enum ChainEnum {
     PROM(22700L, 227L, "Prom"),
     DUCK_CHAIN_TEST(20210500L, 202105L, "DuckChain Testnet"),
     STORY_ODYSSEY_TEST(151600L, 1516L, "Story Odyssey Testnet"),
+    STORY_MAINNET(151400L, 1514L, "Story Mainnet"),
     BERACHAIN_BARTIO(8009400L, 80094L, "Berachain Mainnet"),
     BERACHAIN_BARTIO_TEST(8008400L, 80084L, "Berachain bArtio Testnet"),
     BOTANIX_TEST(363600L, 3636L, "Botanix Testnet"),

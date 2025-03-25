@@ -85,6 +85,7 @@ public class TokenService {
                 String totalAmount = data.getTotalAmount();
                 String saleAmount = data.getSaleAmount();
                 String price = data.getTokenPrice().getPrice();
+                String maxPrice = data.getTokenPrice().getMaxPrice();
                 tokenDTO.setTotalSupply(StringUtils.isNotBlank(totalAmount) ? new BigDecimal(totalAmount) : BigDecimal.ZERO);
                 if(StringUtils.isBlank(fourMemeToken.getImageUrl())){
                     FourMemeToken updateToken = new FourMemeToken();
@@ -103,7 +104,7 @@ public class TokenService {
                     tokenDTO.setMarketCapUsd(tokenDTO.getTotalSupply().multiply(StringUtils.isNotBlank(price) ? new BigDecimal(price) : BigDecimal.ZERO));
                     tokenDTO.setFdvUsd(new BigDecimal(saleAmount).multiply(StringUtils.isNotBlank(price) ? new BigDecimal(price) : BigDecimal.ZERO));
                 }else{
-                    tokenDTO.setRaiseValue(result.getPriceUsd().multiply(new BigDecimal(data.getRaisedAmount())));
+                    tokenDTO.setRaiseValue(result.getPriceUsd().multiply(new BigDecimal(maxPrice)).multiply(new BigDecimal(totalAmount)));
                     tokenDTO.setMarketCapUsd(tokenDTO.getTotalSupply().multiply(StringUtils.isNotBlank(price) ? new BigDecimal(price) : BigDecimal.ZERO).multiply(result.getPriceUsd()));
                     tokenDTO.setFdvUsd(new BigDecimal(saleAmount).multiply(StringUtils.isNotBlank(price) ? new BigDecimal(price) : BigDecimal.ZERO).multiply(result.getPriceUsd()));
                 }

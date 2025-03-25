@@ -44,6 +44,7 @@ public enum ChainCoinGeckoEnum {
     DOGE(3L,CoinGeckoEnum.DOGECHAIN,ChainEnum.DOGE),
     COSMOS(4L,CoinGeckoEnum.COSMOS,ChainEnum.COSMOS),
     BERACHAIN(80094L,CoinGeckoEnum.BERACHAIN,ChainEnum.BERACHAIN_BARTIO),
+    STORY_MAINNET(1514L,CoinGeckoEnum.STORY_MAINNET,ChainEnum.STORY_MAINNET),
     ;
     private final Long chainId;
     private final CoinGeckoEnum coinGeckoEnum;
