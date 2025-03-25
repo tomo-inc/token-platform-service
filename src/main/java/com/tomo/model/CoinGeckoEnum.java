@@ -356,7 +356,8 @@ public enum CoinGeckoEnum {
     SONIC("sonic", "sonic-3", "146", ""),
     DUCKCHAIN("duckchain", "the-open-network", "5545", ""),
     ALGORAND("algorand", "algorand", "", ""),
-    XRP_LEDGER("xrp", "ripple", "", "");
+    XRP_LEDGER("xrp", "ripple", "", ""),
+    STORY_MAINNET("story", "story-2", "1514", "story");
 
     final String platformChainId;
     final String coinId;
