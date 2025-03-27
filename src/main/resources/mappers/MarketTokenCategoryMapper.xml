@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tomo.mapper.MarketTokenCategoryMapper">
+
+    <resultMap id="MarketTokenCategoryResultMap" type="com.tomo.model.market.MarketTokenCategory">
+        <id property="id" column="id"/>
+        <result property="chainIndex" column="chain_index"/>
+        <result property="address" column="address"/>
+        <result property="coinId" column="coin_id"/>
+        <result property="category" column="category"/>
+        <result property="tags" column="tags"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, chain_index, address, coin_id, category, tags, update_time, create_time
+    </sql>
+
+    <select id="selectMarketTokenCategoryById" resultMap="MarketTokenCategoryResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM market_token_category
+        WHERE id = #{id}
+    </select>
+
+    <insert id="insertMarketTokenCategory" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO market_token_category(chain_index, address, coin_id, category, tags, update_time, create_time)
+        VALUES (#{chainIndex}, #{address}, #{coinId}, #{category}, #{tags}, #{updateTime}, #{createTime})
+    </insert>
+
+    <update id="updateMarketTokenCategory">
+        UPDATE market_token_category
+        SET chain_index = #{chainIndex},
+            address = #{address},
+            coin_id = #{coinId},
+            category = #{category},
+            tags = #{tags},
+            update_time = #{updateTime},
+            create_time = #{createTime}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteMarketTokenCategory">
+        DELETE
+        FROM market_token_category
+        WHERE id = #{id}
+    </delete>
+
+</mapper>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tomo.mapper.MarketTokenSecurityInfoMapper">
+
+    <resultMap id="MarketTokenSecurityInfoResultMap" type="com.tomo.model.market.MarketTokenSecurityInfo">
+        <id property="id" column="id"/>
+        <result property="chainIndex" column="chain_index"/>
+        <result property="address" column="address"/>
+        <result property="isOpenSource" column="is_open_source"/>
+        <result property="isProxy" column="is_proxy"/>
+        <result property="isMintable" column="is_mintable"/>
+        <result property="ownerAddress" column="owner_address"/>
+        <result property="canTakeBackOwnership" column="can_take_back_ownership"/>
+        <result property="ownerChangeBalance" column="owner_change_balance"/>
+        <result property="hiddenOwner" column="hidden_owner"/>
+        <result property="selfdestruct" column="selfdestruct"/>
+        <result property="externalCall" column="external_call"/>
+        <result property="gasAbuse" column="gas_abuse"/>
+        <result property="isInDex" column="is_in_dex"/>
+        <result property="buyTax" column="buy_tax"/>
+        <result property="sellTax" column="sell_tax"/>
+        <result property="cannotBuy" column="cannot_buy"/>
+        <result property="cannotSellAll" column="cannot_sell_all"/>
+        <result property="slippageModifiable" column="slippage_modifiable"/>
+        <result property="isHoneypot" column="is_honeypot"/>
+        <result property="transferPausable" column="transfer_pausable"/>
+        <result property="isBlacklisted" column="is_blacklisted"/>
+        <result property="isWhitelisted" column="is_whitelisted"/>
+        <result property="dex" column="dex" typeHandler="org.apache.ibatis.type.JdbcType.JSON"/>
+        <result property="isAntiWhale" column="is_anti_whale"/>
+        <result property="antiWhaleModifiable" column="anti_whale_modifiable"/>
+        <result property="tradingCooldown" column="trading_cooldown"/>
+        <result property="personalSlippageModifiable" column="personal_slippage_modifiable"/>
+        <result property="tokenName" column="token_name"/>
+        <result property="tokenSymbol" column="token_symbol"/>
+        <result property="holderCount" column="holder_count"/>
+        <result property="totalSupply" column="total_supply"/>
+        <result property="holders" column="holders" typeHandler="org.apache.ibatis.type.JdbcType.JSON"/>
+        <result property="ownerBalance" column="owner_balance"/>
+        <result property="ownerPercent" column="owner_percent"/>
+        <result property="creatorAddress" column="creator_address"/>
+        <result property="creatorBalance" column="creator_balance"/>
+        <result property="creatorPercent" column="creator_percent"/>
+        <result property="lpHolderCount" column="lp_holder_count"/>
+        <result property="lpTotalSupply" column="lp_total_supply"/>
+        <result property="lpHolders" column="lp_holders" typeHandler="org.apache.ibatis.type.JdbcType.JSON"/>
+        <result property="isTrueToken" column="is_true_token"/>
+        <result property="isAirdropScam" column="is_airdrop_scam"/>
+        <result property="trustList" column="trust_list"/>
+        <result property="otherPotentialRisks" column="other_potential_risks"/>
+        <result property="note" column="note"/>
+        <result property="fakeToken" column="fake_token" typeHandler="org.apache.ibatis.type.JdbcType.JSON"/>
+        <result property="metadata" column="metadata" typeHandler="org.apache.ibatis.type.JdbcType.JSON"/>
+        <result property="defaultAccountState" column="default_account_state"/>
+        <result property="nonTransferable" column="non_transferable"/>
+        <result property="creator" column="creator" typeHandler="org.apache.ibatis.type.JdbcType.JSON"/>
+        <result property="transferFee" column="transfer_fee" typeHandler="org.apache.ibatis.type.JdbcType.JSON"/>
+        <result property="transferHook" column="transfer_hook" typeHandler="org.apache.ibatis.type.JdbcType.JSON"/>
+        <result property="trustedToken" column="trusted_token"/>
+        <result property="metadataMutable" column="metadata_mutable" typeHandler="org.apache.ibatis.type.JdbcType.JSON"/>
+        <result property="mintable" column="mintable" typeHandler="org.apache.ibatis.type.JdbcType.JSON"/>
+        <result property="freezable" column="freezable" typeHandler="org.apache.ibatis.type.JdbcType.JSON"/>
+        <result property="closable" column="closable" typeHandler="org.apache.ibatis.type.JdbcType.JSON"/>
+        <result property="defaultAccountStateUpgradable" column="default_account_state_upgradable" typeHandler="org.apache.ibatis.type.JdbcType.JSON"/>
+        <result property="balanceMutableAuthority" column="balance_mutable_authority" typeHandler="org.apache.ibatis.type.JdbcType.JSON"/>
+        <result property="transferFeeUpgradable" column="transfer_fee_upgradable" typeHandler="org.apache.ibatis.type.JdbcType.JSON"/>
+        <result property="transferHookUpgradable" column="transfer_hook_upgradable" typeHandler="org.apache.ibatis.type.JdbcType.JSON"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedTime" column="updated_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, chain_index, address, is_open_source, is_proxy, is_mintable, owner_address, can_take_back_ownership, owner_change_balance, hidden_owner, selfdestruct, external_call, gas_abuse, is_in_dex, buy_tax, sell_tax, cannot_buy, cannot_sell_all, slippage_modifiable, is_honeypot, transfer_pausable, is_blacklisted, is_whitelisted, dex, is_anti_whale, anti_whale_modifiable, trading_cooldown, personal_slippage_modifiable, token_name, token_symbol, holder_count, total_supply, holders, owner_balance, owner_percent, creator_address, creator_balance, creator_percent, lp_holder_count, lp_total_supply, lp_holders, is_true_token, is_airdrop_scam, trust_list, other_potential_risks, note, fake_token, metadata, default_account_state, non_transferable, creator, transfer_fee, transfer_hook, trusted_token, metadata_mutable, mintable, freezable, closable, default_account_state_upgradable, balance_mutable_authority, transfer_fee_upgradable, transfer_hook_upgradable, created_time, updated_time
+    </sql>
+
+    <select id="selectMarketTokenSecurityInfoById" resultMap="MarketTokenSecurityInfoResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM market_token_security_info
+        WHERE id = #{id}
+    </select>
+
+    <insert id="insertMarketTokenSecurityInfo" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO market_token_security_info(chain_index, address, is_open_source, is_proxy, is_mintable, owner_address, can_take_back_ownership, owner_change_balance, hidden_owner, selfdestruct, external_call, gas_abuse, is_in_dex, buy_tax, sell_tax, cannot_buy, cannot_sell_all, slippage_modifiable, is_honeypot, transfer_pausable, is_blacklisted, is_whitelisted, dex, is_anti_whale, anti_whale_modifiable, trading_cooldown, personal_slippage_modifiable, token_name, token_symbol, holder_count, total_supply, holders, owner_balance, owner_percent, creator_address, creator_balance, creator_percent, lp_holder_count, lp_total_supply, lp_holders, is_true_token, is_airdrop_scam, trust_list, other_potential_risks, note, fake_token, metadata, default_account_state, non_transferable, creator, transfer_fee, transfer_hook, trusted_token, metadata_mutable, mintable, freezable, closable, default_account_state_upgradable, balance_mutable_authority, transfer_fee_upgradable, transfer_hook_upgradable, created_time, updated_time)
+        VALUES (#{chainIndex}, #{address}, #{isOpenSource}, #{isProxy}, #{isMintable}, #{ownerAddress}, #{canTakeBackOwnership}, #{ownerChangeBalance}, #{hiddenOwner}, #{selfdestruct}, #{externalCall}, #{gasAbuse}, #{isInDex}, #{buyTax}, #{sellTax}, #{cannotBuy}, #{cannotSellAll}, #{slippageModifiable}, #{isHoneypot}, #{transferPausable}, #{isBlacklisted}, #{isWhitelisted}, #{dex}, #{isAntiWhale}, #{antiWhaleModifiable}, #{tradingCooldown}, #{personalSlippageModifiable}, #{tokenName}, #{tokenSymbol}, #{holderCount}, #{totalSupply}, #{holders}, #{ownerBalance}, #{ownerPercent}, #{creatorAddress}, #{creatorBalance}, #{creatorPercent}, #{lpHolderCount}, #{lpTotalSupply}, #{lpHolders}, #{isTrueToken}, #{isAirdropScam}, #{trustList}, #{otherPotentialRisks}, #{note}, #{fakeToken}, #{metadata}, #{defaultAccountState}, #{nonTransferable}, #{creator}, #{transferFee}, #{transferHook}, #{trustedToken}, #{metadataMutable}, #{mintable}, #{freezable}, #{closable}, #{defaultAccountStateUpgradable}, #{balanceMutableAuthority}, #{transferFeeUpgradable}, #{transferHookUpgradable}, #{createdTime}, #{updatedTime})
+    </insert>
+
+    <update id="updateMarketTokenSecurityInfo">
+        UPDATE market_token_security_info
+        SET chain_index = #{chainIndex},
+            address = #{address},
+            is_open_source = #{isOpenSource},
+            is_proxy = #{isProxy},
+            is_mintable = #{isMintable},
+            owner_address = #{ownerAddress},
+            can_take_back_ownership = #{canTakeBackOwnership},
+            owner_change_balance = #{ownerChangeBalance},
+            hidden_owner = #{hiddenOwner},
+            selfdestruct = #{selfdestruct},
+            external_call = #{externalCall},
+            gas_abuse = #{gasAbuse},
+            is_in_dex = #{isInDex},
+            buy_tax = #{buyTax},
+            sell_tax = #{sellTax},
+            cannot_buy = #{cannotBuy},
+            cannot_sell_all = #{cannotSellAll},
+            slippage_modifiable = #{slippageModifiable},
+            is_honeypot = #{isHoneypot},
+            transfer_pausable = #{transferPausable},
+            is_blacklisted = #{isBlacklisted},
+            is_whitelisted = #{isWhitelisted},
+            dex = #{dex},
+            is_anti_whale = #{isAntiWhale},
+            anti_whale_modifiable = #{antiWhaleModifiable},
+            trading_cooldown = #{tradingCooldown},
+            personal_slippage_modifiable = #{personalSlippageModifiable},
+            token_name = #{tokenName},
+            token_symbol = #{tokenSymbol},
+            holder_count = #{holderCount},
+            total_supply = #{totalSupply},
+            holders = #{holders},
+            owner_balance = #{ownerBalance},
+            owner_percent = #{ownerPercent},
+            creator_address = #{creatorAddress},
+            creator_balance = #{creatorBalance},
+            creator_percent = #{creatorPercent},
+            lp_holder_count = #{lpHolderCount},
+            lp_total_supply = #{lpTotalSupply},
+            lp_holders = #{lpHolders},
+            is_true_token = #{isTrueToken},
+            is_airdrop_scam = #{isAirdropScam},
+            trust_list = #{trustList},
+            other_potential_risks = #{otherPotentialRisks},
+            note = #{note},
+            fake_token = #{fakeToken},
+            metadata = #{metadata},
+            default_account_state = #{defaultAccountState},
+            non_transferable = #{nonTransferable},
+            creator = #{creator},
+            transfer_fee = #{transferFee},
+            transfer_hook = #{transferHook},
+            trusted_token = #{trustedToken},
+            metadata_mutable = #{metadataMutable},
+            mintable = #{mintable},
+            freezable = #{freezable},
+            closable = #{closable},
+            default_account_state_upgradable = #{defaultAccountStateUpgradable},
+            balance_mutable_authority = #{balanceMutableAuthority},
+            transfer_fee_upgradable = #{transferFeeUpgradable},
+            transfer_hook_upgradable = #{transferHookUpgradable},
+            created_time = #{createdTime},
+            updated_time = #{updatedTime}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteMarketTokenSecurityInfo">
+        DELETE
+        FROM market_token_security_info
+        WHERE id = #{id}
+    </delete>
+
+</mapper>
