@@ -31,6 +31,13 @@
         WHERE id = #{id}
     </select>
 
+    <select id="selectByChainIndexAndAddress" resultMap="MarketTokenInfoResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM market_token_info
+        WHERE chain_index = #{chainIndex} and address = #{address}
+    </select>
+
+
     <insert id="insertMarketTokenInfo" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO market_token_info(chain_index, address, is_native, name, symbol, image_url, decimals,
                                       social, risk_level, force_safe, update_time, create_time)

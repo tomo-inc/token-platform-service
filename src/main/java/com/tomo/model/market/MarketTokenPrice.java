@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 @Data
 public class MarketTokenPrice {
     private Long id;
+    private Long tokenId;
     private Long chainIndex;
     private String address;
     private String poolAddress;
