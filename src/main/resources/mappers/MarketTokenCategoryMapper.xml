@@ -11,7 +11,7 @@
         <result property="address" column="address"/>
         <result property="coinId" column="coin_id"/>
         <result property="category" column="category"/>
-        <result property="tags" column="tags"/>
+        <result property="tags" column="tags" typeHandler="com.tomo.mapper.type.StringArrayTypeHandler"/>
         <result property="updateTime" column="update_time"/>
         <result property="createTime" column="create_time"/>
     </resultMap>
@@ -24,6 +24,14 @@
         SELECT <include refid="Base_Column_List"/>
         FROM market_token_category
         WHERE id = #{id}
+    </select>
+    <select id="queryByCoinIds" resultType="com.tomo.model.market.MarketTokenCategory">
+        SELECT <include refid="Base_Column_List"/>
+        FROM market_token_category
+        WHERE coin_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
     </select>
 
     <insert id="insertMarketTokenCategory" useGeneratedKeys="true" keyProperty="id">

@@ -4,19 +4,19 @@ import com.tomo.model.market.SocialInfo;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class MarketTokenBaseInfo {
-    private int chainIndex;
+    private Long chainIndex;
     private String address;
-    private boolean isNative;
+    private Boolean isNative;
     private String name;
     private String symbol;
     private String imageUrl;
-    private int decimals;
-    private Long totalSupply;
-    private List<String> category;
-    private List<String> tags;
-    private int riskLevel;
+    private Integer decimals;
+    private String totalSupply;
+    private Map<String, List<String>> category;
+    private Integer riskLevel;
     private SocialInfo social;
 }

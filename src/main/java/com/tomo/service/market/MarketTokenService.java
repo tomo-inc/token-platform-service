@@ -1,0 +1,27 @@
+package com.tomo.service.market;
+
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.tomo.model.dto.MarketTokenDTO;
+import com.tomo.model.req.MarketTokenCategoryReq;
+import com.tomo.model.req.MarketTokenQueryReq;
+import com.tomo.model.req.MarketTokenReq;
+import com.tomo.model.resp.MarketTokenBaseInfo;
+import com.tomo.model.resp.MarketTokenDetailInfo;
+import com.tomo.model.resp.MarketTokenHistory;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
+import java.util.List;
+
+public interface MarketTokenService {
+
+    List<MarketTokenBaseInfo> list(@NotBlank List<MarketTokenReq> list);
+
+    List<MarketTokenDetailInfo> details(@Valid @NotEmpty List<MarketTokenReq> list);
+
+    List<MarketTokenBaseInfo> category(@Valid @NotEmpty MarketTokenCategoryReq req);
+
+    List<MarketTokenHistory> history(@NotNull Long chainIndex, String address);
+}

@@ -2,6 +2,7 @@ package com.tomo.model.market;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Data
@@ -15,6 +16,7 @@ public class MarketTokenInfo {
     private String imageUrl;
     private Integer decimals;
     private SocialInfo social;
+    private BigDecimal totalSupply;
     private Integer riskLevel;
     private Boolean forceSafe;
     private Timestamp updateTime;

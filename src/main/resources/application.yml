@@ -45,7 +45,7 @@ spring:
         nodes: ${REDIS_HOST}:${REDIS_PORT}
         max-redirects: 3
 
-mybatis:
+mybatis-plus:
   mapper-locations: classpath:mappers/*.xml
 
 ## 监控

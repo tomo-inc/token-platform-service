@@ -6,9 +6,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tomo.model.dto.MarketTokenDTO;
 import com.tomo.model.market.MarketTokenInfo;
 import com.tomo.model.req.MarketTokenQueryReq;
+import com.tomo.model.req.MarketTokenReq;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 @Mapper
 public interface MarketTokenInfoMapper extends BaseMapper<MarketTokenInfo> {
@@ -47,7 +50,7 @@ public interface MarketTokenInfoMapper extends BaseMapper<MarketTokenInfo> {
                     p.change_24h as change24h,
                     p.market_cap as marketCap,
                     p.fdv_usd as fdvUsd,
-                    p.total_supply as totalSupply
+                    t.total_supply as totalSupply
                 FROM market_token_info t
                 LEFT JOIN market_token_price p ON t.id = p.token_id
                 WHERE 1=1
@@ -64,6 +67,8 @@ public interface MarketTokenInfoMapper extends BaseMapper<MarketTokenInfo> {
             """
     })
     IPage<MarketTokenDTO> pageMarketToken(@Param("req") MarketTokenQueryReq req, Page pg);
+
+    List<MarketTokenInfo> queryTokenList(@Param("list") List<MarketTokenReq> list);
 
 //    MarketTokenInfo selectMarketTokenInfoById(long id);
 //

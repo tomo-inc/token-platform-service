@@ -19,7 +19,6 @@ public class MarketTokenPrice {
     private BigDecimal change24h;
     private BigDecimal marketCap;
     private BigDecimal fdvUsd;
-    private BigDecimal totalSupply;
     private Timestamp updateTime;
     private Timestamp createTime;
 }

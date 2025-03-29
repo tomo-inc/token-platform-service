@@ -14,7 +14,8 @@
         <result property="symbol" column="symbol"/>
         <result property="imageUrl" column="image_url"/>
         <result property="decimals" column="decimals"/>
-        <result property="social" column="social"/>
+        <result property="social" column="social" typeHandler="com.tomo.mapper.type.JsonTypeHandler"/>
+        <result property="totalSupply" column="total_supply"/>
         <result property="riskLevel" column="risk_level"/>
         <result property="forceSafe" column="force_safe"/>
         <result property="updateTime" column="update_time"/>
@@ -22,27 +23,46 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, chain_index, address, is_native, name, symbol, image_url, decimals, social, risk_level, force_safe, update_time, create_time
+        id, chain_index, address, is_native, name, symbol, image_url, decimals, social::text, total_supply,risk_level, force_safe, update_time, create_time
     </sql>
 
     <select id="selectMarketTokenInfoById" resultMap="MarketTokenInfoResultMap">
-        SELECT <include refid="Base_Column_List"/>
+        SELECT
+        <include refid="Base_Column_List"/>
         FROM market_token_info
         WHERE id = #{id}
     </select>
 
     <select id="selectByChainIndexAndAddress" resultMap="MarketTokenInfoResultMap">
-        SELECT <include refid="Base_Column_List"/>
+        SELECT
+        <include refid="Base_Column_List"/>
         FROM market_token_info
         WHERE chain_index = #{chainIndex} and address = #{address}
     </select>
-
+    <select id="queryTokenList" resultMap="MarketTokenInfoResultMap" parameterType="java.util.List">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM market_token_info
+        WHERE (chain_index, address) IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            (#{item.chainIndex}, #{item.address})
+        </foreach>
+        UNION
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM market_token_info
+        WHERE chain_index IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item.chainIndex}
+        </foreach>
+        AND address IS NULL
+    </select>
 
     <insert id="insertMarketTokenInfo" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO market_token_info(chain_index, address, is_native, name, symbol, image_url, decimals,
-                                      social, risk_level, force_safe, update_time, create_time)
+                                      social, total_supply, risk_level, force_safe, update_time, create_time)
         VALUES (#{chainIndex}, #{address}, #{isNative}, #{name}, #{symbol}, #{imageUrl}, #{decimals},
-                #{social}, #{riskLevel}, #{forceSafe}, #{updateTime}, #{createTime})
+                #{social}, #{totalSupply}, #{riskLevel}, #{forceSafe}, #{updateTime}, #{createTime})
     </insert>
 
     <update id="updateMarketTokenInfo">
@@ -54,7 +74,8 @@
             symbol      = #{symbol},
             image_url   = #{imageUrl},
             decimals    = #{decimals},
-            social      = #{social},
+            social      = #{social, typeHandler=com.tomo.mapper.type.JsonTypeHandler}::json,
+            total_supply = #{totalSupply},
             risk_level  = #{riskLevel},
             force_safe  = #{forceSafe},
             update_time = #{updateTime},

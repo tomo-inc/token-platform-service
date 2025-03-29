@@ -15,4 +15,6 @@ public interface MarketTokenCategoryMapper {
     void updateMarketTokenCategory(MarketTokenCategory marketTokenCategory);
 
     void deleteMarketTokenCategory(long id);
+
+    List<MarketTokenCategory> queryByCoinIds(List<Long> coinIds);
 }
