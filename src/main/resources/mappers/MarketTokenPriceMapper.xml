@@ -7,6 +7,7 @@
 
     <resultMap id="MarketTokenPriceResultMap" type="com.tomo.model.market.MarketTokenPrice">
         <id property="id" column="id"/>
+        <result property="coinId" column="coin_id"/>
         <result property="chainIndex" column="chain_index"/>
         <result property="address" column="address"/>
         <result property="poolAddress" column="pool_address"/>
@@ -22,7 +23,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, chain_index, address, pool_address, is_pool_base_token, liquidity_usd, real_price, volume24h, change24h, market_cap, fdv_usd, update_time, create_time
+        id, coin_id,chain_index, address, pool_address, is_pool_base_token, liquidity_usd, real_price, volume24h, change24h, market_cap, fdv_usd, update_time, create_time
     </sql>
 
     <select id="selectMarketTokenPriceById" resultMap="MarketTokenPriceResultMap">
@@ -31,27 +32,39 @@
         WHERE id = #{id}
     </select>
 
+    <select id="queryByCoinIds" resultMap="MarketTokenPriceResultMap" parameterType="list">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM market_token_price
+        WHERE coin_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
     <insert id="insertMarketTokenPrice" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO market_token_price(chain_index, address, pool_address, is_pool_base_token, liquidity_usd, real_price,
+        INSERT INTO market_token_price(coin_id, chain_index, address, pool_address, is_pool_base_token, liquidity_usd,
+                                       real_price,
                                        volume24h, change24h, market_cap, fdv_usd, update_time, create_time)
-        VALUES (#{chainIndex}, #{address}, #{poolAddress}, #{isPoolBaseToken}, #{liquidityUsd}, #{realPrice},
-                #{volume24h}, #{change24h}, #{marketCap}, #{fdvUsd},#{updateTime}, #{createTime})
+        VALUES (#{coinId},#{chainIndex}, #{address}, #{poolAddress}, #{isPoolBaseToken}, #{liquidityUsd}, #{realPrice},
+                #{volume24h}, #{change24h}, #{marketCap}, #{fdvUsd}, #{updateTime}, #{createTime})
     </insert>
 
     <update id="updateMarketTokenPrice">
         UPDATE market_token_price
-        SET chain_index = #{chainIndex},
-            address = #{address},
-            pool_address = #{poolAddress},
+        SET coin_id            = #{coinId},
+            chain_index        = #{chainIndex},
+            address            = #{address},
+            pool_address       = #{poolAddress},
             is_pool_base_token = #{isPoolBaseToken},
-            liquidity_usd = #{liquidityUsd},
-            real_price = #{realPrice},
-            volume24h = #{volume24h},
-            change24h = #{change24h},
-            market_cap = #{marketCap},
-            fdv_usd = #{fdvUsd},
-            update_time = #{updateTime},
-            create_time = #{createTime}
+            liquidity_usd      = #{liquidityUsd},
+            real_price         = #{realPrice},
+            volume24h          = #{volume24h},
+            change24h          = #{change24h},
+            market_cap         = #{marketCap},
+            fdv_usd            = #{fdvUsd},
+            update_time        = #{updateTime},
+            create_time        = #{createTime}
         WHERE id = #{id}
     </update>
 

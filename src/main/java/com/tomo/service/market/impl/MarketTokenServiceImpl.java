@@ -2,8 +2,10 @@ package com.tomo.service.market.impl;
 
 import com.tomo.mapper.MarketTokenCategoryMapper;
 import com.tomo.mapper.MarketTokenInfoMapper;
+import com.tomo.mapper.MarketTokenPriceMapper;
 import com.tomo.model.market.MarketTokenCategory;
 import com.tomo.model.market.MarketTokenInfo;
+import com.tomo.model.market.MarketTokenPrice;
 import com.tomo.model.req.MarketTokenCategoryReq;
 import com.tomo.model.req.MarketTokenReq;
 import com.tomo.model.resp.MarketTokenBaseInfo;
@@ -26,13 +28,16 @@ public class MarketTokenServiceImpl implements MarketTokenService {
     private MarketTokenInfoMapper marketTokenInfoMapper;
 
     @Autowired
+    private MarketTokenPriceMapper marketTokenPriceMapper;
+
+    @Autowired
     private MarketTokenCategoryMapper marketTokenCategoryMapper;
 
 //    @Autowired
 //    private MarketTokenCacheService marketTokenCacheService;
 
     @Override
-    public List<MarketTokenBaseInfo> list(List<MarketTokenReq> list) {
+    public List<MarketTokenBaseInfo> queryBaseInfoList(List<MarketTokenReq> list) {
 
 //        marketTokenCacheService.cacheTokenList(list);
         List<MarketTokenInfo> tokenInfos = marketTokenInfoMapper.queryTokenList(list);
@@ -47,6 +52,7 @@ public class MarketTokenServiceImpl implements MarketTokenService {
         tokenInfos.forEach(tokenInfo -> {
             List<MarketTokenCategory> categorys = categoryList.stream().filter(category1 -> category1.getCoinId().equals(tokenInfo.getId())).toList();
             MarketTokenBaseInfo baseInfo = new MarketTokenBaseInfo();
+            baseInfo.setCoinId(tokenInfo.getId());
             baseInfo.setChainIndex(tokenInfo.getChainIndex());
             baseInfo.setAddress(tokenInfo.getAddress());
             baseInfo.setIsNative(tokenInfo.getIsNative());
@@ -71,6 +77,15 @@ public class MarketTokenServiceImpl implements MarketTokenService {
 
     @Override
     public List<MarketTokenDetailInfo> details(List<MarketTokenReq> list) {
+        List<MarketTokenBaseInfo> baseInfoList = queryBaseInfoList(list);
+        if (CollectionUtils.isEmpty(baseInfoList)) {
+            return List.of();
+        }
+
+        List<Long> coinIdList = baseInfoList.stream().map(MarketTokenBaseInfo::getCoinId).toList();
+        List<MarketTokenPrice> priceList = marketTokenPriceMapper.queryByCoinIds(coinIdList);
+        Map<Long, MarketTokenPrice> priceMap = priceList.stream().collect(Collectors.toMap(MarketTokenPrice::getCoinId, price -> price));
+
         return List.of();
     }
 

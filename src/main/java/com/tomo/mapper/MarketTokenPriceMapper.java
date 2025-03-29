@@ -1,6 +1,7 @@
 package com.tomo.mapper;
 
 import com.tomo.model.market.MarketTokenPrice;
+import com.tomo.model.req.MarketTokenReq;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -15,4 +16,6 @@ public interface MarketTokenPriceMapper {
     void updateMarketTokenPrice(MarketTokenPrice marketTokenPrice);
 
     void deleteMarketTokenPrice(long id);
+
+    List<MarketTokenPrice> queryByCoinIds(List<Long> coinIdList);
 }

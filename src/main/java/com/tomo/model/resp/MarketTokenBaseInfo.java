@@ -1,5 +1,6 @@
 package com.tomo.model.resp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tomo.model.market.SocialInfo;
 import lombok.Data;
 
@@ -8,6 +9,8 @@ import java.util.Map;
 
 @Data
 public class MarketTokenBaseInfo {
+    @JsonIgnore
+    private Long coinId;
     private Long chainIndex;
     private String address;
     private Boolean isNative;

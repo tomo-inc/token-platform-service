@@ -27,7 +27,7 @@ public class MarketTokenController {
 
     @RequestMapping(value = "list",method = RequestMethod.POST)
     public Result<List<MarketTokenBaseInfo>> list( @Valid @NotEmpty @RequestBody List<MarketTokenReq> list) {
-        List<MarketTokenBaseInfo> resultList = marketTokenService.list(list);
+        List<MarketTokenBaseInfo> resultList = marketTokenService.queryBaseInfoList(list);
         return ResultUtils.success(resultList);
     }
 
