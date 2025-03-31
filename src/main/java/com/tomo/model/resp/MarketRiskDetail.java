@@ -2,6 +2,8 @@ package com.tomo.model.resp;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 public class MarketRiskDetail {
     private Risk risk;
@@ -9,38 +11,38 @@ public class MarketRiskDetail {
 
     @Data
     public static class Risk {
-        private boolean ownerChangeBalance;
-        private boolean externalCall;
-        private boolean hiddenOwner;
-        private boolean isProxy;
-        private boolean isOpenSource;
-        private boolean balanceMutableAuthority;
-        private boolean transferHook;
-        private boolean maliciousAddress;
-        private boolean isHoneypot;
-        private boolean buyTax;
-        private boolean sellTax;
-        private boolean nonTransferable;
-        private boolean feeRate;
+        private Boolean ownerChangeBalance;
+        private Boolean externalCall;
+        private Boolean hiddenOwner;
+        private Boolean isProxy;
+        private Boolean isOpenSource;
+        private Boolean balanceMutableAuthority;
+        private Boolean transferHook;
+        private Boolean maliciousAddress;
+        private Boolean isHoneypot;
+        private Boolean buyTax;
+        private Boolean sellTax;
+        private Boolean nonTransferable;
+        private Boolean feeRate;
 
     }
 
     @Data
     public static class Warn {
-        private int buyTax;
-        private int sellTax;
-        private boolean cannotSellAll;
-        private boolean slippageModifiable;
-        private boolean personalSlippageModifiable;
-        private int feeRate;
-        private boolean transferFeeUpgradable;
-        private boolean transferPausable;
-        private boolean tradingCooldown;
-        private boolean isBlacklisted;
-        private boolean isWhitelisted;
-        private boolean isClosable;
-        private boolean freezable;
-        private boolean transferHookUpgradable;
+        private BigDecimal buyTax;
+        private BigDecimal sellTax;
+        private Boolean cannotSellAll;
+        private Boolean slippageModifiable;
+        private Boolean personalSlippageModifiable;
+        private BigDecimal feeRate;
+        private Boolean transferFeeUpgradable;
+        private Boolean transferPausable;
+        private Boolean tradingCooldown;
+        private Boolean isBlacklisted;
+        private Boolean isWhitelisted;
+        private Boolean isClosable;
+        private Boolean freezable;
+        private Boolean transferHookUpgradable;
 
     }
 
