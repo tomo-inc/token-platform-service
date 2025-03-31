@@ -38,8 +38,8 @@ public class MarketTokenController {
     }
 
     @RequestMapping(value = "category",method = RequestMethod.POST)
-    public Result<List<MarketTokenBaseInfo>> category(@Valid @NotEmpty @RequestBody MarketTokenCategoryReq req) {
-        List<MarketTokenBaseInfo> resultList = marketTokenService.category(req);
+    public Result<List<MarketTokenDetailInfo>> category(@Valid  @RequestBody MarketTokenCategoryReq req) {
+        List<MarketTokenDetailInfo> resultList = marketTokenService.category(req);
         return ResultUtils.success(resultList);
     }
     @RequestMapping(value = "history",method = RequestMethod.GET)

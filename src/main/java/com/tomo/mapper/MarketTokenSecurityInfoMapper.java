@@ -1,6 +1,7 @@
 package com.tomo.mapper;
 
 import com.tomo.model.market.MarketTokenSecurityInfo;
+import com.tomo.model.req.MarketTokenReq;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -15,4 +16,6 @@ public interface MarketTokenSecurityInfoMapper {
     void updateMarketTokenSecurityInfo(MarketTokenSecurityInfo marketTokenSecurityInfo);
 
     void deleteMarketTokenSecurityInfo(long id);
+
+    List<MarketTokenSecurityInfo> list(@Param("list") List<MarketTokenReq> list)
 }

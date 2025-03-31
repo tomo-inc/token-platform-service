@@ -18,7 +18,7 @@ public interface MarketTokenService {
 
     List<MarketTokenDetailInfo> details(@Valid @NotEmpty List<MarketTokenReq> list);
 
-    List<MarketTokenBaseInfo> category(@Valid @NotEmpty MarketTokenCategoryReq req);
+    List<MarketTokenDetailInfo> category(@Valid @NotEmpty MarketTokenCategoryReq req);
 
     List<MarketTokenHistory> history(@NotNull Long chainIndex, String address);
 }

@@ -1,6 +1,7 @@
 package com.tomo.mapper;
 
 import com.tomo.model.market.MarketTokenCategory;
+import com.tomo.model.req.MarketTokenCategoryReq;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -17,4 +18,6 @@ public interface MarketTokenCategoryMapper {
     void deleteMarketTokenCategory(long id);
 
     List<MarketTokenCategory> queryByCoinIds(List<Long> coinIds);
+
+    List<MarketTokenCategory> pageQuery(MarketTokenCategoryReq req);
 }

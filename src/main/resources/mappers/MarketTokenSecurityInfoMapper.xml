@@ -81,6 +81,24 @@
         FROM market_token_security_info
         WHERE id = #{id}
     </select>
+    <select id="list" resultMap="MarketTokenSecurityInfoResultMap" parameterType="java.util.List">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM market_token_security_info
+        WHERE (chain_index, address) IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            (#{item.chainIndex}, #{item.address})
+        </foreach>
+        UNION
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM market_token_info
+        WHERE chain_index IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item.chainIndex}
+        </foreach>
+        AND address IS NULL
+    </select>
 
     <insert id="insertMarketTokenSecurityInfo" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO market_token_security_info(chain_index, address, is_open_source, is_proxy, is_mintable, owner_address, can_take_back_ownership, owner_change_balance, hidden_owner, selfdestruct, external_call, gas_abuse, is_in_dex, buy_tax, sell_tax, cannot_buy, cannot_sell_all, slippage_modifiable, is_honeypot, transfer_pausable, is_blacklisted, is_whitelisted, dex, is_anti_whale, anti_whale_modifiable, trading_cooldown, personal_slippage_modifiable, token_name, token_symbol, holder_count, total_supply, holders, owner_balance, owner_percent, creator_address, creator_balance, creator_percent, lp_holder_count, lp_total_supply, lp_holders, is_true_token, is_airdrop_scam, trust_list, other_potential_risks, note, fake_token, metadata, default_account_state, non_transferable, creator, transfer_fee, transfer_hook, trusted_token, metadata_mutable, mintable, freezable, closable, default_account_state_upgradable, balance_mutable_authority, transfer_fee_upgradable, transfer_hook_upgradable, created_time, updated_time)

@@ -21,17 +21,36 @@
     </sql>
 
     <select id="selectMarketTokenCategoryById" resultMap="MarketTokenCategoryResultMap">
-        SELECT <include refid="Base_Column_List"/>
+        SELECT
+        <include refid="Base_Column_List"/>
         FROM market_token_category
         WHERE id = #{id}
     </select>
-    <select id="queryByCoinIds" resultType="com.tomo.model.market.MarketTokenCategory">
-        SELECT <include refid="Base_Column_List"/>
+    <select id="queryByCoinIds" resultMap="MarketTokenCategoryResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
         FROM market_token_category
         WHERE coin_id IN
         <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
             #{item}
         </foreach>
+    </select>
+    <select id="pageQuery" resultMap="MarketTokenCategoryResultMap"
+            parameterType="com.tomo.model.req.MarketTokenCategoryReq">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM market_token_category
+        WHERE category = #{category}
+        <if test="tags != null and tags.size() > 0">
+            AND tags == ARRAY[<foreach item="tag" collection="tags" separator="," open="" close="">#{tag}</foreach>]::varchar[]
+        </if>
+        <if test="chainIndex != null">
+            AND chain_index = #{chainIndex}
+        </if>
+        <if test="address != null and address != ''">
+            AND address = #{address}
+        </if>
+        LIMIT #{pageSize} OFFSET #{pageNum} * #{pageSize}
     </select>
 
     <insert id="insertMarketTokenCategory" useGeneratedKeys="true" keyProperty="id">
@@ -42,10 +61,10 @@
     <update id="updateMarketTokenCategory">
         UPDATE market_token_category
         SET chain_index = #{chainIndex},
-            address = #{address},
-            coin_id = #{coinId},
-            category = #{category},
-            tags = #{tags},
+            address     = #{address},
+            coin_id     = #{coinId},
+            category    = #{category},
+            tags        = #{tags},
             update_time = #{updateTime},
             create_time = #{createTime}
         WHERE id = #{id}
