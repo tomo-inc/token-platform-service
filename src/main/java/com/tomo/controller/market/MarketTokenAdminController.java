@@ -1,4 +1,4 @@
-package com.tomo.controller;
+package com.tomo.controller.market;
 
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -16,20 +16,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("/v1")
+@RequestMapping("/v1/market/admin")
 public class MarketTokenAdminController {
 
     @Autowired
     private MarketTokenAdminService marketTokenAdminService;
 
-    @PostMapping("/market/admin/updateMarketToken")
+    @PostMapping("/updateMarketToken")
     public Result updateMarketToken(@RequestBody MarketTokenDTO tokenDTO) {
 
         marketTokenAdminService.updateMarketToken(tokenDTO);
         return ResultUtils.success("ok");
     }
 
-    @PostMapping("/market/admin/getMarketTokenList")
+    @PostMapping("/getMarketTokenList")
     public Result<IPage<MarketTokenDTO>> pageMarketToken(@RequestBody MarketTokenQueryReq queryDTO) {
         IPage<MarketTokenDTO> pageResult = marketTokenAdminService.pageMarketToken(queryDTO);
         return ResultUtils.success(pageResult);
