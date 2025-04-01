@@ -27,7 +27,8 @@
     </sql>
 
     <select id="selectMarketTokenPriceById" resultMap="MarketTokenPriceResultMap">
-        SELECT <include refid="Base_Column_List"/>
+        SELECT
+        <include refid="Base_Column_List"/>
         FROM market_token_price
         WHERE id = #{id}
     </select>
@@ -46,8 +47,18 @@
         INSERT INTO market_token_price(coin_id, chain_index, address, pool_address, is_pool_base_token, liquidity_usd,
                                        real_price,
                                        volume24h, change24h, market_cap, fdv_usd, update_time, create_time)
-        VALUES (#{coinId},#{chainIndex}, #{address}, #{poolAddress}, #{isPoolBaseToken}, #{liquidityUsd}, #{realPrice},
+        VALUES (#{coinId}, #{chainIndex}, #{address}, #{poolAddress}, #{isPoolBaseToken}, #{liquidityUsd}, #{realPrice},
                 #{volume24h}, #{change24h}, #{marketCap}, #{fdvUsd}, #{updateTime}, #{createTime})
+    </insert>
+    <insert id="batchInsert" parameterType="list">
+        INSERT INTO market_token_price (coin_id, chain_index, address, pool_address, is_pool_base_token, liquidity_usd,
+        real_price, volume24h, change24h, market_cap, fdv_usd, update_time, create_time)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.coinId}, #{item.chainIndex}, #{item.address}, #{item.poolAddress}, #{item.isPoolBaseToken},
+            #{item.liquidityUsd}, #{item.realPrice}, #{item.volume24h}, #{item.change24h}, #{item.marketCap},
+            #{item.fdvUsd}, #{item.updateTime}, #{item.createTime})
+        </foreach>
     </insert>
 
     <update id="updateMarketTokenPrice">

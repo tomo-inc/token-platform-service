@@ -70,6 +70,8 @@ public interface MarketTokenInfoMapper extends BaseMapper<MarketTokenInfo> {
 
     List<MarketTokenInfo> queryTokenList(@Param("list") List<MarketTokenReq> list);
 
+    void batchInsert(List<MarketTokenInfo> tokenInfoList);
+
 //    MarketTokenInfo selectMarketTokenInfoById(long id);
 //
 //    MarketTokenInfo selectByChainIndexAndAddress(Long chainIndex, String address);

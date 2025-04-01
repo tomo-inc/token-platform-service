@@ -64,6 +64,15 @@
         VALUES (#{chainIndex}, #{address}, #{isNative}, #{name}, #{symbol}, #{imageUrl}, #{decimals},
                 #{social}, #{totalSupply}, #{riskLevel}, #{forceSafe}, #{updateTime}, #{createTime})
     </insert>
+    <insert id="batchInsert">
+        INSERT INTO market_token_info(chain_index, address, is_native, name, symbol, image_url, decimals,
+                                      social, total_supply, risk_level, force_safe, update_time, create_time)
+        VALUES
+        <foreach collection="list" item="item" separator="," >
+            (#{item.chainIndex}, #{item.address}, #{item.isNative}, #{item.name}, #{item.symbol}, #{item.imageUrl}, #{item.decimals},
+            #{item.social}, #{item.totalSupply}, #{item.riskLevel}, #{item.forceSafe}, #{item.updateTime}, #{item.createTime})
+        </foreach>
+    </insert>
 
     <update id="updateMarketTokenInfo">
         UPDATE market_token_info

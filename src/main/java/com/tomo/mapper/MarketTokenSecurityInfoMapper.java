@@ -17,5 +17,5 @@ public interface MarketTokenSecurityInfoMapper {
 
     void deleteMarketTokenSecurityInfo(long id);
 
-    List<MarketTokenSecurityInfo> list(@Param("list") List<MarketTokenReq> list)
+    List<MarketTokenSecurityInfo> list(@Param("list") List<MarketTokenReq> list);
 }

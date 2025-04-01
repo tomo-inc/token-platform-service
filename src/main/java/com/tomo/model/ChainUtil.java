@@ -18,10 +18,15 @@ public class ChainUtil {
 
     @Getter
     private static Map<Long, String> nativeTokenAddrMap = new HashMap<>();
+    private static Map<Long, String> nativeTokenMap = new HashMap<>();
 
     static {
-        nativeTokenAddrMap.put(784L, "0x2::sui::SUI");
-        nativeTokenAddrMap.put(1100L, "EQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAM9c");
+        nativeTokenAddrMap.put(78400L, "0x2::sui::SUI");
+        nativeTokenAddrMap.put(110000L, "EQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAM9c");
+
+        nativeTokenMap.put(78400L, "0x2::sui::SUI");
+        nativeTokenMap.put(110000L, "EQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAM9c");
+        nativeTokenMap.put(100L, "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
     }
 
     // platformid -> enum
@@ -72,6 +77,19 @@ public class ChainUtil {
             return chainId.toString();
         } else {
             return chainId + "-" + address;
+
+        }
+    }
+
+    public static String getTokenKey(Long chainIndex, String address) {
+        ChainEnum chainEnum = ChainEnum.getChanByIndex(chainIndex);
+        String mainTokenAddr = chainEnum.getIsEVM() ? nativeTokenAddrMap.get(ChainEnum.ETH.getChainIndex()) : nativeTokenMap.get(chainIndex);
+
+        if (!StringUtils.hasText(address) || address.equalsIgnoreCase(mainTokenAddr)) {
+            return chainIndex.toString();
+        } else {
+            address = chainEnum.getIsEVM() ? address.toLowerCase() : address;
+            return chainIndex + "-" + address;
 
         }
     }
