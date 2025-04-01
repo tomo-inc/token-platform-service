@@ -1,6 +1,8 @@
 package com.tomo.service;
 
 import jakarta.annotation.Resource;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -27,6 +29,10 @@ public class RedisClient {
     public <T> List<T> hgetAll(String hashName, List<String> keys, Class<T> clazz) {
         HashOperations<String, String, String> hashOps = stringRedisTemplate.opsForHash();
         List<String> resultStr = hashOps.multiGet(hashName, keys);
+        resultStr = resultStr.stream().filter(StringUtils::isNoneBlank).toList();
+        if (CollectionUtils.isEmpty(resultStr)) {
+            return List.of();
+        }
         if (clazz == String.class) {
             return (List<T>) resultStr;
         }

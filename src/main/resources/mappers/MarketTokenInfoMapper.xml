@@ -8,6 +8,7 @@
     <resultMap id="MarketTokenInfoResultMap" type="com.tomo.model.market.MarketTokenInfo">
         <id property="id" column="id"/>
         <result property="chainIndex" column="chain_index"/>
+        <result property="coinId" column="coin_id"/>
         <result property="address" column="address"/>
         <result property="isNative" column="is_native"/>
         <result property="name" column="name"/>
@@ -23,7 +24,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, chain_index, address, is_native, name, symbol, image_url, decimals, social::text, total_supply,risk_level, force_safe, update_time, create_time
+        id, coin_id,chain_index, address, is_native, name, symbol, image_url, decimals, social::text, total_supply,risk_level, force_safe, update_time, create_time
     </sql>
 
     <select id="selectMarketTokenInfoById" resultMap="MarketTokenInfoResultMap">
@@ -50,17 +51,18 @@
     </select>
 
     <insert id="insertMarketTokenInfo" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO market_token_info(chain_index, address, is_native, name, symbol, image_url, decimals,
+        INSERT INTO market_token_info(coin_id, chain_index, address, is_native, name, symbol, image_url, decimals,
                                       social, total_supply, risk_level, force_safe, update_time, create_time)
-        VALUES (#{chainIndex}, #{address}, #{isNative}, #{name}, #{symbol}, #{imageUrl}, #{decimals},
+        VALUES (#{coinId}, #{chainIndex}, #{address}, #{isNative}, #{name}, #{symbol}, #{imageUrl}, #{decimals},
                 #{social}, #{totalSupply}, #{riskLevel}, #{forceSafe}, #{updateTime}, #{createTime})
     </insert>
     <insert id="batchInsert">
-        INSERT INTO market_token_info(chain_index, address, is_native, name, symbol, image_url, decimals,
+        INSERT INTO market_token_info(coin_id,chain_index, address, is_native, name, symbol, image_url, decimals,
         social, total_supply, risk_level, force_safe, update_time, create_time)
         VALUES
         <foreach collection="list" item="item" separator=",">
-            (#{item.chainIndex}, #{item.address}, #{item.isNative}, #{item.name}, #{item.symbol}, #{item.imageUrl},
+            (#{item.coinId},#{item.chainIndex}, #{item.address}, #{item.isNative}, #{item.name}, #{item.symbol},
+            #{item.imageUrl},
             #{item.decimals},
             #{item.social,typeHandler=com.tomo.mapper.type.JsonTypeHandler}::json, #{item.totalSupply},
             #{item.riskLevel}, #{item.forceSafe}, #{item.updateTime},
@@ -68,29 +70,5 @@
 
         </foreach>
     </insert>
-
-    <update id="updateMarketTokenInfo">
-        UPDATE market_token_info
-        SET chain_index  = #{chainIndex},
-            address      = #{address},
-            is_native    = #{isNative},
-            name         = #{name},
-            symbol       = #{symbol},
-            image_url    = #{imageUrl},
-            decimals     = #{decimals},
-            social       = #{social, typeHandler=com.tomo.mapper.type.JsonTypeHandler}::json,
-            total_supply = #{totalSupply},
-            risk_level   = #{riskLevel},
-            force_safe   = #{forceSafe},
-            update_time  = #{updateTime},
-            create_time  = #{createTime}
-        WHERE id = #{id}
-    </update>
-
-    <delete id="deleteMarketTokenInfo">
-        DELETE
-        FROM market_token_info
-        WHERE id = #{id}
-    </delete>
 
 </mapper>

@@ -8,9 +8,9 @@ import java.util.List;
 @Data
 public class MarketTokenCategory {
     private Long id;
+    private String coinId;
     private Long chainIndex;
     private String address;
-    private Long coinId;
     private String category;
     private List<String> tags;
     private Timestamp updateTime;

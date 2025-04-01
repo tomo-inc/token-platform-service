@@ -10,7 +10,7 @@ import java.util.Map;
 @Data
 public class MarketTokenBaseInfo {
     @JsonIgnore
-    private Long coinId;
+    private String coinId;
     private Long chainIndex;
     private String address;
     private Boolean isNative;

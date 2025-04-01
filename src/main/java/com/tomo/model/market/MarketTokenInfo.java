@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 @Data
 public class MarketTokenInfo {
     private Long id;
+    private String coinId;
     private Long chainIndex;
     private String address;
     private Boolean isNative;

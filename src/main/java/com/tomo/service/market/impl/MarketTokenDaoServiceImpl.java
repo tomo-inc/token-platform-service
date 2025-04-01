@@ -63,9 +63,9 @@ public class MarketTokenDaoServiceImpl implements MarketTokenDaoService {
             return new HashMap<>();
         }
 
-        List<Long> coinIdList = baseInfoList.stream().map(MarketTokenBaseInfo::getCoinId).toList();
+        List<String> coinIdList = baseInfoList.stream().map(MarketTokenBaseInfo::getCoinId).toList();
         List<MarketTokenPrice> priceList = marketTokenPriceMapper.queryByCoinIds(coinIdList);
-        Map<Long, MarketTokenPrice> priceMap = priceList.stream().collect(Collectors.toMap(MarketTokenPrice::getCoinId, price -> price));
+        Map<String, MarketTokenPrice> priceMap = priceList.stream().collect(Collectors.toMap(MarketTokenPrice::getCoinId, price -> price));
 
         Map<String, MarketTokenDetailInfo> resultMap = new HashMap<>();
         for (MarketTokenBaseInfo info : baseInfoList) {
@@ -121,7 +121,7 @@ public class MarketTokenDaoServiceImpl implements MarketTokenDaoService {
         tokenInfos.forEach(tokenInfo -> {
             List<MarketTokenCategory> categorys = categoryList.stream().filter(category1 -> category1.getCoinId().equals(tokenInfo.getId())).toList();
             MarketTokenBaseInfo baseInfo = new MarketTokenBaseInfo();
-            baseInfo.setCoinId(tokenInfo.getId());
+            baseInfo.setCoinId(tokenInfo.getCoinId());
             baseInfo.setChainIndex(tokenInfo.getChainIndex());
             baseInfo.setAddress(tokenInfo.getAddress());
             baseInfo.setIsNative(tokenInfo.getIsNative());

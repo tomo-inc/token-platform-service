@@ -16,15 +16,6 @@ import java.util.List;
 @Mapper
 public interface MarketTokenInfoMapper extends BaseMapper<MarketTokenInfo> {
 
-    @Select({
-            """
-            <script>
-                SELECT *
-                FROM market_token_info
-                WHERE chain_index = #{chainIndex} and address = #{address}
-            </script>
-            """
-    })
     MarketTokenInfo selectByChainIndexAndAddress(@Param("chainIndex")Long chainIndex, @Param("address") String address);
 
     @Select({
@@ -72,13 +63,4 @@ public interface MarketTokenInfoMapper extends BaseMapper<MarketTokenInfo> {
 
     void batchInsert(List<MarketTokenInfo> tokenInfoList);
 
-//    MarketTokenInfo selectMarketTokenInfoById(long id);
-//
-//    MarketTokenInfo selectByChainIndexAndAddress(Long chainIndex, String address);
-//
-//    void insertMarketTokenInfo(MarketTokenInfo marketTokenInfo);
-//
-//    void updateMarketTokenInfo(MarketTokenInfo marketTokenInfo);
-//
-//    void deleteMarketTokenInfo(long id);
 }

@@ -89,7 +89,7 @@ public class ChainUtil {
             return chainIndex.toString();
         } else {
             address = chainEnum.getIsEVM() ? address.toLowerCase() : address;
-            return chainIndex + "-" + address;
+            return chainIndex + "_" + address;
 
         }
     }

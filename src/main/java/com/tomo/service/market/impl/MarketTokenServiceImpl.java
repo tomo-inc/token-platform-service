@@ -140,7 +140,7 @@ public class MarketTokenServiceImpl implements MarketTokenService {
 
             // 创建代币价格信息列表
             List<MarketTokenPrice> tokenPriceList = tokenInfoList.stream()
-                    .map(tokenInfo -> createMarketTokenPrice(chainIndex, tokenInfo.getId(), nativeTokenInfo))
+                    .map(tokenInfo -> createMarketTokenPrice(chainIndex, nativeTokenInfo))
                     .toList();
 
             // 批量保存代币价格信息
@@ -150,7 +150,7 @@ public class MarketTokenServiceImpl implements MarketTokenService {
             List<MarketTokenDetailInfo> detailInfoList = tokenInfoList.stream()
                     .map(tokenInfo -> {
                         MarketTokenPrice tokenPrice = tokenPriceList.stream()
-                                .filter(price -> price.getCoinId().equals(tokenInfo.getId()))
+                                .filter(price -> price.getCoinId().equals(tokenInfo.getCoinId()))
                                 .findFirst()
                                 .orElse(null);
                         return createMarketTokenDetailInfo(chainIndex, tokenInfo, tokenPrice);
@@ -192,7 +192,7 @@ public class MarketTokenServiceImpl implements MarketTokenService {
             MarketTokenInfo tokenInfo = tokenInfoList.get(i);
             DexTokenResp.DexData.Attributes attributes = dexTokenResp.getData().get(i).getAttributes();
 
-            MarketTokenPrice tokenPrice = createMarketTokenPrice(chainIndex, tokenInfo.getId(), attributes);
+            MarketTokenPrice tokenPrice = createMarketTokenPrice(chainIndex, attributes);
             tokenPriceList.add(tokenPrice);
 
             MarketTokenDetailInfo detailInfo = createMarketTokenDetailInfo(chainIndex, tokenInfo, tokenPrice);
@@ -209,6 +209,7 @@ public class MarketTokenServiceImpl implements MarketTokenService {
     private MarketTokenInfo createMarketTokenInfo(Long chainIndex, CoinInfoResp nativeTokenInfo) {
         MarketTokenInfo tokenInfo = new MarketTokenInfo();
 
+        tokenInfo.setCoinId(ChainUtil.getTokenKey(chainIndex, ""));
         tokenInfo.setChainIndex(chainIndex);
         tokenInfo.setAddress("");
         tokenInfo.setIsNative(true);
@@ -251,28 +252,29 @@ public class MarketTokenServiceImpl implements MarketTokenService {
         return tokenInfo;
     }
 
-    private MarketTokenPrice createMarketTokenPrice(Long chainIndex, Long coinId, CoinInfoResp nativeTokenInfo) {
+    private MarketTokenPrice createMarketTokenPrice(Long chainIndex, CoinInfoResp nativeTokenInfo) {
         MarketTokenPrice tokenPrice = new MarketTokenPrice();
-        tokenPrice.setCoinId(coinId);
+        tokenPrice.setCoinId(ChainUtil.getTokenKey(chainIndex, ""));
         tokenPrice.setChainIndex(chainIndex);
         tokenPrice.setAddress("");
         CoinInfoResp.MarketData marketData = nativeTokenInfo.getMarketData();
 
         tokenPrice.setLiquidityUsd(marketData.getCirculatingSupply() == null ? null : marketData.getCirculatingSupply());
         tokenPrice.setRealPrice(marketData.getCurrentPrice() == null ? null : marketData.getCurrentPrice().getUsd());
-        tokenPrice.setVolume24h(marketData.getMarketCapChange24H()==null?null:marketData.getMarketCapChange24H());
+        tokenPrice.setVolume24h(marketData.getMarketCapChange24H() == null ? null : marketData.getMarketCapChange24H());
         tokenPrice.setChange24h(marketData.getPriceChange24H() == null ? null : BigDecimal.valueOf(marketData.getPriceChange24H()));
         tokenPrice.setMarketCap(marketData.getMarketCap() == null ? null : marketData.getMarketCap().getUsd());
-        tokenPrice.setFdvUsd(marketData.getFullyDilutedValuation()==null? null : marketData.getFullyDilutedValuation().getUsd());
+        tokenPrice.setFdvUsd(marketData.getFullyDilutedValuation() == null ? null : marketData.getFullyDilutedValuation().getUsd());
         tokenPrice.setUpdateTime(new Timestamp(System.currentTimeMillis()));
         tokenPrice.setCreateTime(new Timestamp(System.currentTimeMillis()));
 
         return tokenPrice;
     }
 
-    private MarketTokenPrice createMarketTokenPrice(Long chainIndex, Long coinId, DexTokenResp.DexData.Attributes attributes) {
+    private MarketTokenPrice createMarketTokenPrice(Long chainIndex,
+                                                    DexTokenResp.DexData.Attributes attributes) {
         MarketTokenPrice tokenPrice = new MarketTokenPrice();
-        tokenPrice.setCoinId(coinId);
+        tokenPrice.setCoinId(ChainUtil.getTokenKey(chainIndex, attributes.getAddress()));
         tokenPrice.setChainIndex(chainIndex);
         tokenPrice.setAddress(attributes.getAddress());
         tokenPrice.setRealPrice(attributes.getPriceUsd());
@@ -285,9 +287,10 @@ public class MarketTokenServiceImpl implements MarketTokenService {
         return tokenPrice;
     }
 
-    private MarketTokenDetailInfo createMarketTokenDetailInfo(Long chainIndex, MarketTokenInfo tokenInfo, MarketTokenPrice tokenPrice) {
+    private MarketTokenDetailInfo createMarketTokenDetailInfo(Long chainIndex, MarketTokenInfo tokenInfo,
+                                                              MarketTokenPrice tokenPrice) {
         MarketTokenDetailInfo detailInfo = new MarketTokenDetailInfo();
-        detailInfo.setCoinId(tokenInfo.getId());
+        detailInfo.setCoinId(tokenInfo.getCoinId());
         detailInfo.setChainIndex(chainIndex);
         detailInfo.setAddress(tokenInfo.getAddress());
         detailInfo.setIsNative(tokenInfo.getIsNative());
@@ -307,7 +310,7 @@ public class MarketTokenServiceImpl implements MarketTokenService {
     @Override
     public List<MarketTokenDetailInfo> category(MarketTokenCategoryReq req) {
         int pageNum = req.getPageNum() == null ? DEFAULT_PAGE_NUM : req.getPageNum();
-        int pageSize = req.getPageSize() == null? DEFAULT_PAGE_SIZE : req.getPageSize();
+        int pageSize = req.getPageSize() == null ? DEFAULT_PAGE_SIZE : req.getPageSize();
         req.setPageNum(pageNum - 1);
         req.setPageSize(pageSize);
 
@@ -323,16 +326,16 @@ public class MarketTokenServiceImpl implements MarketTokenService {
         }).toList();
 
         List<MarketTokenInfo> baseInfoList = marketTokenInfoMapper.queryTokenList(tokenReqList);
-        Map<Long, MarketTokenInfo> baseMap = baseInfoList.stream().collect(Collectors.toMap(MarketTokenInfo::getId, e -> e));
-        List<MarketTokenPrice> priceList = marketTokenPriceMapper.queryByCoinIds(baseInfoList.stream().map(MarketTokenInfo::getId).toList());
-        Map<Long, MarketTokenPrice> priceMap = priceList.stream().collect(Collectors.toMap(MarketTokenPrice::getCoinId, e -> e));
+        Map<String, MarketTokenInfo> baseMap = baseInfoList.stream().collect(Collectors.toMap(MarketTokenInfo::getCoinId, e -> e));
+        List<MarketTokenPrice> priceList = marketTokenPriceMapper.queryByCoinIds(baseInfoList.stream().map(MarketTokenInfo::getCoinId).toList());
+        Map<String, MarketTokenPrice> priceMap = priceList.stream().collect(Collectors.toMap(MarketTokenPrice::getCoinId, e -> e));
 
         List<MarketTokenDetailInfo> resultList = new ArrayList<>();
         categoryList.forEach(e -> {
             MarketTokenInfo baseInfo = baseMap.get(e.getCoinId());
             MarketTokenPrice price = priceMap.get(e.getCoinId());
             MarketTokenDetailInfo detailInfo = new MarketTokenDetailInfo();
-            detailInfo.setCoinId(baseInfo.getId());
+            detailInfo.setCoinId(baseInfo.getCoinId());
             detailInfo.setChainIndex(baseInfo.getChainIndex());
             detailInfo.setAddress(baseInfo.getAddress());
             detailInfo.setIsNative(baseInfo.getIsNative());

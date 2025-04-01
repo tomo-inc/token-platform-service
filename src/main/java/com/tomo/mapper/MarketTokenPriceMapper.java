@@ -17,7 +17,7 @@ public interface MarketTokenPriceMapper {
 
     void deleteMarketTokenPrice(long id);
 
-    List<MarketTokenPrice> queryByCoinIds(List<Long> coinIdList);
+    List<MarketTokenPrice> queryByCoinIds(List<String> coinIdList);
 
     void batchInsert(List<MarketTokenPrice> tokenPriceList);
 }
