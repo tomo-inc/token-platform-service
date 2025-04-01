@@ -47,15 +47,6 @@
         <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
             (#{item.chainIndex}, #{item.address})
         </foreach>
-        UNION
-        SELECT
-        <include refid="Base_Column_List"/>
-        FROM market_token_info
-        WHERE chain_index IN
-        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
-            #{item.chainIndex}
-        </foreach>
-        AND address IS NULL
     </select>
 
     <insert id="insertMarketTokenInfo" useGeneratedKeys="true" keyProperty="id">
@@ -66,29 +57,33 @@
     </insert>
     <insert id="batchInsert">
         INSERT INTO market_token_info(chain_index, address, is_native, name, symbol, image_url, decimals,
-                                      social, total_supply, risk_level, force_safe, update_time, create_time)
+        social, total_supply, risk_level, force_safe, update_time, create_time)
         VALUES
-        <foreach collection="list" item="item" separator="," >
-            (#{item.chainIndex}, #{item.address}, #{item.isNative}, #{item.name}, #{item.symbol}, #{item.imageUrl}, #{item.decimals},
-            #{item.social}, #{item.totalSupply}, #{item.riskLevel}, #{item.forceSafe}, #{item.updateTime}, #{item.createTime})
+        <foreach collection="list" item="item" separator=",">
+            (#{item.chainIndex}, #{item.address}, #{item.isNative}, #{item.name}, #{item.symbol}, #{item.imageUrl},
+            #{item.decimals},
+            #{item.social,typeHandler=com.tomo.mapper.type.JsonTypeHandler}::json, #{item.totalSupply},
+            #{item.riskLevel}, #{item.forceSafe}, #{item.updateTime},
+            #{item.createTime});
+
         </foreach>
     </insert>
 
     <update id="updateMarketTokenInfo">
         UPDATE market_token_info
-        SET chain_index = #{chainIndex},
-            address     = #{address},
-            is_native   = #{isNative},
-            name        = #{name},
-            symbol      = #{symbol},
-            image_url   = #{imageUrl},
-            decimals    = #{decimals},
-            social      = #{social, typeHandler=com.tomo.mapper.type.JsonTypeHandler}::json,
+        SET chain_index  = #{chainIndex},
+            address      = #{address},
+            is_native    = #{isNative},
+            name         = #{name},
+            symbol       = #{symbol},
+            image_url    = #{imageUrl},
+            decimals     = #{decimals},
+            social       = #{social, typeHandler=com.tomo.mapper.type.JsonTypeHandler}::json,
             total_supply = #{totalSupply},
-            risk_level  = #{riskLevel},
-            force_safe  = #{forceSafe},
-            update_time = #{updateTime},
-            create_time = #{createTime}
+            risk_level   = #{riskLevel},
+            force_safe   = #{forceSafe},
+            update_time  = #{updateTime},
+            create_time  = #{createTime}
         WHERE id = #{id}
     </update>
 

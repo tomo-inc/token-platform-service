@@ -4,12 +4,11 @@ import com.tomo.feign.CoinGeckoClient;
 import com.tomo.mapper.MarketTokenCategoryMapper;
 import com.tomo.mapper.MarketTokenInfoMapper;
 import com.tomo.mapper.MarketTokenPriceMapper;
-import com.tomo.model.ChainCoinGeckoEnum;
-import com.tomo.model.ChainUtil;
-import com.tomo.model.Constants;
+import com.tomo.model.*;
 import com.tomo.model.market.MarketTokenCategory;
 import com.tomo.model.market.MarketTokenInfo;
 import com.tomo.model.market.MarketTokenPrice;
+import com.tomo.model.market.SocialInfo;
 import com.tomo.model.req.MarketTokenCategoryReq;
 import com.tomo.model.req.MarketTokenReq;
 import com.tomo.model.resp.*;
@@ -98,8 +97,9 @@ public class MarketTokenServiceImpl implements MarketTokenService {
 
         for (Map.Entry<Long, List<MarketTokenReq>> entry : groupByChainMap.entrySet()) {
             Long chainIndex = entry.getKey();
+            ChainEnum chainEnum = ChainEnum.getChanByIndex(chainIndex);
             List<MarketTokenReq> chainTokens = entry.getValue();
-            ChainCoinGeckoEnum chainInfoEnum = ChainUtil.getChainAndCoinGeckoMap().get(chainIndex);
+            ChainCoinGeckoEnum chainInfoEnum = ChainUtil.getChainAndCoinGeckoMap().get(chainEnum.getChainId());
             if (chainInfoEnum == null) {
                 log.info("MarketTokenServiceImpl#addTokens chainIndex {} not found", chainIndex);
                 continue;
@@ -127,46 +127,42 @@ public class MarketTokenServiceImpl implements MarketTokenService {
     private void handleNativeTokens(Long chainIndex, ChainCoinGeckoEnum chainInfoEnum,
                                     List<MarketTokenReq> nativeTokens, List<MarketTokenDetailInfo> resultList) {
         String coinId = chainInfoEnum.getCoinGeckoEnum().getCoinId();
-        Map<String, TokenPriceResp> nativeTokenPriceMap = coinGeckoClient.getPlatformTokenPrice(coinId);
         CoinInfoResp nativeTokenInfo = coinGeckoClient.getPlatformCoinInfo(coinId);
 
-        if (nativeTokenPriceMap != null && nativeTokenInfo != null) {
-            TokenPriceResp nativeTokenPrice = nativeTokenPriceMap.get(coinId);
-            if (nativeTokenPrice != null) {
-                // 创建代币基本信息列表
-                List<MarketTokenInfo> tokenInfoList = nativeTokens.stream()
+        if (nativeTokenInfo != null) {
+            // 创建代币基本信息列表
+            List<MarketTokenInfo> tokenInfoList = nativeTokens.stream()
                     .map(token -> createMarketTokenInfo(chainIndex, nativeTokenInfo))
                     .toList();
-                
-                // 批量保存代币基本信息
-                marketTokenInfoMapper.batchInsert(tokenInfoList);
 
-                // 创建代币价格信息列表
-                List<MarketTokenPrice> tokenPriceList = tokenInfoList.stream()
-                    .map(tokenInfo -> createMarketTokenPrice(chainIndex, tokenInfo.getId(), nativeTokenPrice))
+            // 批量保存代币基本信息
+            marketTokenInfoMapper.batchInsert(tokenInfoList);
+
+            // 创建代币价格信息列表
+            List<MarketTokenPrice> tokenPriceList = tokenInfoList.stream()
+                    .map(tokenInfo -> createMarketTokenPrice(chainIndex, tokenInfo.getId(), nativeTokenInfo))
                     .toList();
-                
-                // 批量保存代币价格信息
-                marketTokenPriceMapper.batchInsert(tokenPriceList);
 
-                // 创建并保存详细信息到缓存
-                List<MarketTokenDetailInfo> detailInfoList = tokenInfoList.stream()
+            // 批量保存代币价格信息
+            marketTokenPriceMapper.batchInsert(tokenPriceList);
+
+            // 创建并保存详细信息到缓存
+            List<MarketTokenDetailInfo> detailInfoList = tokenInfoList.stream()
                     .map(tokenInfo -> {
                         MarketTokenPrice tokenPrice = tokenPriceList.stream()
-                            .filter(price -> price.getCoinId().equals(tokenInfo.getId()))
-                            .findFirst()
-                            .orElse(null);
+                                .filter(price -> price.getCoinId().equals(tokenInfo.getId()))
+                                .findFirst()
+                                .orElse(null);
                         return createMarketTokenDetailInfo(chainIndex, tokenInfo, tokenPrice);
                     })
                     .toList();
 
-                // 批量保存到缓存
-                detailInfoList.forEach(detailInfo ->
+            // 批量保存到缓存
+            detailInfoList.forEach(detailInfo ->
                     redisClient.hset(Constants.MARKET_TOKEN_DETAIL_REDIS_KEY,
-                        ChainUtil.getTokenKey(chainIndex, ""), detailInfo));
-                
-                resultList.addAll(detailInfoList);
-            }
+                            ChainUtil.getTokenKey(chainIndex, ""), detailInfo));
+
+            resultList.addAll(detailInfoList);
         }
     }
 
@@ -212,14 +208,29 @@ public class MarketTokenServiceImpl implements MarketTokenService {
 
     private MarketTokenInfo createMarketTokenInfo(Long chainIndex, CoinInfoResp nativeTokenInfo) {
         MarketTokenInfo tokenInfo = new MarketTokenInfo();
+
         tokenInfo.setChainIndex(chainIndex);
         tokenInfo.setAddress("");
         tokenInfo.setIsNative(true);
         tokenInfo.setName(nativeTokenInfo.getName());
         tokenInfo.setSymbol(nativeTokenInfo.getSymbol());
         tokenInfo.setImageUrl(nativeTokenInfo.getImage().getSmall());
-        tokenInfo.setDecimals(18);
+//        tokenInfo.setDecimals(nativeTokenInfo.getDetailPlatforms().);
+        CoinInfoResp.Links links = nativeTokenInfo.getLinks();
+        SocialInfo socialInfo = new SocialInfo();
+        if (!CollectionUtils.isEmpty(nativeTokenInfo.getLinks().getHomepage()) && StringUtils.hasLength(nativeTokenInfo.getLinks().getHomepage().get(0))) {
+            socialInfo.setWebsiteUrl(nativeTokenInfo.getLinks().getHomepage().get(0));
+        }
+        if (StringUtils.hasLength(nativeTokenInfo.getLinks().getTwitterScreenName())) {
+            socialInfo.setTwitterUrl(String.format("https://x.com/%s", nativeTokenInfo.getLinks().getTwitterScreenName()));
+        }
+        if (StringUtils.hasLength(nativeTokenInfo.getLinks().getTelegramChannelIdentifier())) {
+            socialInfo.setTelegramUrl(String.format("https://t.me/%s", nativeTokenInfo.getLinks().getTelegramChannelIdentifier()));
+        }
+        tokenInfo.setSocial(socialInfo);
         tokenInfo.setTotalSupply(nativeTokenInfo.getMarketData() != null ? nativeTokenInfo.getMarketData().getTotalSupply() : null);
+        tokenInfo.setForceSafe(false);
+        tokenInfo.setRiskLevel(RiskLevel.NONE.getCode());
         tokenInfo.setUpdateTime(new Timestamp(System.currentTimeMillis()));
         tokenInfo.setCreateTime(new Timestamp(System.currentTimeMillis()));
         return tokenInfo;
@@ -240,17 +251,22 @@ public class MarketTokenServiceImpl implements MarketTokenService {
         return tokenInfo;
     }
 
-    private MarketTokenPrice createMarketTokenPrice(Long chainIndex, Long coinId, TokenPriceResp nativeTokenPrice) {
+    private MarketTokenPrice createMarketTokenPrice(Long chainIndex, Long coinId, CoinInfoResp nativeTokenInfo) {
         MarketTokenPrice tokenPrice = new MarketTokenPrice();
         tokenPrice.setCoinId(coinId);
         tokenPrice.setChainIndex(chainIndex);
         tokenPrice.setAddress("");
-        tokenPrice.setRealPrice(BigDecimal.valueOf(nativeTokenPrice.getRealPrice()));
-        tokenPrice.setVolume24h(BigDecimal.valueOf(nativeTokenPrice.getVolume24h()));
-        tokenPrice.setChange24h(BigDecimal.valueOf(nativeTokenPrice.getChange24h()));
-        tokenPrice.setMarketCap(BigDecimal.valueOf(nativeTokenPrice.getMarketCap()));
+        CoinInfoResp.MarketData marketData = nativeTokenInfo.getMarketData();
+
+        tokenPrice.setLiquidityUsd(marketData.getCirculatingSupply() == null ? null : marketData.getCirculatingSupply());
+        tokenPrice.setRealPrice(marketData.getCurrentPrice() == null ? null : marketData.getCurrentPrice().getUsd());
+        tokenPrice.setVolume24h(marketData.getMarketCapChange24H()==null?null:marketData.getMarketCapChange24H());
+        tokenPrice.setChange24h(marketData.getPriceChange24H() == null ? null : BigDecimal.valueOf(marketData.getPriceChange24H()));
+        tokenPrice.setMarketCap(marketData.getMarketCap() == null ? null : marketData.getMarketCap().getUsd());
+        tokenPrice.setFdvUsd(marketData.getFullyDilutedValuation()==null? null : marketData.getFullyDilutedValuation().getUsd());
         tokenPrice.setUpdateTime(new Timestamp(System.currentTimeMillis()));
         tokenPrice.setCreateTime(new Timestamp(System.currentTimeMillis()));
+
         return tokenPrice;
     }
 

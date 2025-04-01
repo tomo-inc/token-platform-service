@@ -104,6 +104,11 @@ public class MarketTokenDaoServiceImpl implements MarketTokenDaoService {
     @Override
     public List<MarketTokenBaseInfo> queryBaseInfo(List<MarketTokenReq> list) {
 
+        list.forEach(e->{
+            if (e.getAddress() == null) {
+                e.setAddress("");
+            }
+        });
         List<MarketTokenInfo> tokenInfos = marketTokenInfoMapper.queryTokenList(list);
         if (CollectionUtils.isEmpty(tokenInfos)) {
             return List.of();

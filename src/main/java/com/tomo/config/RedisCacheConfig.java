@@ -14,6 +14,7 @@ import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisClusterConfiguration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -42,22 +43,18 @@ public class RedisCacheConfig {
 
     @Bean
     public LettuceConnectionFactory redisConnectionFactory() {
-        ClusterTopologyRefreshOptions topologyRefreshOptions = ClusterTopologyRefreshOptions.builder()
-                .enablePeriodicRefresh(Duration.ofMillis(redisTimeout))
-                .build();
+        RedisStandaloneConfiguration standaloneConfig = new RedisStandaloneConfiguration();
+        standaloneConfig.setHostName(host);
+        standaloneConfig.setPort(port);
+        standaloneConfig.setUsername(username);
+        standaloneConfig.setPassword(pwd);
+
         LettuceClientConfiguration clientConfig = LettuceClientConfiguration.builder()
-                .readFrom(ReadFrom.REPLICA_PREFERRED)
                 .commandTimeout(Duration.ofMillis(redisTimeout))
-                .clientOptions(ClusterClientOptions.builder().topologyRefreshOptions(topologyRefreshOptions).build())
-                .useSsl()
+//                .useSsl() // Keep this only if actually needed
                 .build();
 
-        // Redis 连接配置
-        RedisClusterConfiguration clusterConfiguration = new RedisClusterConfiguration(Arrays.asList(host + ":" + port));
-        clusterConfiguration.setUsername(username);
-        clusterConfiguration.setPassword(pwd);
-
-        return new LettuceConnectionFactory(clusterConfiguration, clientConfig);
+        return new LettuceConnectionFactory(standaloneConfig, clientConfig);
     }
 
     @Bean
