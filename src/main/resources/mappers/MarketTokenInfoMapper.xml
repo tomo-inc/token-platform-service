@@ -26,6 +26,24 @@
     <sql id="Base_Column_List">
         id, coin_id,chain_index, address, is_native, name, symbol, image_url, decimals, social::text, total_supply,risk_level, force_safe, update_time, create_time
     </sql>
+    <update id="updateById">
+        UPDATE market_token_info
+        SET
+        <if test="coinId != null">coin_id = #{coinId},</if>
+        <if test="chainIndex != null">chain_index = #{chainIndex},</if>
+        <if test="address != null">address = #{address},</if>
+        <if test="isNative != null">is_native = #{isNative},</if>
+        <if test="name != null">name = #{name},</if>
+        <if test="symbol != null">symbol = #{symbol},</if>
+        <if test="imageUrl != null">image_url = #{imageUrl},</if>
+        <if test="decimals != null">decimals = #{decimals},</if>
+        <if test="social != null">social = #{social,typeHandler=com.tomo.mapper.type.JsonTypeHandler}::json,</if>
+        <if test="totalSupply != null">total_supply = #{totalSupply},</if>
+        <if test="riskLevel != null">risk_level = #{riskLevel},</if>
+        <if test="forceSafe != null">force_safe = #{forceSafe},</if>
+        <if test="updateTime != null">update_time = #{updateTime}</if>
+        WHERE id = #{id}
+    </update>
 
     <select id="selectMarketTokenInfoById" resultMap="MarketTokenInfoResultMap">
         SELECT
@@ -53,7 +71,7 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM market_token_info
-        WHERE social::text = 'null'
+        WHERE social is null
         order by id desc
         LIMIT 100
     </select>

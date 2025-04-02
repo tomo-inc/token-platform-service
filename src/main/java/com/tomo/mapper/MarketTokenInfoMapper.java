@@ -66,4 +66,7 @@ public interface MarketTokenInfoMapper extends BaseMapper<MarketTokenInfo> {
 
     List<MarketTokenInfo> querySocialNull();
 
+    int updateById(MarketTokenInfo tokenInfo);
+
+
 }

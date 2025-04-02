@@ -8,6 +8,7 @@ import com.tomo.model.resp.DexTokensPriceResp;
 import com.tomo.model.resp.NativeCoinSimpleInfoResp;
 import com.tomo.model.resp.OnchainOHLCVResp;
 import com.tomo.model.resp.TokenPriceResp;
+import com.tomo.model.resp.coingecko.CoinGeckoTokenInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,8 +18,8 @@ import java.util.Map;
 
 // todo network
 @FeignClient(name = "coingecko-feign",
-             url = "https://pro-api.coingecko.com/api/v3",
-             configuration = CoinGeckoClientConfig.class)
+        url = "https://pro-api.coingecko.com/api/v3",
+        configuration = CoinGeckoClientConfig.class)
 public interface CoinGeckoClient {
     // platform
     @GetMapping("/asset_platforms")
@@ -48,12 +49,11 @@ public interface CoinGeckoClient {
                                              @PathVariable("days") Integer days);
 
 
-
     // onchain
     @GetMapping("/onchain/networks/{network}/pools/{poolAddress}/ohlcv/{interval}?limit={limit}&aggregate={aggregate}&token={token}")
     OnchainOHLCVResp getOnchainOHLCV(@PathVariable("network") String network,
                                      @PathVariable("poolAddress") String poolAddress,
-                                     @PathVariable("interval")  String interval,
+                                     @PathVariable("interval") String interval,
                                      @PathVariable("limit") Integer limit,
                                      @PathVariable("aggregate") Integer aggregate,
                                      @PathVariable("token") String token);
@@ -61,17 +61,21 @@ public interface CoinGeckoClient {
 
     @GetMapping("/onchain/networks/{network}/tokens/multi/{address}?include=top_pools")
     DexTokenResp batchGetTokenInfo(@PathVariable("network") String network,
-                                   @PathVariable("address") String address) ;
+                                   @PathVariable("address") String address);
 
     @GetMapping("/onchain/networks/{network}/tokens/multi/{address}")
     DexTokenResp batchGetSimpleTokenInfo(@PathVariable("network") String network,
-                                         @PathVariable("address") String address) ;
+                                         @PathVariable("address") String address);
 
 
     @GetMapping("/onchain/simple/networks/{network}/token_price/{address}")
     DexTokensPriceResp batchGetTokenPrice(@PathVariable("network") String network,
                                           @PathVariable("address") String addresses);
 
+
+    @GetMapping("/onchain/networks/{network}/tokens/{address}/info")
+    CoinGeckoTokenInfo getTokenInfo(@PathVariable("network") String network,
+                                    @PathVariable("address") String address);
 
 
 }

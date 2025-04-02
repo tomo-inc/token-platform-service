@@ -12,7 +12,7 @@ import com.tomo.model.market.SocialInfo;
 import com.tomo.model.req.MarketTokenCategoryReq;
 import com.tomo.model.req.MarketTokenReq;
 import com.tomo.model.resp.*;
-import com.tomo.service.RedisClient;
+import com.tomo.model.resp.coingecko.CoinGeckoTokenInfo;
 import com.tomo.service.market.MarketTokenDaoService;
 import com.tomo.service.market.MarketTokenService;
 import lombok.extern.slf4j.Slf4j;
@@ -371,8 +371,45 @@ public class MarketTokenServiceImpl implements MarketTokenService {
     @Override
     public void updateSocialInfo() {
         List<MarketTokenInfo> tokenInfoList = marketTokenInfoMapper.querySocialNull();
-        if (!CollectionUtils.isEmpty(tokenInfoList)) {
-
+        if (CollectionUtils.isEmpty(tokenInfoList)) {
+            return;
         }
+        for (MarketTokenInfo tokenInfo : tokenInfoList) {
+
+            try {
+                ChainEnum chainEnum = ChainEnum.getChanByIndex(tokenInfo.getChainIndex());
+                ChainCoinGeckoEnum chainInfoEnum = ChainUtil.getChainAndCoinGeckoMap().get(chainEnum.getChainId());
+                if (chainInfoEnum == null) {
+                    log.info("MarketTokenServiceImpl#addTokens chainIndex {} not found", tokenInfo.getChainIndex());
+                    continue;
+                }
+
+                CoinGeckoTokenInfo geckoTokenInfo = coinGeckoClient.getTokenInfo(chainInfoEnum.getCoinGeckoEnum().getNetworkId(), tokenInfo.getAddress());
+                if (geckoTokenInfo == null || geckoTokenInfo.getData() == null || geckoTokenInfo.getData().getAttributes() == null) {
+                    log.info("MarketTokenServiceImpl#updateSocialInfo geckoTokenInfo is null, chainIndex {}, address {}", tokenInfo.getChainIndex(), tokenInfo.getAddress());
+                    continue;
+                }
+
+                CoinGeckoTokenInfo.Attributes attributes = geckoTokenInfo.getData().getAttributes();
+                SocialInfo socialInfo = new SocialInfo();
+                if (!CollectionUtils.isEmpty(attributes.getWebsites())) {
+                    socialInfo.setWebsiteUrl(attributes.getWebsites().get(0));
+                }
+                if (StringUtils.hasLength(attributes.getTwitterHandle())) {
+                    socialInfo.setTwitterUrl(String.format("https://x.com/%s", attributes.getTwitterHandle()));
+                }
+                if (StringUtils.hasLength(attributes.getTelegramHandle())) {
+                    socialInfo.setTelegramUrl(String.format("https://t.me/%s", attributes.getTelegramHandle()));
+                }
+
+                tokenInfo.setSocial(socialInfo);
+
+                marketTokenInfoMapper.updateById(tokenInfo);
+            } catch (Exception e) {
+                log.error("MarketTokenServiceImpl#updateSocialInfo error, chainIndex {}, address {}", tokenInfo.getChainIndex(), tokenInfo.getAddress(), e);
+            }
+        }
+
+
     }
 }
