@@ -57,5 +57,16 @@ public interface MarketTokenInfoMapper extends BaseMapper<MarketTokenInfo> {
 
     int updateById(MarketTokenInfo tokenInfo);
 
+    @Select("""
+        select t.id,t.address,t.chain_index FROM market_token_info t
+        where chain_index = #{chainIndex} and address is not null and (force_safe IS NULL OR force_safe <> 1) and (risk != 4 or risk is null)
+    """)
+    List<MarketTokenInfo> getSecurityList(Long chainIndex);
 
+    @Select("""
+        select t.id,t.address,t.chain_index FROM market_token_info t
+        where chain_index = #{chainIndex} and address is not null and risk = 0 and (force_safe IS NULL OR force_safe <> 1)
+        limit 500
+    """)
+    List<MarketTokenInfo> getNullSecurityList(Long chainIndex);
 }

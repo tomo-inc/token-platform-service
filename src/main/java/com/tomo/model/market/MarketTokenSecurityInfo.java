@@ -1,6 +1,9 @@
 package com.tomo.model.market;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -8,6 +11,9 @@ import java.util.List;
 import java.util.Map;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class MarketTokenSecurityInfo {
     private Long id;
     private Long chainIndex;

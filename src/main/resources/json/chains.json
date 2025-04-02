@@ -1,0 +1,751 @@
+[
+  {
+    "name": "BITCOIN",
+    "platformType": "BTC",
+    "coinGeckoNativeCoinId": "bitcoin",
+    "chainId": 0,
+    "okxId": "0",
+    "rpcUrl": "https://mempool.space/api"
+  },
+  {
+    "name": "DOGECOIN",
+    "platformType": "DOGE",
+    "coinGeckoId": "drc-20",
+    "coinGeckoNativeCoinId": "dogecoin",
+    "okxId": "3",
+    "rpcUrl": "https://api.bitcore.io/api/DOGE/mainnet"
+  },
+  {
+    "name": "BASE",
+    "platformType": "EVM",
+    "coinGeckoId": "base",
+    "coinGeckoDexId": "base",
+    "coinGeckoNativeCoinId": "ethereum",
+    "ankrId": "base",
+    "rangoId": "BASE",
+    "okxId": "8453",
+    "chainId": 8453,
+    "rpcUrl": "https://base-mainnet.g.alchemy.com/v2/DR7Jtd4NSYTtAY7Heme8ml-j6oBCZgGO",
+    "supportNoFeeSwap": true,
+    "loan": 30000000000000,
+    "rpcUrls": [
+      "https://base-mainnet.g.alchemy.com/v2/DR7Jtd4NSYTtAY7Heme8ml-j6oBCZgGO",
+      "https://rpc.ankr.com/base/c2487bd8fe1c09aca100f8c32f847cadb5632bd92c1a9baee1107a81de3c1dfc"
+    ],
+    "blockExplorerName": "",
+    "blockExplorerUrl": "https://basescan.org",
+    "blockExplorerApiUrl": ""
+  },
+  {
+    "name": "SOLANA",
+    "platformType": "SOLANA",
+    "coinGeckoId": "solana",
+    "coinGeckoDexId": "solana",
+    "coinGeckoNativeCoinId": "solana",
+    "rangoId": "SOLANA",
+    "okxId": "501",
+    "chainId": 501,
+    "rpcUrl": "https://mainnet.helius-rpc.com/?api-key=ac6f0298-d53b-4a04-8389-7966584a67d1",
+    "supportNoFeeSwap": true,
+    "loan": "500000"
+  },
+  {
+    "name": "ETH",
+    "platformType": "EVM",
+    "coinGeckoId": "ethereum",
+    "coinGeckoDexId": "eth",
+    "coinGeckoNativeCoinId": "ethereum",
+    "ankrId": "eth",
+    "rangoId": "ETH",
+    "okxId": "1",
+    "chainId": 1,
+    "rpcUrl": "https://eth-mainnet.g.alchemy.com/v2/DR7Jtd4NSYTtAY7Heme8ml-j6oBCZgGOm",
+    "rpcUrls": [
+      "https://eth-mainnet.g.alchemy.com/v2/RtiObPHFZnEsl72kfnQ5Q1bk0Aj8WFwD",
+      "https://eth-mainnet.g.alchemy.com/v2/DR7Jtd4NSYTtAY7Heme8ml-j6oBCZgGO",
+      "https://mainnet.infura.io/v3/e42637ee1f664cad93e70bbf62196769"
+    ],
+    "blockExplorerName": "Etherscan",
+    "blockExplorerUrl": "https://etherscan.io",
+    "blockExplorerApiUrl": "https://api.etherscan.io/api"
+  },
+  {
+    "name": "LINEA",
+    "platformType": "EVM",
+    "coinGeckoId": "linea",
+    "coinGeckoDexId": "linea",
+    "coinGeckoNativeCoinId": "ethereum",
+    "ankrId": "linea",
+    "rangoId": "LINEA",
+    "okxId": "59144",
+    "chainId": 59144,
+    "rpcUrl": "https://linea-mainnet.infura.io/v3/e42637ee1f664cad93e70bbf62196769",
+    "supportNoFeeSwap": true,
+    "loan": 30000000000000,
+    "rpcUrls": [
+      "https://linea-mainnet.infura.io/v3/e42637ee1f664cad93e70bbf62196769",
+      "https://rpc.ankr.com/linea/9ee45a578b2f7134d9d4fc583414946e07588fc409468c0ba4d56dfc5176615d",
+      "https://linea-mainnet.g.alchemy.com/v2/DR7Jtd4NSYTtAY7Heme8ml-j6oBCZgGO"
+    ],
+    "blockExplorerName": "",
+    "blockExplorerUrl": "https://lineascan.build",
+    "blockExplorerApiUrl": ""
+  },
+  {
+    "name": "OPTIMISM",
+    "platformType": "EVM",
+    "coinGeckoId": "optimistic-ethereum",
+    "coinGeckoDexId": "optimism",
+    "coinGeckoNativeCoinId": "ethereum",
+    "ankrId": "optimistic",
+    "rangoId": "OPTIMISM",
+    "okxId": "10",
+    "chainId": 10,
+    "rpcUrl": "https://opt-mainnet.g.alchemy.com/v2/DR7Jtd4NSYTtAY7Heme8ml-j6oBCZgGO",
+    "rpcUrls": [
+      "https://opt-mainnet.g.alchemy.com/v2/oYu8Ai2M85roqxhvHxBMdLjqs8Kh-4qt",
+      "https://optimism-mainnet.infura.io/v3/e42637ee1f664cad93e70bbf62196769",
+      "https://rpc.ankr.com/optimism/c626b2acc7d5145c9b392e8aff82409e2c61444b24a36be4cceed74f29eedaba",
+      "https://opt-mainnet.g.alchemy.com/v2/DR7Jtd4NSYTtAY7Heme8ml-j6oBCZgGO"
+    ],
+    "blockExplorerName": "",
+    "blockExplorerUrl": "https://optimistic.etherscan.io",
+    "blockExplorerApiUrl": ""
+  },
+  {
+    "name": "ARBITRUM",
+    "platformType": "EVM",
+    "coinGeckoId": "arbitrum-one",
+    "coinGeckoDexId": "arbitrum",
+    "coinGeckoNativeCoinId": "ethereum",
+    "ankrId": "arbitrum",
+    "rangoId": "ARBITRUM",
+    "okxId": "42161",
+    "chainId": 42161,
+    "rpcUrl": "https://arb-mainnet.g.alchemy.com/v2/DR7Jtd4NSYTtAY7Heme8ml-j6oBCZgGO",
+    "supportNoFeeSwap": true,
+    "loan": 30000000000000,
+    "rpcUrls": [
+      "https://arb-mainnet.g.alchemy.com/v2/DR7Jtd4NSYTtAY7Heme8ml-j6oBCZgGO",
+      "https://arbitrum-mainnet.infura.io/v3/e42637ee1f664cad93e70bbf62196769",
+      "https://rpc.ankr.com/arbitrum/e4ee651c8e8d46257a5e9cd1b80d29b39e4b988f14e5ea8589b5452a8131abba",
+      "https://arb-mainnet.g.alchemy.com/v2/BaBkGlhFa9kh4yi9OLmaeQlKZtvaLgi-"
+    ],
+    "blockExplorerName": "",
+    "blockExplorerUrl": "https://arbiscan.io",
+    "blockExplorerApiUrl": ""
+  },
+  {
+    "name": "BSC",
+    "platformType": "EVM",
+    "coinGeckoId": "binance-smart-chain",
+    "coinGeckoDexId": "bsc",
+    "coinGeckoNativeCoinId": "binancecoin",
+    "ankrId": "bsc",
+    "rangoId": "BSC",
+    "okxId": "56",
+    "chainId": 56,
+    "rpcUrl": "https://rpc.ankr.com/bsc/ac79e83cf02a544dbb9b3f4c5d5478b2510b921e7d5739ded8791a932e8de0a6",
+    "rpcUrls": [
+        "https://bnb-mainnet.g.alchemy.com/v2/G4hUqxgmvzDORrO27SZTgPTZdz9vaMT6",
+        "https://bnb-mainnet.g.alchemy.com/v2/DR7Jtd4NSYTtAY7Heme8ml-j6oBCZgGO",
+        "https://rpc.ankr.com/bsc/ac79e83cf02a544dbb9b3f4c5d5478b2510b921e7d5739ded8791a932e8de0a6",
+        "https://rpc.ankr.com/bsc/5fc8ed1906d70db2174601d49aa1edc708e5ff35f1c862c95d43734a6943730e",
+        "https://bsc-dataseed1.defibit.io/"
+    ],
+    "blockExplorerName": "",
+    "blockExplorerUrl": "https://bscscan.com",
+    "blockExplorerApiUrl": ""
+  },
+  {
+    "name": "POLYGON_POS",
+    "platformType": "EVM",
+    "coinGeckoId": "polygon-pos",
+    "coinGeckoDexId": "polygon_pos",
+    "coinGeckoNativeCoinId": "matic-network",
+    "ankrId": "polygon",
+    "rangoId": "POLYGON",
+    "okxId": "137",
+    "chainId": 137,
+    "rpcUrl": "https://rpc.ankr.com/polygon/c2d7e8a3db5dce62e202db3d28cca25e74da5028abbf20764e2961918ba34dfc",
+    "supportNoFeeSwap": true,
+    "loan": "100000000000000000",
+    "rpcUrls": [
+      "https://polygon-mainnet.g.alchemy.com/v2/DR7Jtd4NSYTtAY7Heme8ml-j6oBCZgGO",
+      "https://rpc.ankr.com/polygon/c2d7e8a3db5dce62e202db3d28cca25e74da5028abbf20764e2961918ba34dfc",
+      "https://rpc.ankr.com/polygon",
+      "https://rpc.ankr.com/polygon/1da4199a20e8ebd6c77f56d6b044eaa83775d6ac7a1c578763a057a66ef24103",
+      "https://rpc.ankr.com/polygon/ac79e83cf02a544dbb9b3f4c5d5478b2510b921e7d5739ded8791a932e8de0a6"
+    ],
+    "blockExplorerName": "",
+    "blockExplorerUrl": "https://polygonscan.com",
+    "blockExplorerApiUrl": ""
+  },
+  {
+    "name": "POLYGON_ZKEVM",
+    "platformType": "EVM",
+    "coinGeckoId": "polygon-zkevm",
+    "coinGeckoDexId": "polygon-zkevm",
+    "coinGeckoNativeCoinId": "ethereum",
+    "ankrId": "polygon_zkevm",
+    "rangoId": "POLYGONZK",
+    "okxId": "1101",
+    "chainId": 1101,
+    "rpcUrl": "https://zkevm-rpc.com"
+  },
+  {
+    "name": "BLAST",
+    "platformType": "EVM",
+    "coinGeckoId": "blast",
+    "coinGeckoDexId": "blast",
+    "coinGeckoNativeCoinId": "ethereum",
+    "rangoId": "BLAST",
+    "okxId": "81457",
+    "chainId": 81457,
+    "rpcUrl": "https://rpc.blast.io",
+    "rpcUrls": [
+      "https://blast-mainnet.g.alchemy.com/v2/DR7Jtd4NSYTtAY7Heme8ml-j6oBCZgGO",
+      "https://rpc.ankr.com/blast/1c6f7bcdfedae95506790bceca4c0fe9b0b635ce555fd412413ce500b8d572f9",
+      "https://rpc.blast.io"
+    ],
+    "blockExplorerName": "",
+    "blockExplorerUrl": "https://blastscan.io",
+    "blockExplorerApiUrl": ""
+  },
+  {
+    "name": "SCROLL",
+    "platformType": "EVM",
+    "coinGeckoId": "scroll",
+    "coinGeckoDexId": "scroll",
+    "coinGeckoNativeCoinId": "weth",
+    "ankrId": "scroll",
+    "rangoId": "SCROLL",
+    "okxId": "534352",
+    "chainId": 534352,
+    "rpcUrl": "https://rpc.ankr.com/scroll/c2d7e8a3db5dce62e202db3d28cca25e74da5028abbf20764e2961918ba34dfc",
+    "rpcUrls": [
+      "https://scroll-mainnet.g.alchemy.com/v2/TqGM2FxF-bvxY6t0lN-J8c2nDidQtRCZ",
+      "https://scroll-mainnet.g.alchemy.com/v2/DR7Jtd4NSYTtAY7Heme8ml-j6oBCZgGO",
+      "https://rpc.ankr.com/scroll/c2d7e8a3db5dce62e202db3d28cca25e74da5028abbf20764e2961918ba34dfc",
+      "https://rpc.ankr.com/scroll/29fb8c6c5a90691782b017d9b6ad609d5e67c33e9b0905cce2153cefd28d3b2d",
+      "https://rpc.ankr.com/scroll"
+    ],
+    "blockExplorerName": "",
+    "blockExplorerUrl": "https://scrollscan.com",
+    "blockExplorerApiUrl": ""
+  },
+  {
+    "name": "AVAX",
+    "platformType": "EVM",
+    "coinGeckoId": "avax",
+    "coinGeckoDexId": "avax",
+    "coinGeckoNativeCoinId": "avalanche-2",
+    "ankrId": "avalanche",
+    "rangoId": "AVAX_CCHAIN",
+    "okxId": "43114",
+    "chainId": 43114,
+    "rpcUrl": "https://rpc.ankr.com/avalanche/c2d7e8a3db5dce62e202db3d28cca25e74da5028abbf20764e2961918ba34dfc",
+    "rpcUrls": [
+      "https://avax-mainnet.g.alchemy.com/v2/DR7Jtd4NSYTtAY7Heme8ml-j6oBCZgGO",
+      "https://rpc.ankr.com/avalanche/c2d7e8a3db5dce62e202db3d28cca25e74da5028abbf20764e2961918ba34dfc",
+      "https://rpc.ankr.com/avalanche",
+      "https://rpc.ankr.com/avalanche/57f10f5dfc7ba8d80707c85c1cc1d5feeda3c1c7447da479c55156196d816235",
+      "https://rpc.ankr.com/avalanche/ac79e83cf02a544dbb9b3f4c5d5478b2510b921e7d5739ded8791a932e8de0a6"
+    ],
+    "blockExplorerName": "",
+    "blockExplorerUrl": "https://snowtrace.io",
+    "blockExplorerApiUrl": ""
+  },
+  {
+    "name": "MANTLE",
+    "platformType": "EVM",
+    "coinGeckoId": "mantle",
+    "coinGeckoDexId": "mantle",
+    "coinGeckoNativeCoinId": "mantle",
+    "okxId": "5000",
+    "chainId": 5000,
+    "rpcUrl": "https://rpc.mantle.xyz"
+  },
+  {
+    "name": "CRONOS",
+    "platformType": "EVM",
+    "coinGeckoId": "cronos",
+    "coinGeckoDexId": "cro",
+    "coinGeckoNativeCoinId": "crypto-com-chain",
+    "rangoId": "CRONOS",
+    "okxId": "25",
+    "chainId": 25,
+    "rpcUrl": "https://evm.cronos.org"
+  },
+  {
+    "name": "GNOSIS",
+    "platformType": "EVM",
+    "coinGeckoId": "xdai",
+    "coinGeckoDexId": "xdai",
+    "coinGeckoNativeCoinId": "xdai",
+    "ankrId": "gnosis",
+    "rangoId": "GNOSIS",
+    "okxId": "100",
+    "chainId": 100,
+    "rpcUrl": "https://rpc.gnosischain.com"
+  },
+  {
+    "name": "ZKLINK_NOVA",
+    "platformType": "EVM",
+    "coinGeckoId": "zklink-nova",
+    "coinGeckoDexId": "zklink-nova",
+    "coinGeckoNativeCoinId": "zklink",
+    "okxId": "810180",
+    "chainId": 810180,
+    "rpcUrl": "https://rpc.zklink.io"
+  },
+  {
+    "name": "ZKSYNC",
+    "platformType": "EVM",
+    "coinGeckoId": "zksync",
+    "coinGeckoDexId": "zksync",
+    "coinGeckoNativeCoinId": "ethereum",
+    "rangoId": "ZKSYNC",
+    "okxId": "324",
+    "chainId": 324,
+    "rpcUrl": "https://mainnet.era.zksync.io",
+    "rpcUrls": [
+      "https://zksync-mainnet.g.alchemy.com/v2/DR7Jtd4NSYTtAY7Heme8ml-j6oBCZgGO",
+      "https://rpc.ankr.com/zksync_era/73839306f1cd63a8a214a0a26748a083d8e2062d731c938171bc88582f72580a",
+      "https://mainnet.era.zksync.io"
+    ],
+    "blockExplorerName": "",
+    "blockExplorerUrl": "https://mainnet.era.zksync.io",
+    "blockExplorerApiUrl": ""
+  },
+  {
+    "name": "MODE",
+    "platformType": "EVM",
+    "coinGeckoId": "mode",
+    "coinGeckoDexId": "mode",
+    "coinGeckoNativeCoinId": "mode",
+    "rangoId": "MODE",
+    "okxId": "34443",
+    "chainId": 34443,
+    "rpcUrl": "https://mainnet.mode.network"
+  },
+  {
+    "name": "TAIKO",
+    "platformType": "EVM",
+    "coinGeckoId": "taiko",
+    "coinGeckoDexId": "taiko",
+    "coinGeckoNativeCoinId": "taiko",
+    "okxId": "167000",
+    "chainId": 167000,
+    "rpcUrl": "https://rpc.mainnet.taiko.xyz"
+  },
+  {
+    "name": "FANTOM",
+    "platformType": "EVM",
+    "coinGeckoId": "fantom",
+    "coinGeckoDexId": "ftm",
+    "coinGeckoNativeCoinId": "fantom",
+    "ankrId": "fantom",
+    "rangoId": "FANTOM",
+    "okxId": "250",
+    "chainId": 250,
+    "rpcUrl": "https://rpc.ankr.com/fantom"
+  },
+  {
+    "name": "MANTA",
+    "platformType": "EVM",
+    "coinGeckoId": "manta-pacific",
+    "coinGeckoDexId": "manta-pacific",
+    "coinGeckoNativeCoinId": "weth",
+    "okxId": "169",
+    "chainId": 169,
+    "rpcUrl": "https://pacific-rpc.manta.network/http"
+  },
+  {
+    "name": "BOUNCEBIT",
+    "platformType": "EVM",
+    "coinGeckoId": "bouncebit",
+    "coinGeckoDexId": "bouncebit",
+    "coinGeckoNativeCoinId": "bouncebit",
+    "okxId": "6001",
+    "chainId": 6001,
+    "rpcUrl": "https://fullnode-mainnet.bouncebitapi.com"
+  },
+  {
+    "name": "BOB",
+    "platformType": "EVM",
+    "coinGeckoId": "bob-network",
+    "coinGeckoDexId": "bob-network",
+    "coinGeckoNativeCoinId": "weth",
+    "okxId": "60808",
+    "chainId": 60808,
+    "rpcUrl": "https://rpc.gobob.xyz",
+    "rpcUrls": [
+      "https://rpc.gobob.xyz"
+    ],
+    "blockExplorerName": "",
+    "blockExplorerUrl": "https://rpc.gobob.xyz",
+    "blockExplorerApiUrl": ""
+  },
+  {
+    "name": "B3",
+    "platformType": "EVM",
+    "okxId": "8333",
+    "chainId": 8333,
+    "rpcUrl": "https://mainnet-rpc.b3.fun",
+    "coinGeckoNativeCoinId": "ethereum",
+    "rpcUrls": [
+      "https://mainnet-rpc.b3.fun/http"
+    ],
+    "blockExplorerName": "",
+    "blockExplorerUrl": "https://mainnet-rpc.b3.fun/http",
+    "blockExplorerApiUrl": ""
+  },
+  {
+    "name": "MEVM",
+    "platformType": "EVM",
+    "chainId": 3073
+  },
+  {
+    "name": "LORENZO",
+    "platformType": "EVM",
+    "okxId": "8329",
+    "chainId": 8329,
+    "rpcUrl": "https://rpc.lorenzo-protocol.xyz",
+    "coinGeckoNativeCoinId": "bitcoin",
+    "rpcUrls": [
+      "https://rpc.lorenzo-protocol.xyz"
+    ],
+    "blockExplorerName": "",
+    "blockExplorerUrl": "https://scan.lorenzo-protocol.xyz",
+    "blockExplorerApiUrl": ""
+  },
+  {
+    "name": "B2",
+    "platformType": "EVM",
+    "okxId": "223",
+    "chainId": 223,
+    "rpcUrl": "https://rpc.bsquared.network",
+    "coinGeckoNativeCoinId": "bitcoin",
+    "rpcUrls": [
+      "https://rpc.ankr.com/b2/82af823a605e3d780f91b7dede4fd56bbb3058f26cd90dc3a31f355c699b94d5",
+      "https://rpc.bsquared.network"
+    ],
+    "blockExplorerName": "",
+    "blockExplorerUrl": "https://explorer.bsquared.network",
+    "blockExplorerApiUrl": ""
+  },
+  {
+    "name": "BITLAYER",
+    "platformType": "EVM",
+    "coinGeckoId": "bitlayer",
+    "coinGeckoDexId": "bitlayer",
+    "coinGeckoNativeCoinId": "bitcoin",
+    "okxId": "200901",
+    "chainId": 200901,
+    "rpcUrl": "https://rpc.bitlayer.org",
+    "rpcUrls": [
+      "https://rpc.ankr.com/bitlayer/021add687c9a1fb60565842ee19bef5e200ffd2056ce88392c7ed51c950d2724",
+      "https://rpc.bitlayer.org"
+    ],
+    "blockExplorerName": "",
+    "blockExplorerUrl": "https://rpc.bitlayer.org",
+    "blockExplorerApiUrl": ""
+  },
+  {
+    "name": "TON",
+    "platformType": "TON",
+    "coinGeckoId": "the-open-network",
+    "coinGeckoDexId": "ton",
+    "coinGeckoNativeCoinId": "the-open-network",
+    "okxId": "607",
+    "chainId": 1100,
+    "rpcUrl": "https://toncenter.com/api/v2/jsonRPC"
+  },
+  {
+    "name": "TRON",
+    "platformType": "TRON",
+    "coinGeckoId": "tron",
+    "coinGeckoNativeCoinId": "tron",
+    "coinGeckoDexId": "tron",
+    "okxId": "195",
+    "chainId": 19484,
+    "rpcUrl": "https://api.trongrid.io"
+  },
+  {
+    "name": "SUI",
+    "platformType": "SUI",
+    "coinGeckoId": "sui",
+    "coinGeckoDexId": "sui-network",
+    "coinGeckoNativeCoinId": "sui",
+    "okxId": "784",
+    "chainId": 784,
+    "rpcUrl": "https://fullnode.mainnet.sui.io"
+  },
+  {
+    "name": "COSMOS_HUB",
+    "platformType": "COSMOS",
+    "coinGeckoId": "cosmos",
+    "coinGeckoNativeCoinId": "cosmos",
+    "rpcUrl": "https://cosmos-rpc.quickapi.com:443"
+  },
+  {
+    "name": "DUCKCHAIN",
+    "platformType": "EVM",
+    "okxId": "5545",
+    "chainId": 5545,
+    "coinGeckoNativeCoinId": "the-open-network",
+    "rpcUrl": "https://rpc.duckchain.io",
+    "rpcUrls": [
+      "https://rpc.duckchain.io"
+    ],
+    "blockExplorerName": "",
+    "blockExplorerUrl": "https://scan.duckchain.io",
+    "blockExplorerApiUrl": ""
+  },
+  {
+    "name": "NEOX",
+    "platformType": "EVM",
+    "chainId": 47763,
+    "rpcUrl": "https://mainnet-2.rpc.banelabs.org",
+    "rpcUrls": [
+      "https://mainnet-2.rpc.banelabs.org"
+    ],
+    "blockExplorerName": "",
+    "blockExplorerUrl": "https://neotube.io/",
+    "blockExplorerApiUrl": ""
+  },
+  {
+    "name": "MERLIN",
+    "platformType": "EVM",
+    "coinGeckoId": "merlin-chain",
+    "coinGeckoDexId": "merlin-chain",
+    "coinGeckoNativeCoinId": "bitcoin",
+    "okxId": "4200",
+    "chainId": 4200,
+    "rpcUrl": "https://rpc.merlinchain.io",
+    "rpcUrls": [
+      "https://rpc.merlinchain.io"
+    ],
+    "blockExplorerName": "",
+    "blockExplorerUrl": "https://scan.merlinchain.io",
+    "blockExplorerApiUrl": ""
+  },
+  {
+    "name": "SEI",
+    "platformType": "EVM",
+    "coinGeckoId": "sei-network",
+    "coinGeckoDexId": "sei-network",
+    "coinGeckoNativeCoinId": "sei-network",
+    "okxId": "1329",
+    "chainId": 1329,
+    "rpcUrl": "https://evm-rpc.sei-apis.com",
+    "rpcUrls": [
+      "https://evm-rpc.sei-apis.com"
+    ],
+    "blockExplorerName": "",
+    "blockExplorerUrl": "https://seitrace.com",
+    "blockExplorerApiUrl": ""
+  },
+  {
+    "name": "WORLD_CHAIN",
+    "platformType": "EVM",
+    "coinGeckoId": "world-chain",
+    "coinGeckoDexId": "world-chain",
+    "coinGeckoNativeCoinId": "ethereum",
+    "okxId": "480",
+    "chainId": 480,
+    "rpcUrl": "https://worldchain-mainnet.g.alchemy.com/public",
+    "rpcUrls": [
+      "https://worldchain-mainnet.g.alchemy.com/v2/DR7Jtd4NSYTtAY7Heme8ml-j6oBCZgGO",
+      "https://worldchain-mainnet.g.alchemy.com/public"
+    ],
+    "blockExplorerName": "",
+    "blockExplorerUrl": "https://worldchain-mainnet.explorer.alchemy.com",
+    "blockExplorerApiUrl": ""
+  },
+  {
+    "name": "AILAYER",
+    "platformType": "EVM",
+    "coinGeckoNativeCoinId": "bitcoin",
+    "chainId": 2649,
+    "rpcUrl": "https://mainnet-rpc.ailayer.xyz",
+    "rpcUrls": [
+      "https://mainnet-rpc.ailayer.xyz"
+    ],
+    "blockExplorerName": "",
+    "blockExplorerUrl": "https://mainnet-explorer.ailayer.xyz",
+    "blockExplorerApiUrl": ""
+  },
+  {
+    "name": "PROM",
+    "platformType": "EVM",
+    "chainId": 227,
+    "rpcUrl": "https://testnet-rpc.prom.io",
+    "rpcUrls": [
+      "https://rpc.prom.io"
+    ],
+    "blockExplorerName": "",
+    "blockExplorerUrl": "https://promscan.io",
+    "blockExplorerApiUrl": ""
+  },
+  {
+    "name": "GRAVITY",
+    "platformType": "EVM",
+    "coinGeckoId": "gravity-alpha",
+    "coinGeckoDexId": "gravity-alpha",
+    "coinGeckoNativeCoinId": "g-token",
+    "okxId": "1625",
+    "chainId": 1625,
+    "rpcUrl": "https://rpc.gravity.xyz",
+    "rpcUrls": [
+      "https://rpc.ankr.com/gravity/5837c82e627408c9f6be9ab4e26603bd53f5cb93b8c5c3a7ce664feb32897d8c",
+      "https://rpc.gravity.xyz"
+    ],
+    "blockExplorerName": "",
+    "blockExplorerUrl": "https://explorer.gravity.xyz",
+    "blockExplorerApiUrl": ""
+  },
+  {
+    "name": "OPBNB",
+    "platformType": "EVM",
+    "coinGeckoId": "opbnb",
+    "coinGeckoDexId": "opbnb",
+    "coinGeckoNativeCoinId": "binancecoin",
+    "okxId": "204",
+    "chainId": 204,
+    "rpcUrl": "https://opbnb-mainnet-rpc.bnbchain.org",
+    "rpcUrls": [
+      "https://opbnb-mainnet-rpc.bnbchain.org"
+    ],
+    "blockExplorerName": "",
+    "blockExplorerUrl": "https://opbnb.bscscan.com",
+    "blockExplorerApiUrl": ""
+  },
+  {
+    "name": "CORN",
+    "platformType": "EVM",
+    "chainId": 21000000,
+    "rpcUrl": "https://maizenet-rpc.usecorn.com",
+    "rpcUrls": [
+      "https://maizenet-rpc.usecorn.com",
+      "https://rpc.ankr.com/corn_maizenet/c0d200a661d21d27c420cf2de5904360c57304320891ce07fb3312f584ce23c8"
+    ],
+    "blockExplorerName": "",
+    "blockExplorerUrl": "https://maizenet-explorer.usecorn.com",
+    "blockExplorerApiUrl": ""
+  },
+  {
+    "name": "LINEA_TESTNET",
+    "platformType": "EVM",
+    "chainId": 59140,
+    "rpcUrl": "https://linea-goerli.infura.io/v3/e42637ee1f664cad93e70bbf62196769",
+    "isTestnet": true
+  },
+  {
+    "name": "BASE_TESTNET",
+    "platformType": "EVM",
+    "chainId": 84532,
+    "rpcUrl": "https://sepolia.base.org",
+    "isTestnet": true
+  },
+  {
+    "name": "SOLANA_TESTNET",
+    "platformType": "SOLANA",
+    "rpcUrl": "https://solana-devnet.g.alchemy.com/v2/GN_RsjBzFQJlbiFdVgu4owectyqxO0JN",
+    "isTestnet": true
+  },
+  {
+    "name": "BITCOIN_TESTNET",
+    "platformType": "BTC",
+    "rpcUrl": "https://mempool.space/testnet/api",
+    "isTestnet": true
+  },
+  {
+    "name": "BITCOIN_SIGNET",
+    "platformType": "BTC",
+    "rpcUrl": "https://mempool.space/signet/api",
+    "isTestnet": true
+  },
+  {
+    "name": "DUCKCHAIN_TESTNET",
+    "platformType": "EVM",
+    "okxId": "202105",
+    "chainId": 202105,
+    "rpcUrl": "https://testnet-rpc.duckchain.io",
+    "isTestnet": true,
+    "rpcUrls": [
+      "https://testnet-rpc.duckchain.io"
+    ],
+    "blockExplorerName": "",
+    "blockExplorerUrl": "https://testnet-scan.duckchain.io",
+    "blockExplorerApiUrl": ""
+  },
+  {
+    "name": "STORY_NETWORK_TESTNET",
+    "platformType": "EVM",
+    "chainId": 1516,
+    "rpcUrl": "https://testnet.storyrpc.io",
+    "isTestnet": true,
+    "rpcUrls": [
+      "https://rpc.odyssey.storyrpc.io"
+    ],
+    "blockExplorerName": "",
+    "blockExplorerUrl": "https://testnet.storyscan.xyz/",
+    "blockExplorerApiUrl": ""
+  },
+  {
+    "name": "BERACHAIN_BARTIO",
+    "platformType": "EVM",
+    "chainId": 80084,
+    "rpcUrl": "https://bartio.rpc.berachain.com",
+    "isTestnet": true,
+    "rpcUrls": [
+      "https://bartio.rpc.berachain.com"
+    ],
+    "blockExplorerName": "",
+    "blockExplorerUrl": "https://bartio.beratrail.io",
+    "blockExplorerApiUrl": ""
+  },
+  {
+    "name": "BOTANIX_TESTNET",
+    "platformType": "EVM",
+    "chainId": 3636,
+    "rpcUrl": "https://poa-node.botanixlabs.dev",
+    "isTestnet": true,
+    "rpcUrls": [
+      "https://poa-node.botanixlabs.dev"
+    ],
+    "blockExplorerName": "",
+    "blockExplorerUrl": "https://blockscout.botanixlabs.dev",
+    "blockExplorerApiUrl": ""
+  },
+  {
+    "name": "MEVM_TESTNET",
+    "platformType": "EVM",
+    "chainId": 30732,
+    "rpcUrl": "https://mevm.devnet.imola.movementnetw",
+    "isTestnet": true
+  },
+  {
+    "name": "TON_TESTNET",
+    "platformType": "TON",
+    "coinGeckoNativeCoinId": "the-open-network",
+    "rpcUrl": "https://testnet.toncenter.com/api/v2/jsonRPC",
+    "chainId": 1101,
+    "isTestnet": true
+  },
+  {
+    "name": "TAC_TESTNET",
+    "platformType": "EVM",
+    "chainId": 2390,
+    "rpcUrl": "https://turin.rpc.tac.build",
+    "isTestnet": true,
+    "rpcUrls": [
+      "https://turin.rpc.tac.build"
+    ],
+    "blockExplorerName": "",
+    "blockExplorerUrl": "https://turin.explorer.tac.build",
+    "blockExplorerApiUrl": ""
+  }
+]

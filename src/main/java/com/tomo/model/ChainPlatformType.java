@@ -1,0 +1,32 @@
+package com.tomo.model;
+
+import com.baomidou.mybatisplus.annotation.EnumValue;
+
+public enum ChainPlatformType {
+        EVM("evm", "^0x[a-fA-F0-9]{40}$"),
+        BTC("btc", null),
+        SOLANA("solana", "[1-9A-HJ-NP-Za-km-z]{32,44}"),
+        TON("ton", "^(0|-1):[a-fA-F0-9]{64}|^[a-zA-Z0-9_\\-\\\\]{48}$"),
+        TRON("tron", "T[A-Za-z1-9]{33}$"),
+        SUI("sui", "0x[a-fA-F0-9]{64}::.+::.+$"),
+        COSMOS("cosmos", "^cosmos1[a-z0-9]{38}$"),
+        DOGE("doge","^D{1}[5-9A-HJ-NP-Ua-km-z1-9]{25,34}$");
+
+        @EnumValue
+        private final String value;
+
+        private final String regex;
+
+        ChainPlatformType(String value, String regex) {
+            this.value = value;
+            this.regex = regex;
+        }
+
+        public String toString() {
+            return value;
+        }
+
+        public String getRegex() {
+            return regex;
+        }
+    }

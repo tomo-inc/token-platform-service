@@ -53,14 +53,14 @@ public class MarketTokenAdminServiceImpl implements MarketTokenAdminService {
         Page<MarketTokenBaseInfo> response = new Page<>();
         List<MarketTokenInfo> records = tokens.getRecords();
 
-        List<Long> coinIds = records.stream().map(MarketTokenInfo::getId).toList();
+        List<String> coinIds = records.stream().map(MarketTokenInfo::getCoinId).toList();
         List<MarketTokenCategory> categoryList = marketTokenCategoryMapper.queryByCoinIds(coinIds);
 
         List<MarketTokenBaseInfo> resultList = new ArrayList<>();
         records.forEach(tokenInfo -> {
             List<MarketTokenCategory> categorys = categoryList.stream().filter(category1 -> category1.getCoinId().equals(tokenInfo.getId())).toList();
             MarketTokenBaseInfo baseInfo = new MarketTokenBaseInfo();
-            baseInfo.setCoinId(tokenInfo.getId());
+            baseInfo.setCoinId(tokenInfo.getCoinId());
             baseInfo.setChainIndex(tokenInfo.getChainIndex());
             baseInfo.setAddress(tokenInfo.getAddress());
             baseInfo.setIsNative(tokenInfo.getIsNative());

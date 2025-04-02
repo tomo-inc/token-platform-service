@@ -71,6 +71,15 @@ public enum ChainEnum {
         return null;
     }
 
+    public static ChainEnum getByChainId(final Long chainId) {
+        for (ChainEnum chainEnum : ChainEnum.values()) {
+            if (chainEnum.getChainId().equals(chainId)) {
+                return chainEnum;
+            }
+        }
+        return null;
+    }
+
     public static ChainEnum getChanByIndex(final Long chainIndex) {
         ChainEnum[] values = ChainEnum.values();
         for (ChainEnum value : values) {

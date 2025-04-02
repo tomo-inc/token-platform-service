@@ -87,3 +87,8 @@ cache:
         prefix: TPS:TOKEN_INFO_
       price:
         prefix: TPS:TOKEN_PRICE_
+
+
+goplus:
+  key: ''
+  secret: ''
