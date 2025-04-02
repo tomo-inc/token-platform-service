@@ -8,5 +8,6 @@ import java.util.List;
 
 public interface MarketKLineService {
 
-    List<MarketOHLCVInfo> getKLine(@NotNull Long chainIndex, String address, @NotBlank String interval);
+    List<MarketOHLCVInfo> getKLine(@NotNull Long chainIndex, String address, @NotBlank String interval, Long beforeTs,
+                                   Integer limit);
 }

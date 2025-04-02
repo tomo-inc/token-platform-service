@@ -25,9 +25,11 @@ public class MarketKLineController {
 
     @RequestMapping(value = "history", method = RequestMethod.GET)
     public Result<List<MarketOHLCVInfo>> getKLine(@NotNull @RequestParam Long chainIndex,
-                                 @RequestParam(required = false) String address,
-                                 @NotBlank @RequestParam String interval) {
-        List<MarketOHLCVInfo> list = marketKLineService.getKLine(chainIndex, address, interval);
+                                                  @RequestParam(required = false) String address,
+                                                  @NotBlank @RequestParam String interval,
+                                                  @RequestParam(required = false) Long beforeTs,
+                                                  @RequestParam(required = false, defaultValue = "100") Integer limit) {
+        List<MarketOHLCVInfo> list = marketKLineService.getKLine(chainIndex, address, interval, beforeTs, limit);
         return ResultUtils.success(list);
     }
 }

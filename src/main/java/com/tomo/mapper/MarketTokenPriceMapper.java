@@ -20,4 +20,6 @@ public interface MarketTokenPriceMapper {
     List<MarketTokenPrice> queryByCoinIds(List<String> coinIdList);
 
     void batchInsert(List<MarketTokenPrice> tokenPriceList);
+
+    MarketTokenPrice getByCoinId(String coinId);
 }

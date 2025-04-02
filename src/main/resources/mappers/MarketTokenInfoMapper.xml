@@ -85,6 +85,11 @@
         </foreach>
 
     </select>
+    <select id="getByCoinId" resultMap="MarketTokenInfoResultMap">
+        select <include refid="Base_Column_List"/>
+        from market_token_info
+        where coin_id = #{coinId}
+    </select>
 
     <insert id="insertMarketTokenInfo" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO market_token_info(coin_id, chain_index, address, is_native, name, symbol, image_url, decimals,

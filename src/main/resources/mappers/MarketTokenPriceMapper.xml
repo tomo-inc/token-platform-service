@@ -42,6 +42,11 @@
             #{item}
         </foreach>
     </select>
+    <select id="getByCoinId" resultMap="MarketTokenPriceResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from market_token_price where coin_id = #{coinId}
+    </select>
 
     <insert id="insertMarketTokenPrice" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO market_token_price(coin_id, chain_index, address, pool_address, is_pool_base_token, liquidity_usd,
