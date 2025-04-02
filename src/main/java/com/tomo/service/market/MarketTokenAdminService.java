@@ -1,8 +1,8 @@
 package com.tomo.service.market;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.tomo.model.dto.MarketTokenDTO;
 import com.tomo.model.req.MarketTokenQueryReq;
+import com.tomo.model.resp.MarketTokenBaseInfo;
 
 /**
  * 市场代币管理服务
@@ -14,7 +14,7 @@ public interface MarketTokenAdminService {
      *
      * @param tokenDTO 代币信息
      */
-    void updateMarketToken(MarketTokenDTO tokenDTO);
+    void updateMarketToken(MarketTokenBaseInfo tokenDTO);
 
     /**
      * 获取市场代币列表
@@ -22,5 +22,5 @@ public interface MarketTokenAdminService {
      * @param queryDTO 查询参数
      * @return 分页结果
      */
-    IPage<MarketTokenDTO> pageMarketToken(MarketTokenQueryReq queryDTO);
+    IPage<MarketTokenBaseInfo> pageMarketToken(MarketTokenQueryReq queryDTO);
 }

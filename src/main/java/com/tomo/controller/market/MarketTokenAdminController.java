@@ -3,8 +3,8 @@ package com.tomo.controller.market;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tomo.model.ResultUtils;
-import com.tomo.model.dto.MarketTokenDTO;
 import com.tomo.model.req.MarketTokenQueryReq;
+import com.tomo.model.resp.MarketTokenBaseInfo;
 import com.tomo.model.resp.Result;
 import com.tomo.service.market.MarketTokenAdminService;
 import lombok.extern.slf4j.Slf4j;
@@ -23,15 +23,15 @@ public class MarketTokenAdminController {
     private MarketTokenAdminService marketTokenAdminService;
 
     @PostMapping("/updateMarketToken")
-    public Result updateMarketToken(@RequestBody MarketTokenDTO tokenDTO) {
+    public Result updateMarketToken(@RequestBody MarketTokenBaseInfo tokenDTO) {
 
         marketTokenAdminService.updateMarketToken(tokenDTO);
         return ResultUtils.success("ok");
     }
 
     @PostMapping("/getMarketTokenList")
-    public Result<IPage<MarketTokenDTO>> pageMarketToken(@RequestBody MarketTokenQueryReq queryDTO) {
-        IPage<MarketTokenDTO> pageResult = marketTokenAdminService.pageMarketToken(queryDTO);
+    public Result<IPage<MarketTokenBaseInfo>> pageMarketToken(@RequestBody MarketTokenQueryReq queryDTO) {
+        IPage<MarketTokenBaseInfo> pageResult = marketTokenAdminService.pageMarketToken(queryDTO);
         return ResultUtils.success(pageResult);
     }
 }
