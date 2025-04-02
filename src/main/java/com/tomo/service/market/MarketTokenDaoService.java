@@ -9,6 +9,9 @@ import java.util.Map;
 
 public interface MarketTokenDaoService {
     Map<String, MarketTokenDetailInfo> queryFromCache(List<MarketTokenReq> list);
+
+    void saveCache(List<MarketTokenDetailInfo> list);
+
     Map<String, MarketTokenDetailInfo> queryFromDb(List<MarketTokenReq> list);
 
 

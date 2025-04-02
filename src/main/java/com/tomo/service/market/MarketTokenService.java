@@ -21,4 +21,6 @@ public interface MarketTokenService {
     List<MarketTokenDetailInfo> category(@Valid @NotEmpty MarketTokenCategoryReq req);
 
     List<MarketTokenHistory> history(@NotNull Long chainIndex, String address);
+
+    void updateSocialInfo();
 }

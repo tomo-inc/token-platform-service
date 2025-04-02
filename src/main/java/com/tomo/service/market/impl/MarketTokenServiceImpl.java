@@ -47,9 +47,6 @@ public class MarketTokenServiceImpl implements MarketTokenService {
     @Autowired
     private CoinGeckoClient coinGeckoClient;
 
-    @Autowired
-    private RedisClient redisClient;
-
     public static final int DEFAULT_PAGE_NUM = 1;
     public static final int DEFAULT_PAGE_SIZE = 10;
 
@@ -82,6 +79,8 @@ public class MarketTokenServiceImpl implements MarketTokenService {
         mergedList.addAll(cacheMap.values());
         mergedList.addAll(dbMap.values());
         mergedList.addAll(newList);
+
+        marketTokenDaoService.saveCache(mergedList);
 
         return mergedList;
     }
@@ -157,11 +156,6 @@ public class MarketTokenServiceImpl implements MarketTokenService {
                     })
                     .toList();
 
-            // 批量保存到缓存
-            detailInfoList.forEach(detailInfo ->
-                    redisClient.hset(Constants.MARKET_TOKEN_DETAIL_REDIS_KEY,
-                            ChainUtil.getTokenKey(chainIndex, ""), detailInfo));
-
             resultList.addAll(detailInfoList);
         }
     }
@@ -200,9 +194,7 @@ public class MarketTokenServiceImpl implements MarketTokenService {
         }
 
         marketTokenPriceMapper.batchInsert(tokenPriceList);
-        detailInfoList.forEach(detailInfo ->
-                redisClient.hset(Constants.MARKET_TOKEN_DETAIL_REDIS_KEY,
-                        ChainUtil.getTokenKey(chainIndex, detailInfo.getAddress()), detailInfo));
+
         resultList.addAll(detailInfoList);
     }
 
@@ -239,6 +231,9 @@ public class MarketTokenServiceImpl implements MarketTokenService {
 
     private MarketTokenInfo createMarketTokenInfo(Long chainIndex, DexTokenResp.DexData.Attributes attributes) {
         MarketTokenInfo tokenInfo = new MarketTokenInfo();
+        tokenInfo.setCoinId(ChainUtil.getTokenKey(chainIndex, attributes.getAddress()));
+//        tokenInfo.setSocial();
+
         tokenInfo.setChainIndex(chainIndex);
         tokenInfo.setAddress(attributes.getAddress());
         tokenInfo.setIsNative(false);
@@ -247,6 +242,8 @@ public class MarketTokenServiceImpl implements MarketTokenService {
         tokenInfo.setImageUrl(attributes.getImageUrl());
         tokenInfo.setDecimals(attributes.getDecimals());
         tokenInfo.setTotalSupply(attributes.getTotalSupply());
+        tokenInfo.setRiskLevel(RiskLevel.NONE.getCode());
+        tokenInfo.setForceSafe(false);
         tokenInfo.setUpdateTime(new Timestamp(System.currentTimeMillis()));
         tokenInfo.setCreateTime(new Timestamp(System.currentTimeMillis()));
         return tokenInfo;
@@ -290,6 +287,7 @@ public class MarketTokenServiceImpl implements MarketTokenService {
     private MarketTokenDetailInfo createMarketTokenDetailInfo(Long chainIndex, MarketTokenInfo tokenInfo,
                                                               MarketTokenPrice tokenPrice) {
         MarketTokenDetailInfo detailInfo = new MarketTokenDetailInfo();
+
         detailInfo.setCoinId(tokenInfo.getCoinId());
         detailInfo.setChainIndex(chainIndex);
         detailInfo.setAddress(tokenInfo.getAddress());
@@ -299,7 +297,10 @@ public class MarketTokenServiceImpl implements MarketTokenService {
         detailInfo.setImageUrl(tokenInfo.getImageUrl());
         detailInfo.setDecimals(tokenInfo.getDecimals());
         detailInfo.setTotalSupply(tokenInfo.getTotalSupply() != null ? tokenInfo.getTotalSupply().toPlainString() : "");
+        detailInfo.setRiskLevel(tokenInfo.getRiskLevel());
+        detailInfo.setSocial(tokenInfo.getSocial());
         detailInfo.setRealPrice(tokenPrice.getRealPrice().toPlainString());
+        detailInfo.setLiquidityUsd(tokenPrice.getLiquidityUsd() != null ? tokenPrice.getLiquidityUsd().toPlainString() : "");
         detailInfo.setVolume24h(tokenPrice.getVolume24h() != null ? tokenPrice.getVolume24h().toPlainString() : "");
         detailInfo.setChange24h(tokenPrice.getChange24h() != null ? tokenPrice.getChange24h().toPlainString() : "");
         detailInfo.setMarketCap(tokenPrice.getMarketCap() != null ? tokenPrice.getMarketCap().toPlainString() : "");
@@ -365,5 +366,13 @@ public class MarketTokenServiceImpl implements MarketTokenService {
     @Override
     public List<MarketTokenHistory> history(Long chainIndex, String address) {
         return List.of();
+    }
+
+    @Override
+    public void updateSocialInfo() {
+        List<MarketTokenInfo> tokenInfoList = marketTokenInfoMapper.querySocialNull();
+        if (!CollectionUtils.isEmpty(tokenInfoList)) {
+
+        }
     }
 }

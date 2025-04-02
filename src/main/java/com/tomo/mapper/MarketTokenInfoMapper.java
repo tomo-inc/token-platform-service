@@ -60,7 +60,10 @@ public interface MarketTokenInfoMapper extends BaseMapper<MarketTokenInfo> {
     IPage<MarketTokenDTO> pageMarketToken(@Param("req") MarketTokenQueryReq req, Page pg);
 
     List<MarketTokenInfo> queryTokenList(@Param("list") List<MarketTokenReq> list);
+    List<MarketTokenInfo> queryByCoinIds(@Param("list") List<String> list);
 
     void batchInsert(List<MarketTokenInfo> tokenInfoList);
+
+    List<MarketTokenInfo> querySocialNull();
 
 }

@@ -49,6 +49,24 @@
             (#{item.chainIndex}, #{item.address})
         </foreach>
     </select>
+    <select id="querySocialNull" resultMap="MarketTokenInfoResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM market_token_info
+        WHERE social::text = 'null'
+        order by id desc
+        LIMIT 100
+    </select>
+    <select id="queryByCoinIds" resultMap="MarketTokenInfoResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from market_token_info
+        where coin_id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+
+    </select>
 
     <insert id="insertMarketTokenInfo" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO market_token_info(coin_id, chain_index, address, is_native, name, symbol, image_url, decimals,

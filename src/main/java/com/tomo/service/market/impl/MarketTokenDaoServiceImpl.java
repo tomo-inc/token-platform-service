@@ -13,14 +13,14 @@ import com.tomo.model.resp.MarketTokenBaseInfo;
 import com.tomo.model.resp.MarketTokenDetailInfo;
 import com.tomo.service.RedisClient;
 import com.tomo.service.market.MarketTokenDaoService;
+import com.tomo.util.JsonUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,17 +36,35 @@ public class MarketTokenDaoServiceImpl implements MarketTokenDaoService {
     @Autowired
     private MarketTokenPriceMapper marketTokenPriceMapper;
 
+    @Value("${market.token.cache.time.seconds:3600}")
+    private Long tokenCacheTimeSeconds;
+
     @Override
     public Map<String, MarketTokenDetailInfo> queryFromCache(List<MarketTokenReq> list) {
         if (CollectionUtils.isEmpty(list)) {
             return new HashMap<>();
         }
 
-        List<String> tokenKeys = list.stream().map(e -> ChainUtil.getTokenKey(e.getChainIndex(), e.getAddress())).toList();
+        List<MarketTokenDetailInfo> detailInfos = new ArrayList<>();
 
-        List<MarketTokenDetailInfo> detailInfos = redisClient.hgetAll(Constants.MARKET_TOKEN_DETAIL_REDIS_KEY, tokenKeys, MarketTokenDetailInfo.class);
-        if (CollectionUtils.isEmpty(detailInfos)) {
-            return new HashMap<>();
+        List<String> nativeKeys = list.stream().filter(e -> StringUtils.isBlank(e.getAddress())).map(e -> ChainUtil.getTokenKey(e.getChainIndex(), e.getAddress())).toList();
+        List<String> tokenKeys = list.stream().filter(e -> StringUtils.isNoneBlank(e.getAddress())).map(e -> ChainUtil.getTokenKey(e.getChainIndex(), e.getAddress())).toList();
+        if (!CollectionUtils.isEmpty(nativeKeys)) {
+            List<MarketTokenDetailInfo> nativeInfos = redisClient.hgetAll(Constants.MARKET_NATIVE_TOKEN_DETAIL_KEY, nativeKeys, MarketTokenDetailInfo.class);
+            if (!CollectionUtils.isEmpty(nativeInfos)) {
+                detailInfos.addAll(nativeInfos);
+            }
+        }
+
+        if (!CollectionUtils.isEmpty(tokenKeys)) {
+            List<String> cacheKeys = tokenKeys.stream().map(e -> String.format(Constants.MARKET_CONTRACT_TOKEN_DETAIL_KEY_PREFIX, e)).toList();
+            List<String> jsonList = redisClient.multiGet(cacheKeys);
+            if (!CollectionUtils.isEmpty(jsonList)) {
+                List<MarketTokenDetailInfo> contractTokens = jsonList.stream().filter(Objects::nonNull).map(e -> JsonUtil.parseObject(e, MarketTokenDetailInfo.class)).toList();
+                if (!CollectionUtils.isEmpty(contractTokens)) {
+                    detailInfos.addAll(contractTokens);
+                }
+            }
         }
 
         return detailInfos.stream().collect(Collectors.toMap(
@@ -57,7 +75,29 @@ public class MarketTokenDaoServiceImpl implements MarketTokenDaoService {
     }
 
     @Override
+    public void saveCache(List<MarketTokenDetailInfo> list) {
+        Map<Boolean, List<MarketTokenDetailInfo>> map = list.stream().collect(Collectors.groupingBy(MarketTokenDetailInfo::getIsNative));
+        List<MarketTokenDetailInfo> nativeList = map.get(true);
+        List<MarketTokenDetailInfo> contractList = map.get(false);
+        if (!CollectionUtils.isEmpty(nativeList)) {
+            redisClient.hsetAll(Constants.MARKET_NATIVE_TOKEN_DETAIL_KEY, nativeList.stream().collect(Collectors.toMap(
+                    info -> ChainUtil.getTokenKey(info.getChainIndex(), info.getAddress()),
+                    info -> info
+            )));
+        }
+        if (!CollectionUtils.isEmpty(contractList)) {
+            Map<String, String> cacheMap = contractList.stream().collect(Collectors.toMap(e -> String.format(Constants.MARKET_CONTRACT_TOKEN_DETAIL_KEY_PREFIX, ChainUtil.getTokenKey(e.getChainIndex(), e.getAddress())), JsonUtil::toJson));
+            redisClient.multiSet(cacheMap, tokenCacheTimeSeconds);
+        }
+
+
+    }
+
+    @Override
     public Map<String, MarketTokenDetailInfo> queryFromDb(List<MarketTokenReq> list) {
+        if (CollectionUtils.isEmpty(list)) {
+            return new HashMap<>();
+        }
         List<MarketTokenBaseInfo> baseInfoList = queryBaseInfo(list);
         if (CollectionUtils.isEmpty(baseInfoList)) {
             return new HashMap<>();
@@ -104,17 +144,11 @@ public class MarketTokenDaoServiceImpl implements MarketTokenDaoService {
     @Override
     public List<MarketTokenBaseInfo> queryBaseInfo(List<MarketTokenReq> list) {
 
-        list.forEach(e->{
-            if (e.getAddress() == null) {
-                e.setAddress("");
-            }
-        });
-        List<MarketTokenInfo> tokenInfos = marketTokenInfoMapper.queryTokenList(list);
+        List<String> coinIds = list.stream().map(e -> ChainUtil.getTokenKey(e.getChainIndex(), e.getAddress())).distinct().toList();
+        List<MarketTokenInfo> tokenInfos = marketTokenInfoMapper.queryByCoinIds(coinIds);
         if (CollectionUtils.isEmpty(tokenInfos)) {
             return List.of();
         }
-
-        List<Long> coinIds = tokenInfos.stream().map(MarketTokenInfo::getId).toList();
 
         List<MarketTokenBaseInfo> resultList = new ArrayList<>();
         List<MarketTokenCategory> categoryList = marketTokenCategoryMapper.queryByCoinIds(coinIds);
