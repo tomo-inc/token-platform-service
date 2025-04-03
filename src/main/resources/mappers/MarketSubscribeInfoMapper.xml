@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tomo.mapper.MarketSubscribeInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.tomo.model.MarketSubscribeInfo">
+        <id column="id" property="id" />
+        <result column="chain_index" property="chainIndex" />
+        <result column="address" property="address" />
+        <result column="type" property="type" />
+        <result column="status" property="status" />
+        <result column="created_time" property="createdTime" />
+        <result column="updated_time" property="updatedTime" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, chain_index, address, type, status, created_time, updated_time
+    </sql>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM market_subscribe_info
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM market_subscribe_info
+    </select>
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM market_subscribe_info
+        <where>
+            <if test="chainIndex != null">
+                AND chain_index = #{chainIndex}
+            </if>
+            <if test="address != null">
+                AND address = #{address}
+            </if>
+        </where>
+        ORDER BY id DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO market_subscribe_info (chain_index, address, type, status, created_time, updated_time)
+        VALUES (#{chainIndex}, #{address}, #{type}, #{status}, #{createdTime}, #{updatedTime})
+    </insert>
+    <insert id="batchInsert">
+        INSERT INTO market_subscribe_info (chain_index, address, type, status, created_time, updated_time)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.chainIndex}, #{item.address}, #{item.type}, #{item.status}, #{item.createdTime}, #{item.updatedTime})
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        status = VALUES(status),
+        updated_time = VALUES(updatedTime)
+    </insert>
+
+    <update id="update">
+        UPDATE market_subscribe_info
+        SET chain_index = #{chainIndex},
+            address = #{address},
+            type = #{type},
+            status = #{status},
+            created_time = #{createdTime},
+            updated_time = #{updatedTime}
+        WHERE id = #{id}
+    </update>
+    <update id="batchUpdate">
+        <foreach collection="list" item="item" index="index" open="" separator=";" close="">
+            UPDATE market_subscribe_info
+            SET
+            status = #{item.status},
+            updated_time = #{item.updatedTime}
+            WHERE chain_index = #{item.chainIndex} and address = #{item.address} and type = #{item.type}
+        </foreach>
+    </update>
+
+    <delete id="delete">
+        DELETE FROM market_subscribe_info
+        WHERE id = #{id}
+    </delete>
+
+</mapper>
