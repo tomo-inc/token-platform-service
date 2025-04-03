@@ -29,7 +29,7 @@
         <result property="transferPausable" column="transfer_pausable"/>
         <result property="isBlacklisted" column="is_blacklisted"/>
         <result property="isWhitelisted" column="is_whitelisted"/>
-        <result property="dex" column="dex" typeHandler="com.tomo.mapper.type.JsonTypeHandler"/>
+        <result property="dex" column="dex"/>
         <result property="isAntiWhale" column="is_anti_whale"/>
         <result property="antiWhaleModifiable" column="anti_whale_modifiable"/>
         <result property="tradingCooldown" column="trading_cooldown"/>
@@ -38,7 +38,7 @@
         <result property="tokenSymbol" column="token_symbol"/>
         <result property="holderCount" column="holder_count"/>
         <result property="totalSupply" column="total_supply"/>
-        <result property="holders" column="holders" typeHandler="com.tomo.mapper.type.JsonTypeHandler"/>
+        <result property="holders" column="holders"/>
         <result property="ownerBalance" column="owner_balance"/>
         <result property="ownerPercent" column="owner_percent"/>
         <result property="creatorAddress" column="creator_address"/>
@@ -46,28 +46,28 @@
         <result property="creatorPercent" column="creator_percent"/>
         <result property="lpHolderCount" column="lp_holder_count"/>
         <result property="lpTotalSupply" column="lp_total_supply"/>
-        <result property="lpHolders" column="lp_holders" typeHandler="com.tomo.mapper.type.JsonTypeHandler"/>
+        <result property="lpHolders" column="lp_holders"/>
         <result property="isTrueToken" column="is_true_token"/>
         <result property="isAirdropScam" column="is_airdrop_scam"/>
         <result property="trustList" column="trust_list"/>
         <result property="otherPotentialRisks" column="other_potential_risks"/>
         <result property="note" column="note"/>
-        <result property="fakeToken" column="fake_token" typeHandler="com.tomo.mapper.type.JsonTypeHandler"/>
-        <result property="metadata" column="metadata" typeHandler="com.tomo.mapper.type.JsonTypeHandler"/>
+        <result property="fakeToken" column="fake_token"/>
+        <result property="metadata" column="metadata"/>
         <result property="defaultAccountState" column="default_account_state"/>
         <result property="nonTransferable" column="non_transferable"/>
-        <result property="creator" column="creator" typeHandler="com.tomo.mapper.type.JsonTypeHandler"/>
-        <result property="transferFee" column="transfer_fee" typeHandler="com.tomo.mapper.type.JsonTypeHandler"/>
-        <result property="transferHook" column="transfer_hook" typeHandler="com.tomo.mapper.type.JsonTypeHandler"/>
+        <result property="creator" column="creator"/>
+        <result property="transferFee" column="transfer_fee"/>
+        <result property="transferHook" column="transfer_hook"/>
         <result property="trustedToken" column="trusted_token"/>
-        <result property="metadataMutable" column="metadata_mutable" typeHandler="com.tomo.mapper.type.JsonTypeHandler"/>
-        <result property="mintable" column="mintable" typeHandler="com.tomo.mapper.type.JsonTypeHandler"/>
-        <result property="freezable" column="freezable" typeHandler="com.tomo.mapper.type.JsonTypeHandler"/>
-        <result property="closable" column="closable" typeHandler="com.tomo.mapper.type.JsonTypeHandler"/>
-        <result property="defaultAccountStateUpgradable" column="default_account_state_upgradable" typeHandler="com.tomo.mapper.type.JsonTypeHandler"/>
-        <result property="balanceMutableAuthority" column="balance_mutable_authority" typeHandler="com.tomo.mapper.type.JsonTypeHandler"/>
-        <result property="transferFeeUpgradable" column="transfer_fee_upgradable" typeHandler="com.tomo.mapper.type.JsonTypeHandler"/>
-        <result property="transferHookUpgradable" column="transfer_hook_upgradable" typeHandler="com.tomo.mapper.type.JsonTypeHandler"/>
+        <result property="metadataMutable" column="metadata_mutable"/>
+        <result property="mintable" column="mintable"/>
+        <result property="freezable" column="freezable"/>
+        <result property="closable" column="closable"/>
+        <result property="defaultAccountStateUpgradable" column="default_account_state_upgradable"/>
+        <result property="balanceMutableAuthority" column="balance_mutable_authority"/>
+        <result property="transferFeeUpgradable" column="transfer_fee_upgradable"/>
+        <result property="transferHookUpgradable" column="transfer_hook_upgradable"/>
         <result property="createdTime" column="created_time"/>
         <result property="updatedTime" column="updated_time"/>
     </resultMap>
