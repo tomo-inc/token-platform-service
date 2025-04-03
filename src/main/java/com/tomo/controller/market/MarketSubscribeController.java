@@ -7,10 +7,7 @@ import com.tomo.model.resp.Result;
 import com.tomo.service.market.MarketSubscribeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,13 +20,13 @@ public class MarketSubscribeController {
     private MarketSubscribeService marketSubscribeService;
 
     @RequestMapping(value = "batchSubscribe",method = RequestMethod.POST)
-    public Result<Void> subscribe(List<MarketSubscribeReq> req) {
+    public Result<Void> subscribe(@RequestBody List<MarketSubscribeReq> req) {
         marketSubscribeService.batchSubscribe(req);
         return ResultUtils.success(null);
     }
 
     @RequestMapping(value = "unSubscribe",method = RequestMethod.POST)
-    public Result<Void> unSubscribe(List<MarketSubscribeReq> req) {
+    public Result<Void> unSubscribe(@RequestBody List<MarketSubscribeReq> req) {
         marketSubscribeService.unSubscribe(req);
         return ResultUtils.success(null);
     }

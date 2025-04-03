@@ -41,7 +41,8 @@
             </if>
         </where>
         ORDER BY id DESC
-        LIMIT #{offset}, #{pageSize}
+        LIMIT #{pageSize} OFFSET #{offset}
+
     </select>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
@@ -54,9 +55,9 @@
         <foreach collection="list" item="item" index="index" separator=",">
             (#{item.chainIndex}, #{item.address}, #{item.type}, #{item.status}, #{item.createdTime}, #{item.updatedTime})
         </foreach>
-        ON DUPLICATE KEY UPDATE
-        status = VALUES(status),
-        updated_time = VALUES(updatedTime)
+        ON CONFLICT (chain_index, address, type) DO UPDATE SET
+        status = EXCLUDED.status,
+        updated_time = EXCLUDED.updated_time
     </insert>
 
     <update id="update">
