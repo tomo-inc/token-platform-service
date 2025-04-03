@@ -9,6 +9,8 @@ import java.util.List;
 @Mapper
 public interface MarketTokenPriceMapper {
 
+    MarketTokenPrice selectMarketTokenPrice(Long chainIndex, String address);
+
     MarketTokenPrice selectMarketTokenPriceById(long id);
 
     void insertMarketTokenPrice(MarketTokenPrice marketTokenPrice);

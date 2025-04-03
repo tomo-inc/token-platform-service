@@ -33,6 +33,13 @@
         WHERE id = #{id}
     </select>
 
+    <select id="selectMarketTokenPrice" resultMap="MarketTokenPriceResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM market_token_price
+        WHERE chain_index = #{chainIndex}  and address = #{address}
+    </select>
+
     <select id="queryByCoinIds" resultMap="MarketTokenPriceResultMap" parameterType="list">
         SELECT
         <include refid="Base_Column_List"/>
