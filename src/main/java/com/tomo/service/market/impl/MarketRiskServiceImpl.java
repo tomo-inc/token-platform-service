@@ -143,19 +143,19 @@ public class MarketRiskServiceImpl implements MarketRiskService {
         }
     }
 
-    private JsonNode parseStringToJson(Map<String, Object> map) {
+    private JsonNode parseStringToJson(String json) {
         try {
-            String jsonString = JsonUtil.toJson(map);
-            JsonNode jsonNode = objectMapper.readTree(jsonString);
+//            String jsonString = JsonUtil.toJson(map);
+            JsonNode jsonNode = objectMapper.readTree(json);
             if (jsonNode.isArray()) {
                 return (ArrayNode) jsonNode;
             } else if (jsonNode.isObject()) {
                 return (ObjectNode) jsonNode;
             } else {
-                throw new RuntimeException("Provided string is not a valid JSON object or array: " + jsonString);
+                throw new RuntimeException("Provided string is not a valid JSON object or array: " + json);
             }
         } catch (Exception e) {
-            throw new RuntimeException("Invalid JSON string: " + map, e);
+            throw new RuntimeException("Invalid JSON string: " + json, e);
         }
     }
 }
