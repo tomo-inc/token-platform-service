@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.tomo.mapper.MarketTokenInfoMapper;
 import com.tomo.model.ChainEnum;
 import com.tomo.model.ChainPlatformType;
-import com.tomo.model.RiskLevel;
+import com.tomo.model.market.enums.RiskLevel;
 import com.tomo.model.dto.ChainDTO;
 import com.tomo.model.market.MarketTokenInfo;
 import com.tomo.service.market.MarketTokenSecurityJobService;

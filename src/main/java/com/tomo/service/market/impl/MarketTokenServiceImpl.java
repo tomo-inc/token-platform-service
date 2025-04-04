@@ -5,14 +5,13 @@ import com.tomo.mapper.MarketTokenCategoryMapper;
 import com.tomo.mapper.MarketTokenInfoMapper;
 import com.tomo.mapper.MarketTokenPriceMapper;
 import com.tomo.model.*;
-import com.tomo.model.market.MarketTokenCategory;
-import com.tomo.model.market.MarketTokenInfo;
-import com.tomo.model.market.MarketTokenPrice;
-import com.tomo.model.market.SocialInfo;
+import com.tomo.model.market.*;
+import com.tomo.model.market.enums.RiskLevel;
 import com.tomo.model.req.MarketTokenCategoryReq;
 import com.tomo.model.req.MarketTokenReq;
 import com.tomo.model.resp.*;
 import com.tomo.model.resp.coingecko.CoinGeckoTokenInfo;
+import com.tomo.service.market.GDexClientService;
 import com.tomo.service.market.MarketTokenDaoService;
 import com.tomo.service.market.MarketTokenService;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +25,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -46,6 +46,9 @@ public class MarketTokenServiceImpl implements MarketTokenService {
 
     @Autowired
     private CoinGeckoClient coinGeckoClient;
+
+    @Autowired
+    private GDexClientService gDexClientService;
 
     public static final int DEFAULT_PAGE_NUM = 1;
     public static final int DEFAULT_PAGE_SIZE = 10;
@@ -364,8 +367,38 @@ public class MarketTokenServiceImpl implements MarketTokenService {
     }
 
     @Override
-    public List<MarketTokenHistory> history(Long chainIndex, String address) {
-        return List.of();
+    public List<MarketTokenHistory> history(Long chainIndex, String address,
+                                            Integer pageNum, Integer pageSize) {
+
+        List<GDexTxInfo> txInfos = gDexClientService.dex_txsQuery(chainIndex, address, pageNum, pageSize);
+        if (CollectionUtils.isEmpty(txInfos)) {
+            return List.of();
+        }
+        List<MarketTokenHistory> historyList = txInfos.stream().map(e -> {
+            GDexTxInfo.Token gDextoken = e.getTokens().stream().filter(i -> i.getAddress().equalsIgnoreCase(address)).findFirst().orElse(null);
+            if (gDextoken == null) {
+                log.error("MarketTokenServiceImpl#history gDextoken is null, chainIndex {}, address {}", chainIndex, address);
+                return null;
+            }
+
+            MarketTokenHistory history = new MarketTokenHistory();
+            history.setTxHash(e.getTxHash());
+            history.setTxFrom(e.getTxFrom());
+            history.setTxTo(e.getTxTo());
+            history.setSide(gDextoken.getSide());
+            history.setAmount(gDextoken.getAmount() == null ? "" : gDextoken.getAmount().toPlainString());
+            history.setPrice(gDextoken.getPrice() == null ? "" : gDextoken.getPrice().toPlainString());
+            history.setValue(gDextoken.getValue() == null ? "" : gDextoken.getValue().toPlainString());
+            MarketTokenHistory.Token token = new MarketTokenHistory.Token();
+            token.setAddress(gDextoken.getAddress());
+            token.setName(gDextoken.getName());
+            token.setSymbol(gDextoken.getSymbol());
+            token.setDecimals(gDextoken.getDecimals());
+            history.setToken(token);
+            history.setTime(e.getTime());
+            return history;
+        }).filter(Objects::nonNull).toList();
+        return historyList;
     }
 
     @Override

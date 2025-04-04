@@ -1,6 +1,5 @@
-package com.tomo.model;
+package com.tomo.model.market.enums;
 
-import com.baomidou.mybatisplus.annotation.EnumValue;
 import lombok.Getter;
 
 @Getter

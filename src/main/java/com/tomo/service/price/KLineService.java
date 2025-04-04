@@ -1,7 +1,7 @@
 package com.tomo.service.price;
 
 
-import com.tomo.model.IntervalEnum;
+import com.tomo.model.market.enums.IntervalEnum;
 import com.tomo.model.dto.TokenOhlcvDTO;
 
 import java.util.List;

@@ -1,7 +1,6 @@
 package com.tomo.service.market.impl;
 
 import com.tomo.mapper.MarketSubscribeInfoMapper;
-import com.tomo.mapper.MarketTokenCategoryMapper;
 import com.tomo.mapper.MarketTokenInfoMapper;
 import com.tomo.model.ChainUtil;
 import com.tomo.model.MarketSubscribeInfo;
@@ -9,13 +8,11 @@ import com.tomo.model.market.MarketTokenInfo;
 import com.tomo.model.req.MarketSubscribeReq;
 import com.tomo.model.resp.MarketSubscribeResp;
 import com.tomo.service.market.MarketSubscribeService;
-import com.tomo.service.market.MarketTokenDaoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import javax.swing.text.rtf.RTFEditorKit;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +26,6 @@ public class MarketSubscribeServiceImpl implements MarketSubscribeService {
     @Autowired
     private MarketSubscribeInfoMapper marketSubscribeInfoMapper;
 
-    @Autowired
-    private MarketTokenDaoService marketTokenDaoService;
     @Autowired
     private MarketTokenInfoMapper marketTokenInfoMapper;
 

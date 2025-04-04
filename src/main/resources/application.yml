@@ -92,3 +92,8 @@ cache:
 goplus:
   key: ''
   secret: ''
+
+market:
+  gdex:
+    url: https://testapi.ourdex.com/
+    appId: 'tesy'

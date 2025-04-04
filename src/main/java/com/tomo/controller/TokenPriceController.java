@@ -1,7 +1,7 @@
 package com.tomo.controller;
 
 import com.tomo.service.category.CoinGeckoService;
-import com.tomo.model.IntervalEnum;
+import com.tomo.model.market.enums.IntervalEnum;
 import com.tomo.model.ResultUtils;
 import com.tomo.model.dto.TokenOhlcvDTO;
 import com.tomo.model.resp.Result;

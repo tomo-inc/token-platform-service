@@ -20,7 +20,8 @@ public interface MarketTokenService {
 
     List<MarketTokenDetailInfo> category(@Valid @NotEmpty MarketTokenCategoryReq req);
 
-    List<MarketTokenHistory> history(@NotNull Long chainIndex, String address);
+    List<MarketTokenHistory> history(Long chainIndex, String address,
+                                     Integer pageNum, Integer pageSize);
 
     void updateSocialInfo();
 }

@@ -6,7 +6,7 @@ import com.tomo.mapper.MarketTokenInfoMapper;
 import com.tomo.mapper.MarketTokenPriceMapper;
 import com.tomo.model.ChainEnum;
 import com.tomo.model.ChainUtil;
-import com.tomo.model.IntervalEnum;
+import com.tomo.model.market.enums.IntervalEnum;
 import com.tomo.model.market.MarketTokenInfo;
 import com.tomo.model.market.MarketTokenPrice;
 import com.tomo.model.resp.MarketOHLCVInfo;

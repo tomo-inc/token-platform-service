@@ -1,7 +1,7 @@
 package com.tomo.service.category;
 
 
-import com.tomo.model.IntervalEnum;
+import com.tomo.model.market.enums.IntervalEnum;
 import com.tomo.model.dto.TokenInfoDTO;
 import com.tomo.model.dto.TokenOhlcvDTO;
 import com.tomo.model.req.OnchainTokenReq;

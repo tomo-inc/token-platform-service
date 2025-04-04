@@ -4,6 +4,7 @@ import com.tomo.feign.CoinGeckoClient;
 import com.tomo.model.ResultUtils;
 import com.tomo.model.resp.Result;
 import com.tomo.model.resp.coingecko.CoinGeckoTokenInfo;
+import com.tomo.service.market.GDexClientService;
 import com.tomo.service.market.MarketTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,9 @@ public class TestController {
     @Autowired
     private MarketTokenService marketTokenService;
 
+    @Autowired
+    private GDexClientService gDexClientService;
+
     @GetMapping("/test/coinGeckoTokenInfo")
     public Result<CoinGeckoTokenInfo> testCoinGeckoTokenInfo(String network, String address) {
         CoinGeckoTokenInfo tokenInfo = coinGeckoClient.getTokenInfo(network, address);
@@ -27,6 +31,12 @@ public class TestController {
     @GetMapping("/test/testUpdateSocial")
     public Result testUpdateSocial() {
         marketTokenService.updateSocialInfo();
+        return ResultUtils.success("ok");
+    }
+
+    @GetMapping("/test/testGDexClient")
+    public Result testGDexClient() {
+//        gDexClientService.getClint(1L);
         return ResultUtils.success("ok");
     }
 

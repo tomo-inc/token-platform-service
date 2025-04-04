@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.tomo.feign.GoplusClient;
 import com.tomo.mapper.MarketTokenInfoMapper;
 import com.tomo.model.ChainPlatformType;
-import com.tomo.model.RiskLevel;
+import com.tomo.model.market.enums.RiskLevel;
 import com.tomo.model.market.MarketTokenSecurityInfo;
 import com.tomo.model.resp.SolanaSecurityResp;
 import com.tomo.service.market.MarketTokenSecurityService;

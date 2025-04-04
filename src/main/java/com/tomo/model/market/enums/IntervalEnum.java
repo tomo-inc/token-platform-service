@@ -1,4 +1,4 @@
-package com.tomo.model;
+package com.tomo.model.market.enums;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
 

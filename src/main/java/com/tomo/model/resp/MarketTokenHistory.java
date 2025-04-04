@@ -2,19 +2,18 @@ package com.tomo.model.resp;
 
 import lombok.Data;
 
+@Data
 public class MarketTokenHistory {
-    private String addr;
-    private String router;
-    private String factory;
-    private String pool;
+    private String txHash;
+    private String txFrom;
+    private String txTo;
     private String side;
     private String amount;
-    private Double price;
-    private Double value;
+    private String price;
+    private String value;
     private Token token;
     private Long time;
-    private String txFrom;
-    private String txHash;
+
 
     @Data
     public static class Token {

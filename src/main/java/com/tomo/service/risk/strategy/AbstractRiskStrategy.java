@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tomo.mapper.MarketTokenInfoMapper;
-import com.tomo.model.RiskLevel;
+import com.tomo.model.market.enums.RiskLevel;
 import com.tomo.model.market.MarketTokenInfo;
 import com.tomo.model.market.MarketTokenSecurityInfo;
 import com.tomo.service.market.MarketTokenSecurityService;
